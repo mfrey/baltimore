@@ -1,0 +1,2177 @@
+version 2
+run Scenario05-0-20130429-11:11:04-21740
+attr configname Scenario05
+attr datetime 20130429-11:11:04
+attr experiment Scenario05
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvars2 $repetition=0
+attr measurement ""
+attr network Scenario05
+attr processid 21740
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+
+scalar Scenario05.node[0].app 	trafficSent 	0
+scalar Scenario05.node[0].app 	trafficReceived 	0
+scalar Scenario05.node[0].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[0].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[0].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[0].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[0].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[0].networkLayer.arp 	initiatedResolution:count 	0
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[0].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[0].networkLayer.arp 	sentReq:count 	0
+attr title  "ARP request sent, count"
+scalar Scenario05.node[0].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[0].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[0].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[0].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[0].wlan[0].mac 	"number of received packets" 	0
+scalar Scenario05.node[0].wlan[0].mac 	"number of collisions" 	3
+scalar Scenario05.node[0].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[0].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[0].wlan[0].mac 	"sent and receive bites" 	672
+scalar Scenario05.node[0].wlan[0].mac 	"sent packet within AC 0" 	0
+scalar Scenario05.node[0].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[0].wlan[0].mac 	"sentWithoutRetry AC 0" 	0
+scalar Scenario05.node[0].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[0].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[0].wlan[0].radio 	lossRate:min 	-nan
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[0].wlan[0].radio 	lossRate:max 	-nan
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[0].wlan[0].radio 	lossRate:timeavg 	-nan
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[0].wlan[0].radio 	radioState:count 	41
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[0].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[0].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[0].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[0].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[1].app 	trafficSent 	671
+scalar Scenario05.node[1].app 	trafficReceived 	0
+scalar Scenario05.node[1].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[1].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[1].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[1].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[1].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[1].networkLayer.arp 	initiatedResolution:count 	29
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[1].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[1].networkLayer.arp 	sentReq:count 	30
+attr title  "ARP request sent, count"
+scalar Scenario05.node[1].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[1].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[1].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[1].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[1].wlan[0].mac 	"number of received packets" 	29
+scalar Scenario05.node[1].wlan[0].mac 	"number of collisions" 	3
+scalar Scenario05.node[1].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[1].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[1].wlan[0].mac 	"sent and receive bites" 	242592
+scalar Scenario05.node[1].wlan[0].mac 	"sent packet within AC 0" 	671
+scalar Scenario05.node[1].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[1].wlan[0].mac 	"sentWithoutRetry AC 0" 	671
+scalar Scenario05.node[1].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[1].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[1].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[1].wlan[0].radio 	lossRate:max 	0.06
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[1].wlan[0].radio 	lossRate:timeavg 	0.0012120219907738
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[1].wlan[0].radio 	radioState:count 	6719
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[1].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[1].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[1].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[1].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[2].app 	trafficSent 	0
+scalar Scenario05.node[2].app 	trafficReceived 	0
+scalar Scenario05.node[2].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[2].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[2].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[2].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[2].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[2].networkLayer.arp 	initiatedResolution:count 	0
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[2].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[2].networkLayer.arp 	sentReq:count 	0
+attr title  "ARP request sent, count"
+scalar Scenario05.node[2].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[2].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[2].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[2].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[2].wlan[0].mac 	"number of received packets" 	0
+scalar Scenario05.node[2].wlan[0].mac 	"number of collisions" 	4
+scalar Scenario05.node[2].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[2].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[2].wlan[0].mac 	"sent and receive bites" 	672
+scalar Scenario05.node[2].wlan[0].mac 	"sent packet within AC 0" 	0
+scalar Scenario05.node[2].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[2].wlan[0].mac 	"sentWithoutRetry AC 0" 	0
+scalar Scenario05.node[2].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[2].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[2].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[2].wlan[0].radio 	lossRate:max 	0.08
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[2].wlan[0].radio 	lossRate:timeavg 	0.0013529160579584
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[2].wlan[0].radio 	radioState:count 	4797
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[2].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[2].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[2].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[2].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[3].app 	trafficSent 	0
+scalar Scenario05.node[3].app 	trafficReceived 	0
+scalar Scenario05.node[3].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[3].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[3].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[3].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[3].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[3].networkLayer.arp 	initiatedResolution:count 	1
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[3].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[3].networkLayer.arp 	sentReq:count 	1
+attr title  "ARP request sent, count"
+scalar Scenario05.node[3].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[3].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[3].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[3].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[3].wlan[0].mac 	"number of received packets" 	2
+scalar Scenario05.node[3].wlan[0].mac 	"number of collisions" 	2
+scalar Scenario05.node[3].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[3].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[3].wlan[0].mac 	"sent and receive bites" 	2128
+scalar Scenario05.node[3].wlan[0].mac 	"sent packet within AC 0" 	2
+scalar Scenario05.node[3].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[3].wlan[0].mac 	"sentWithoutRetry AC 0" 	2
+scalar Scenario05.node[3].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[3].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[3].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[3].wlan[0].radio 	lossRate:max 	0.04
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[3].wlan[0].radio 	lossRate:timeavg 	0.0017645859710741
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[3].wlan[0].radio 	radioState:count 	2361
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[3].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[3].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[3].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[3].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[4].app 	trafficSent 	0
+scalar Scenario05.node[4].app 	trafficReceived 	0
+scalar Scenario05.node[4].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[4].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[4].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[4].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[4].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[4].networkLayer.arp 	initiatedResolution:count 	0
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[4].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[4].networkLayer.arp 	sentReq:count 	0
+attr title  "ARP request sent, count"
+scalar Scenario05.node[4].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[4].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[4].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[4].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[4].wlan[0].mac 	"number of received packets" 	0
+scalar Scenario05.node[4].wlan[0].mac 	"number of collisions" 	4
+scalar Scenario05.node[4].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[4].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[4].wlan[0].mac 	"sent and receive bites" 	672
+scalar Scenario05.node[4].wlan[0].mac 	"sent packet within AC 0" 	0
+scalar Scenario05.node[4].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[4].wlan[0].mac 	"sentWithoutRetry AC 0" 	0
+scalar Scenario05.node[4].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[4].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[4].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[4].wlan[0].radio 	lossRate:max 	0.08
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[4].wlan[0].radio 	lossRate:timeavg 	0.0013529159908464
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[4].wlan[0].radio 	radioState:count 	4799
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[4].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[4].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[4].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[4].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[5].app 	trafficSent 	0
+scalar Scenario05.node[5].app 	trafficReceived 	0
+scalar Scenario05.node[5].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[5].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[5].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[5].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[5].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[5].networkLayer.arp 	initiatedResolution:count 	0
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[5].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[5].networkLayer.arp 	sentReq:count 	0
+attr title  "ARP request sent, count"
+scalar Scenario05.node[5].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[5].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[5].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[5].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[5].wlan[0].mac 	"number of received packets" 	0
+scalar Scenario05.node[5].wlan[0].mac 	"number of collisions" 	2
+scalar Scenario05.node[5].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[5].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[5].wlan[0].mac 	"sent and receive bites" 	672
+scalar Scenario05.node[5].wlan[0].mac 	"sent packet within AC 0" 	0
+scalar Scenario05.node[5].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[5].wlan[0].mac 	"sentWithoutRetry AC 0" 	0
+scalar Scenario05.node[5].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[5].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[5].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[5].wlan[0].radio 	lossRate:max 	0.04
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[5].wlan[0].radio 	lossRate:timeavg 	0.014202147844495
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[5].wlan[0].radio 	radioState:count 	429
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[5].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[5].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[5].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[5].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[6].app 	trafficSent 	0
+scalar Scenario05.node[6].app 	trafficReceived 	0
+scalar Scenario05.node[6].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[6].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[6].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[6].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[6].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[6].networkLayer.arp 	initiatedResolution:count 	9
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[6].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[6].networkLayer.arp 	sentReq:count 	9
+attr title  "ARP request sent, count"
+scalar Scenario05.node[6].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[6].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[6].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[6].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[6].wlan[0].mac 	"number of received packets" 	379
+scalar Scenario05.node[6].wlan[0].mac 	"number of collisions" 	4
+scalar Scenario05.node[6].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[6].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[6].wlan[0].mac 	"sent and receive bites" 	134512
+scalar Scenario05.node[6].wlan[0].mac 	"sent packet within AC 0" 	378
+scalar Scenario05.node[6].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[6].wlan[0].mac 	"sentWithoutRetry AC 0" 	378
+scalar Scenario05.node[6].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[6].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[6].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[6].wlan[0].radio 	lossRate:max 	0.08
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[6].wlan[0].radio 	lossRate:timeavg 	0.00098760872037063
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[6].wlan[0].radio 	radioState:count 	6745
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[6].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[6].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[6].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[6].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[7].app 	trafficSent 	0
+scalar Scenario05.node[7].app 	trafficReceived 	0
+scalar Scenario05.node[7].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[7].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[7].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[7].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[7].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[7].networkLayer.arp 	initiatedResolution:count 	7
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[7].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[7].networkLayer.arp 	sentReq:count 	7
+attr title  "ARP request sent, count"
+scalar Scenario05.node[7].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[7].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[7].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[7].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[7].wlan[0].mac 	"number of received packets" 	91
+scalar Scenario05.node[7].wlan[0].mac 	"number of collisions" 	5
+scalar Scenario05.node[7].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[7].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[7].wlan[0].mac 	"sent and receive bites" 	37296
+scalar Scenario05.node[7].wlan[0].mac 	"sent packet within AC 0" 	92
+scalar Scenario05.node[7].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[7].wlan[0].mac 	"sentWithoutRetry AC 0" 	92
+scalar Scenario05.node[7].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[7].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[7].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[7].wlan[0].radio 	lossRate:max 	0.1
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[7].wlan[0].radio 	lossRate:timeavg 	0.0017956879680435
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[7].wlan[0].radio 	radioState:count 	5203
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[7].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[7].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[7].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[7].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[8].app 	trafficSent 	0
+scalar Scenario05.node[8].app 	trafficReceived 	671
+scalar Scenario05.node[8].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[8].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[8].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[8].networkLayer.ara 	packetDelivered:count 	671
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[8].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[8].networkLayer.arp 	initiatedResolution:count 	0
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[8].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[8].networkLayer.arp 	sentReq:count 	0
+attr title  "ARP request sent, count"
+scalar Scenario05.node[8].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[8].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[8].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[8].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[8].wlan[0].mac 	"number of received packets" 	671
+scalar Scenario05.node[8].wlan[0].mac 	"number of collisions" 	4
+scalar Scenario05.node[8].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[8].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[8].wlan[0].mac 	"sent and receive bites" 	13216
+scalar Scenario05.node[8].wlan[0].mac 	"sent packet within AC 0" 	23
+scalar Scenario05.node[8].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[8].wlan[0].mac 	"sentWithoutRetry AC 0" 	23
+scalar Scenario05.node[8].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[8].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[8].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[8].wlan[0].radio 	lossRate:max 	0.08
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[8].wlan[0].radio 	lossRate:timeavg 	0.0021719071341237
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[8].wlan[0].radio 	radioState:count 	4795
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[8].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[8].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[8].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[8].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[9].app 	trafficSent 	0
+scalar Scenario05.node[9].app 	trafficReceived 	0
+scalar Scenario05.node[9].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[9].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[9].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[9].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[9].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[9].networkLayer.arp 	initiatedResolution:count 	1
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[9].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[9].networkLayer.arp 	sentReq:count 	1
+attr title  "ARP request sent, count"
+scalar Scenario05.node[9].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[9].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[9].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[9].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[9].wlan[0].mac 	"number of received packets" 	126
+scalar Scenario05.node[9].wlan[0].mac 	"number of collisions" 	2
+scalar Scenario05.node[9].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[9].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[9].wlan[0].mac 	"sent and receive bites" 	47152
+scalar Scenario05.node[9].wlan[0].mac 	"sent packet within AC 0" 	132
+scalar Scenario05.node[9].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[9].wlan[0].mac 	"sentWithoutRetry AC 0" 	132
+scalar Scenario05.node[9].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[9].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[9].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[9].wlan[0].radio 	lossRate:max 	0.04
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[9].wlan[0].radio 	lossRate:timeavg 	0.00099773061214107
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[9].wlan[0].radio 	radioState:count 	4547
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[9].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[9].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[9].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[9].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[10].app 	trafficSent 	0
+scalar Scenario05.node[10].app 	trafficReceived 	0
+scalar Scenario05.node[10].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[10].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[10].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[10].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[10].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[10].networkLayer.arp 	initiatedResolution:count 	0
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[10].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[10].networkLayer.arp 	sentReq:count 	0
+attr title  "ARP request sent, count"
+scalar Scenario05.node[10].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[10].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[10].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[10].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[10].wlan[0].mac 	"number of received packets" 	0
+scalar Scenario05.node[10].wlan[0].mac 	"number of collisions" 	4
+scalar Scenario05.node[10].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[10].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[10].wlan[0].mac 	"sent and receive bites" 	672
+scalar Scenario05.node[10].wlan[0].mac 	"sent packet within AC 0" 	0
+scalar Scenario05.node[10].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[10].wlan[0].mac 	"sentWithoutRetry AC 0" 	0
+scalar Scenario05.node[10].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[10].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[10].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[10].wlan[0].radio 	lossRate:max 	0.08
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[10].wlan[0].radio 	lossRate:timeavg 	0.0013529160579584
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[10].wlan[0].radio 	radioState:count 	4797
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[10].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[10].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[10].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[10].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[11].app 	trafficSent 	0
+scalar Scenario05.node[11].app 	trafficReceived 	0
+scalar Scenario05.node[11].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[11].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[11].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[11].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[11].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[11].networkLayer.arp 	initiatedResolution:count 	0
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[11].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[11].networkLayer.arp 	sentReq:count 	0
+attr title  "ARP request sent, count"
+scalar Scenario05.node[11].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[11].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[11].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[11].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[11].wlan[0].mac 	"number of received packets" 	0
+scalar Scenario05.node[11].wlan[0].mac 	"number of collisions" 	2
+scalar Scenario05.node[11].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[11].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[11].wlan[0].mac 	"sent and receive bites" 	672
+scalar Scenario05.node[11].wlan[0].mac 	"sent packet within AC 0" 	0
+scalar Scenario05.node[11].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[11].wlan[0].mac 	"sentWithoutRetry AC 0" 	0
+scalar Scenario05.node[11].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[11].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[11].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[11].wlan[0].radio 	lossRate:max 	0.04
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[11].wlan[0].radio 	lossRate:timeavg 	0.0029527108569635
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[11].wlan[0].radio 	radioState:count 	1803
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[11].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[11].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[11].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[11].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[12].app 	trafficSent 	0
+scalar Scenario05.node[12].app 	trafficReceived 	0
+scalar Scenario05.node[12].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[12].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[12].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[12].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[12].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[12].networkLayer.arp 	initiatedResolution:count 	0
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[12].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[12].networkLayer.arp 	sentReq:count 	0
+attr title  "ARP request sent, count"
+scalar Scenario05.node[12].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[12].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[12].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[12].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[12].wlan[0].mac 	"number of received packets" 	0
+scalar Scenario05.node[12].wlan[0].mac 	"number of collisions" 	2
+scalar Scenario05.node[12].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[12].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[12].wlan[0].mac 	"sent and receive bites" 	672
+scalar Scenario05.node[12].wlan[0].mac 	"sent packet within AC 0" 	0
+scalar Scenario05.node[12].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[12].wlan[0].mac 	"sentWithoutRetry AC 0" 	0
+scalar Scenario05.node[12].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[12].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[12].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[12].wlan[0].radio 	lossRate:max 	0.04
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[12].wlan[0].radio 	lossRate:timeavg 	0.0016288756435666
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[12].wlan[0].radio 	radioState:count 	2361
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[12].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[12].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[12].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[12].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[13].app 	trafficSent 	0
+scalar Scenario05.node[13].app 	trafficReceived 	0
+scalar Scenario05.node[13].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[13].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[13].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[13].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[13].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[13].networkLayer.arp 	initiatedResolution:count 	1
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[13].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[13].networkLayer.arp 	sentReq:count 	1
+attr title  "ARP request sent, count"
+scalar Scenario05.node[13].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[13].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[13].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[13].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[13].wlan[0].mac 	"number of received packets" 	2
+scalar Scenario05.node[13].wlan[0].mac 	"number of collisions" 	4
+scalar Scenario05.node[13].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[13].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[13].wlan[0].mac 	"sent and receive bites" 	2128
+scalar Scenario05.node[13].wlan[0].mac 	"sent packet within AC 0" 	2
+scalar Scenario05.node[13].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[13].wlan[0].mac 	"sentWithoutRetry AC 0" 	2
+scalar Scenario05.node[13].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[13].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[13].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[13].wlan[0].radio 	lossRate:max 	0.08
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[13].wlan[0].radio 	lossRate:timeavg 	0.0034387549644618
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[13].wlan[0].radio 	radioState:count 	2361
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[13].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[13].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[13].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[13].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[14].app 	trafficSent 	0
+scalar Scenario05.node[14].app 	trafficReceived 	0
+scalar Scenario05.node[14].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[14].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[14].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[14].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[14].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[14].networkLayer.arp 	initiatedResolution:count 	7
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[14].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[14].networkLayer.arp 	sentReq:count 	7
+attr title  "ARP request sent, count"
+scalar Scenario05.node[14].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[14].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[14].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[14].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[14].wlan[0].mac 	"number of received packets" 	90
+scalar Scenario05.node[14].wlan[0].mac 	"number of collisions" 	4
+scalar Scenario05.node[14].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[14].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[14].wlan[0].mac 	"sent and receive bites" 	36400
+scalar Scenario05.node[14].wlan[0].mac 	"sent packet within AC 0" 	90
+scalar Scenario05.node[14].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[14].wlan[0].mac 	"sentWithoutRetry AC 0" 	90
+scalar Scenario05.node[14].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[14].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[14].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[14].wlan[0].radio 	lossRate:max 	0.08
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[14].wlan[0].radio 	lossRate:timeavg 	0.0012669273558858
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[14].wlan[0].radio 	radioState:count 	3821
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[14].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[14].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[14].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[14].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[15].app 	trafficSent 	0
+scalar Scenario05.node[15].app 	trafficReceived 	0
+scalar Scenario05.node[15].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[15].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[15].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[15].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[15].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[15].networkLayer.arp 	initiatedResolution:count 	0
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[15].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[15].networkLayer.arp 	sentReq:count 	0
+attr title  "ARP request sent, count"
+scalar Scenario05.node[15].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[15].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[15].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[15].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[15].wlan[0].mac 	"number of received packets" 	0
+scalar Scenario05.node[15].wlan[0].mac 	"number of collisions" 	2
+scalar Scenario05.node[15].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[15].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[15].wlan[0].mac 	"sent and receive bites" 	672
+scalar Scenario05.node[15].wlan[0].mac 	"sent packet within AC 0" 	0
+scalar Scenario05.node[15].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[15].wlan[0].mac 	"sentWithoutRetry AC 0" 	0
+scalar Scenario05.node[15].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[15].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[15].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[15].wlan[0].radio 	lossRate:max 	0.04
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[15].wlan[0].radio 	lossRate:timeavg 	0.0032227771820076
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[15].wlan[0].radio 	radioState:count 	1413
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[15].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[15].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[15].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[15].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[16].app 	trafficSent 	0
+scalar Scenario05.node[16].app 	trafficReceived 	0
+scalar Scenario05.node[16].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[16].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[16].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[16].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[16].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[16].networkLayer.arp 	initiatedResolution:count 	1
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[16].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[16].networkLayer.arp 	sentReq:count 	1
+attr title  "ARP request sent, count"
+scalar Scenario05.node[16].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[16].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[16].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[16].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[16].wlan[0].mac 	"number of received packets" 	2
+scalar Scenario05.node[16].wlan[0].mac 	"number of collisions" 	1
+scalar Scenario05.node[16].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[16].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[16].wlan[0].mac 	"sent and receive bites" 	2128
+scalar Scenario05.node[16].wlan[0].mac 	"sent packet within AC 0" 	2
+scalar Scenario05.node[16].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[16].wlan[0].mac 	"sentWithoutRetry AC 0" 	2
+scalar Scenario05.node[16].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[16].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[16].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[16].wlan[0].radio 	lossRate:max 	0.02
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[16].wlan[0].radio 	lossRate:timeavg 	0.0069282875051514
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[16].wlan[0].radio 	radioState:count 	437
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[16].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[16].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[16].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[16].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[17].app 	trafficSent 	0
+scalar Scenario05.node[17].app 	trafficReceived 	0
+scalar Scenario05.node[17].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[17].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[17].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[17].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[17].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[17].networkLayer.arp 	initiatedResolution:count 	7
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[17].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[17].networkLayer.arp 	sentReq:count 	7
+attr title  "ARP request sent, count"
+scalar Scenario05.node[17].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[17].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[17].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[17].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[17].wlan[0].mac 	"number of received packets" 	252
+scalar Scenario05.node[17].wlan[0].mac 	"number of collisions" 	2
+scalar Scenario05.node[17].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[17].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[17].wlan[0].mac 	"sent and receive bites" 	90832
+scalar Scenario05.node[17].wlan[0].mac 	"sent packet within AC 0" 	252
+scalar Scenario05.node[17].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[17].wlan[0].mac 	"sentWithoutRetry AC 0" 	252
+scalar Scenario05.node[17].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[17].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[17].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[17].wlan[0].radio 	lossRate:max 	0.04
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[17].wlan[0].radio 	lossRate:timeavg 	0.0011324955158256
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[17].wlan[0].radio 	radioState:count 	4547
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[17].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[17].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[17].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[17].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[18].app 	trafficSent 	0
+scalar Scenario05.node[18].app 	trafficReceived 	0
+scalar Scenario05.node[18].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[18].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[18].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[18].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[18].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[18].networkLayer.arp 	initiatedResolution:count 	0
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[18].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[18].networkLayer.arp 	sentReq:count 	0
+attr title  "ARP request sent, count"
+scalar Scenario05.node[18].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[18].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[18].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[18].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[18].wlan[0].mac 	"number of received packets" 	0
+scalar Scenario05.node[18].wlan[0].mac 	"number of collisions" 	6
+scalar Scenario05.node[18].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[18].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[18].wlan[0].mac 	"sent and receive bites" 	672
+scalar Scenario05.node[18].wlan[0].mac 	"sent packet within AC 0" 	0
+scalar Scenario05.node[18].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[18].wlan[0].mac 	"sentWithoutRetry AC 0" 	0
+scalar Scenario05.node[18].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[18].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[18].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[18].wlan[0].radio 	lossRate:max 	0.12
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[18].wlan[0].radio 	lossRate:timeavg 	0.022662129970379
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[18].wlan[0].radio 	radioState:count 	827
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[18].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[18].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[18].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[18].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
+scalar Scenario05.node[19].app 	trafficSent 	0
+scalar Scenario05.node[19].app 	trafficReceived 	0
+scalar Scenario05.node[19].networkLayer.ara 	routeFailure:count 	0
+attr title  "Route Failures, count"
+scalar Scenario05.node[19].networkLayer.ara 	routingLoopDetected:count 	0
+attr title  "Routing loops, count"
+scalar Scenario05.node[19].networkLayer.ara 	packetUnDeliverable:count 	0
+attr title  "Packets undevliverable, count"
+scalar Scenario05.node[19].networkLayer.ara 	packetDelivered:count 	0
+attr title  "Packets devlivered, count"
+scalar Scenario05.node[19].networkLayer.arp 	failedResolution:count 	0
+attr title  "ARP failed resolutions, count"
+scalar Scenario05.node[19].networkLayer.arp 	initiatedResolution:count 	0
+attr title  "ARP initiated resolutions, count"
+scalar Scenario05.node[19].networkLayer.arp 	sentReplies:count 	0
+attr title  "ARP replies sent, count"
+scalar Scenario05.node[19].networkLayer.arp 	sentReq:count 	0
+attr title  "ARP request sent, count"
+scalar Scenario05.node[19].wlan[0].mgmt 	dropPkByQueue:count 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, count"
+scalar Scenario05.node[19].wlan[0].mgmt 	dropPkByQueue:sum(packetBytes) 	0
+attr interpolationmode  none
+attr source  dropPkByQueue
+attr title  "packets dropped by queue, sum(packetBytes)"
+scalar Scenario05.node[19].wlan[0].mgmt 	dataQueueLen:max 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, max"
+scalar Scenario05.node[19].wlan[0].mgmt 	dataQueueLen:timeavg 	0
+attr interpolationmode  sample-hold
+attr title  "data queue length, timeavg"
+scalar Scenario05.node[19].wlan[0].mac 	"number of received packets" 	0
+scalar Scenario05.node[19].wlan[0].mac 	"number of collisions" 	6
+scalar Scenario05.node[19].wlan[0].mac 	"number of internal collisions" 	0
+scalar Scenario05.node[19].wlan[0].mac 	"number of retry for AC 0" 	0
+scalar Scenario05.node[19].wlan[0].mac 	"sent and receive bites" 	672
+scalar Scenario05.node[19].wlan[0].mac 	"sent packet within AC 0" 	0
+scalar Scenario05.node[19].wlan[0].mac 	"sent in TXOP " 	0
+scalar Scenario05.node[19].wlan[0].mac 	"sentWithoutRetry AC 0" 	0
+scalar Scenario05.node[19].wlan[0].mac 	"numGivenUp AC 0" 	0
+scalar Scenario05.node[19].wlan[0].mac 	"numDropped AC 0" 	0
+scalar Scenario05.node[19].wlan[0].radio 	lossRate:min 	0
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, min"
+scalar Scenario05.node[19].wlan[0].radio 	lossRate:max 	0.12
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, max"
+scalar Scenario05.node[19].wlan[0].radio 	lossRate:timeavg 	0.0014814130805559
+attr interpolationmode  backward-sample-hold
+attr title  "packet loss rate, timeavg"
+scalar Scenario05.node[19].wlan[0].radio 	radioState:count 	5203
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), count"
+statistic Scenario05.node[19].wlan[0].radio 	channelNo:histogram
+field count 1
+field mean 0
+field stddev -nan
+field sum 0
+field sqrsum 0
+field min 0
+field max 0
+attr interpolationmode  sample-hold
+attr title  "channel no, histogram"
+bin	-INF	0
+bin	-0.5	0
+bin	-0.46666666666667	0
+bin	-0.43333333333333	0
+bin	-0.4	0
+bin	-0.36666666666667	0
+bin	-0.33333333333333	0
+bin	-0.3	0
+bin	-0.26666666666667	0
+bin	-0.23333333333333	0
+bin	-0.2	0
+bin	-0.16666666666667	0
+bin	-0.13333333333333	0
+bin	-0.1	0
+bin	-0.066666666666667	0
+bin	-0.033333333333333	0
+bin	0	1
+bin	0.033333333333333	0
+bin	0.066666666666667	0
+bin	0.1	0
+bin	0.13333333333333	0
+bin	0.16666666666667	0
+bin	0.2	0
+bin	0.23333333333333	0
+bin	0.26666666666667	0
+bin	0.3	0
+bin	0.33333333333333	0
+bin	0.36666666666667	0
+bin	0.4	0
+bin	0.43333333333333	0
+bin	0.46666666666667	0
+bin	0.5	0
+scalar Scenario05.node[19].wlan[0].radio 	bitrate:min 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, min"
+attr unit  bps
+scalar Scenario05.node[19].wlan[0].radio 	bitrate:max 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, max"
+attr unit  bps
+scalar Scenario05.node[19].wlan[0].radio 	bitrate:timeavg 	54000000
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, timeavg"
+attr unit  bps
