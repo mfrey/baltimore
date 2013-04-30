@@ -3,5 +3,6 @@
 class Node:
   def __init__(self):
     identifier = -1
+    results = {}
 
 

@@ -48,7 +48,7 @@ scalar Scenario05.node[0].wlan[0].mgmt 	dataQueueLen:timeavg 	0
 attr interpolationmode  sample-hold
 attr title  "data queue length, timeavg"
 scalar Scenario05.node[0].wlan[0].mac 	"number of received packets" 	0
-scalar Scenario05.node[0].wlan[0].mac 	"number of collisions" 	3
+calar Scenario05.node[0].wlan[0].mac 	"number of collisions" 	3
 scalar Scenario05.node[0].wlan[0].mac 	"number of internal collisions" 	0
 scalar Scenario05.node[0].wlan[0].mac 	"number of retry for AC 0" 	0
 scalar Scenario05.node[0].wlan[0].mac 	"sent and receive bites" 	672

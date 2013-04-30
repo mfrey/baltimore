@@ -31,34 +31,62 @@ class ScalarFile:
       for _ in xrange(18):
         next(f)
       
-      # preparte the reg exp to match node[number]
-      pattern = re.compile('node\[\d\]')
-      node_identifier = -1
-      
-      node = n.Node()
-      node.identifier = node_identifier
+      nodes = {}
+      nodes[0] = n.Node()
+      nodes[0].identifier = 0
 
       for line in f:
-        result = pattern.findall(line)            
+        if not line.startswith('attr'): 
+          # determine the node id
+          identifier = self.get_node_identifier(line)
+          if identifier != -1:
+            # check if the node id has already been seen and stored
+            if identifier in nodes:
+              size = len(line.split(' '))
+              key, value = line.split(' ')[size-2], line.split(' ')[size-1]
+              print value
+              #nodes[identifier]
+            # create a new node
+            else:
+              nodes[identifier] = n.Node()
+              nodes[identifier].identifier = identifier
+          # add the content
+         # print line
 
-        if len(result) != 0:
-          # get the node from the string
-          identifier = result[0].split('[')[1].split(']')[0]
-
-          if node.identifier != -1:
-            if identifier != node.identifier:        
-              # push the current node
-              result_arr.append(node) 
-              # create a new node
-              node = n.Node()
-              node.identifier = identifier
-          else:
-            node.identifier = identifier
-
-#          print result
-        
-      print len(result_arr)
+      print nodes
       
+
+  def get_node_identifier(self, line):
+    if not line.startswith('field'):
+      if not line.startswith('bin'):
+    # TODO: fix that (that's quite aweful)
+        return line.split(' ')[1].split('.')[1].split('[')[1].split(']')[0]
+    else:
+      return -1
+
+  def handle_line(self, line):
+     if line.startswith('scalar'):
+       self.handle_scalar(line)
+     elif line.startswith('field'):
+       self.handle_field(line)
+     elif line.startswith('bin'):
+       self.handle_bin(line)
+     elif line.startswith('attr'):
+       self.handle_attr(line)
+     else:
+       raise "unkown entry type in scalar file"
+
+  def handle_field(self, line):
+     raise NotImplemented, "method not implemented"
+
+  def handle_bin(self, line):
+     raise NotImplemented, "method not implemented"
+
+  def handle_scalar(self, line):
+     raise NotImplemented, "method not implemented"
+
+  def handle_scalar(self, attr):
+     raise NotImplemented, "method not implemented"
 
   def handle_preamble(self, preamble):
     # remove the new lines from the entries
