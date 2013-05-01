@@ -2,7 +2,7 @@
 
 class Node:
   def __init__(self):
-    identifier = -1
-    results = {}
+    self.identifier = -1
+    self.results = {}
 
 
