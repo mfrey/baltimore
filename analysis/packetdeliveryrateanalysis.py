@@ -1,15 +1,25 @@
 #!/usr/bin/env python2.7
 
 class PacketDeliveryRateAnalysis:
+  def __init__(self):
+	self.sent = 0
+	self.received = 0
+	self.loops = 0
+	self.routeFailures = 0
+
   def evaluate(self, nodes):
-	sent = 0
-	received = 0
-
+	
 	for node in nodes:
-	  #sent = sent + nodes[node]["trafficSent"]
-	  print nodes[node].results["trafficSent"]
-	  #received = received + nodes[node]["trafficReceived"]
+	  try:
+		self.sent = self.sent + int(nodes[node].results["trafficSent"])
+		self.received = self.received + int(nodes[node].results["trafficReceived"])
+		self.routeFailures = self.routeFailures + int(nodes[node].results["routeFailure:count"])
 
-	print "packet delivery rate is ", (received/sent * 100)
+	  except KeyError:
+		print "unknown key "
+
+	print "Sent Packets:     ", self.sent
+	print "Received Packets: ", self.received, " ", (self.received/self.sent * 100), "%" 
+	print "Route Failures:   ", self.routeFailures
 
 

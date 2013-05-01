@@ -30,7 +30,7 @@ class ScalarFile:
 #      preamble = f.readlines()[:16]
  #     self.handle_preamble(preamble)
 
-      for _ in xrange(18):
+      for _ in xrange(17):
         next(f)
 
       for line in f:
@@ -65,6 +65,8 @@ class ScalarFile:
 	if identifier not in self.nodes:
 	  self.nodes[identifier] = n.Node()
 	  self.nodes[identifier].identifier = identifier
+
+#	if identifier == 0:
 
 	key, value = shlex.split(line)[2], shlex.split(line)[3]
 	self.nodes[identifier].results[key] = value
