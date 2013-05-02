@@ -22,6 +22,7 @@ def main():
     pdrAnalysis = pdr.PacketDeliveryRateAnalysis()
     pdrAnalysis.evaluate(scalarParser.nodes)
     print pdrAnalysis
+    pdrAnalysis.clear()
     print ""
 
 if __name__ == "__main__":

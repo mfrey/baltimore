@@ -3,6 +3,7 @@
 class PacketDeliveryRateAnalysis:
   def __str__(self):
     result = "Sent Packets:              " + str(self.sent) + "\n"
+    result = result + "Received Packets:          " + str(self.received) + ", " + self.get_percentage(self.received)
     result = result + "Route Failures:            " + str(self.routeFailures) + ", " + self.get_percentage(self.routeFailures)
     result = result + "Failed Route Discoveries:  " + str(self.routeDiscoveryFailed) + ", " + self.get_percentage(self.routeDiscoveryFailed)
     result = result + "Dropped Packets (TTL = 0): " + str(self.timeToLiveExpired) + ", " + self.get_percentage(self.timeToLiveExpired) 
@@ -27,7 +28,15 @@ class PacketDeliveryRateAnalysis:
   def __init__(self):
     self.sent = 0
     self.received = 0
-    self.loops = 0
+    self.routeFailures = 0
+    self.routingLoopDetected = 0
+    self.routeDiscoveryFailed = 0
+    self.timeToLiveExpired = 0
+    self.inexplicableLoss = 0
+
+  def clear(self):
+    self.sent = 0
+    self.received = 0
     self.routeFailures = 0
     self.routingLoopDetected = 0
     self.routeDiscoveryFailed = 0
