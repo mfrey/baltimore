@@ -16,6 +16,11 @@ Installation from git
 
 		python2.7 main.py
 
+Documentation
+-------------
+There are a few lines of documentation at the [wiki](https://github.com/mfrey/baltimore/wiki). However, nearly 
+everything is pretty much ongoing work!
+
 Bug tracker
 -----------
 Have a bug or feature request? Please create an issue here on GitHub!
