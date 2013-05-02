@@ -1,0 +1,162 @@
+version 2
+run General-0-20130401-12:58:37-5166
+attr configname General
+attr datetime 20130401-12:58:37
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvars2 $repetition=0
+attr measurement ""
+attr network ManetTest
+attr processid 5166
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+
+vector 14  ManetTest.node1.wlan[0].mgmt  dataQueueLen:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "data queue length, vector"
+vector 34  ManetTest.node2.wlan[0].mgmt  dataQueueLen:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "data queue length, vector"
+vector 54  ManetTest.node3.wlan[0].mgmt  dataQueueLen:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "data queue length, vector"
+vector 74  ManetTest.node4.wlan[0].mgmt  dataQueueLen:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "data queue length, vector"
+vector 94  ManetTest.node5.wlan[0].mgmt  dataQueueLen:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "data queue length, vector"
+vector 101  ManetTest.node1.wlan[0].mac  RadioState  ETV
+attr enum  "IDLE=0, RECV=1, SLEEP=3, TRANSMIT=2"
+attr enumname  RadioState
+vector 100  ManetTest.node1.wlan[0].mac  State  ETV
+attr enum  "BACKOFF=3, DEFER=1, IDLE=0, RECEIVE=8, WAITACK=4, WAITAIFS=2, WAITCTS=6, WAITMULTICAST=5, WAITSIFS=7"
+attr enumname  Ieee80211Mac
+vector 106  ManetTest.node1.battery  Consumed  ETV
+vector 109  ManetTest.node2.wlan[0].mac  RadioState  ETV
+attr enum  "IDLE=0, RECV=1, SLEEP=3, TRANSMIT=2"
+attr enumname  RadioState
+vector 108  ManetTest.node2.wlan[0].mac  State  ETV
+attr enum  "BACKOFF=3, DEFER=1, IDLE=0, RECEIVE=8, WAITACK=4, WAITAIFS=2, WAITCTS=6, WAITMULTICAST=5, WAITSIFS=7"
+attr enumname  Ieee80211Mac
+vector 114  ManetTest.node2.battery  Consumed  ETV
+vector 117  ManetTest.node3.wlan[0].mac  RadioState  ETV
+attr enum  "IDLE=0, RECV=1, SLEEP=3, TRANSMIT=2"
+attr enumname  RadioState
+vector 116  ManetTest.node3.wlan[0].mac  State  ETV
+attr enum  "BACKOFF=3, DEFER=1, IDLE=0, RECEIVE=8, WAITACK=4, WAITAIFS=2, WAITCTS=6, WAITMULTICAST=5, WAITSIFS=7"
+attr enumname  Ieee80211Mac
+vector 122  ManetTest.node3.battery  Consumed  ETV
+vector 125  ManetTest.node4.wlan[0].mac  RadioState  ETV
+attr enum  "IDLE=0, RECV=1, SLEEP=3, TRANSMIT=2"
+attr enumname  RadioState
+vector 124  ManetTest.node4.wlan[0].mac  State  ETV
+attr enum  "BACKOFF=3, DEFER=1, IDLE=0, RECEIVE=8, WAITACK=4, WAITAIFS=2, WAITCTS=6, WAITMULTICAST=5, WAITSIFS=7"
+attr enumname  Ieee80211Mac
+vector 130  ManetTest.node4.battery  Consumed  ETV
+vector 133  ManetTest.node5.wlan[0].mac  RadioState  ETV
+attr enum  "IDLE=0, RECV=1, SLEEP=3, TRANSMIT=2"
+attr enumname  RadioState
+vector 132  ManetTest.node5.wlan[0].mac  State  ETV
+attr enum  "BACKOFF=3, DEFER=1, IDLE=0, RECEIVE=8, WAITACK=4, WAITAIFS=2, WAITCTS=6, WAITMULTICAST=5, WAITSIFS=7"
+attr enumname  Ieee80211Mac
+vector 138  ManetTest.node5.battery  Consumed  ETV
+vector 16  ManetTest.node1.wlan[0].radio  bitrate:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, vector"
+attr unit  bps
+vector 18  ManetTest.node1.wlan[0].radio  radioState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), vector"
+vector 17  ManetTest.node1.wlan[0].radio  channelNo:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "channel no, vector"
+vector 36  ManetTest.node2.wlan[0].radio  bitrate:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, vector"
+attr unit  bps
+vector 38  ManetTest.node2.wlan[0].radio  radioState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), vector"
+vector 37  ManetTest.node2.wlan[0].radio  channelNo:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "channel no, vector"
+vector 56  ManetTest.node3.wlan[0].radio  bitrate:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, vector"
+attr unit  bps
+vector 58  ManetTest.node3.wlan[0].radio  radioState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), vector"
+vector 57  ManetTest.node3.wlan[0].radio  channelNo:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "channel no, vector"
+vector 76  ManetTest.node4.wlan[0].radio  bitrate:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, vector"
+attr unit  bps
+vector 78  ManetTest.node4.wlan[0].radio  radioState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), vector"
+vector 77  ManetTest.node4.wlan[0].radio  channelNo:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "channel no, vector"
+vector 96  ManetTest.node5.wlan[0].radio  bitrate:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "tx bitrate, vector"
+attr unit  bps
+vector 98  ManetTest.node5.wlan[0].radio  radioState:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "radio state (enum), vector"
+vector 97  ManetTest.node5.wlan[0].radio  channelNo:vector  ETV
+attr interpolationmode  sample-hold
+attr title  "channel no, vector"
+14	0	0	0
+16	0	0	54000000
+17	0	0	0
+18	0	0	0
+34	0	0	0
+36	0	0	54000000
+37	0	0	0
+38	0	0	0
+54	0	0	0
+56	0	0	54000000
+57	0	0	0
+58	0	0	0
+74	0	0	0
+76	0	0	54000000
+77	0	0	0
+78	0	0	0
+94	0	0	0
+96	0	0	54000000
+97	0	0	0
+98	0	0	0
+100	0	0	0
+100	0	0	0
+101	0	0	0
+101	0	0	0
+106	0	0	0
+108	0	0	0
+108	0	0	0
+109	0	0	0
+109	0	0	0
+114	0	0	0
+116	0	0	0
+116	0	0	0
+117	0	0	0
+117	0	0	0
+122	0	0	0
+124	0	0	0
+124	0	0	0
+125	0	0	0
+125	0	0	0
+130	0	0	0
+132	0	0	0
+132	0	0	0
+133	0	0	0
+133	0	0	0
+138	0	0	0
