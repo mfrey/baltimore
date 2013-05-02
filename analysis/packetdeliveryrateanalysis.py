@@ -25,6 +25,13 @@ class PacketDeliveryRateAnalysis:
       return str("{0:.2f}".format(round(result, 2))) + " % \n" 
     return "\n"
 
+  def get_packet_delivery_rate(self):
+    if self.sent > 0:
+      result = (float(self.received)/float(self.sent))*100.0
+      return "{0:.2f}".format(round(result, 2)) 
+    return 0.0
+
+
   def __init__(self):
     self.sent = 0
     self.received = 0
