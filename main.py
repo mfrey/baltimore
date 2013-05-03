@@ -36,11 +36,11 @@ def main():
       pdrSum += analyser.pdr
       sumOfSentPackets +=analyser.sent
       sumOfReceivedPackets += analyser.received
-      sumOfLoops += analyser.routingLoopDetected
-      sumOfRouteFailures += analyser.routeFailures
-      sumOfFailedDiscoveries += analyser.routeDiscoveryFailed
-      sumOfTTLDrops += analyser.timeToLiveExpired
-      sumOfInexplicableLosses += analyser.inexplicableLoss
+      sumOfLoops += analyser.routing_loop_detected
+      sumOfRouteFailures += analyser.route_failures
+      sumOfFailedDiscoveries += analyser.route_discovery_failed
+      sumOfTTLDrops += analyser.time_to_live_expired
+      sumOfInexplicableLosses += analyser.inexplicable_loss
       
       if arguments.verbose:
         print replication.run
@@ -69,3 +69,4 @@ def print_statistics(name, avgNrOfSentPackets, value):
 
 if __name__ == "__main__":
   main()
+

@@ -1,5 +1,4 @@
-#!/usr/bin/python
-# -*- coding: UTF-8 -*-
+#!/usr/bin/env python2.7
 
 import re
 import shlex
@@ -7,7 +6,6 @@ import shlex
 from representation import node as n
 
 class ScalarFile:
-
   def __init__(self, fileName): 
 	self.fileName = fileName
 	self.currentLineNr = 0
@@ -18,7 +16,7 @@ class ScalarFile:
 	  self.read_preamble()
 	  self.read_body()
 	except IOError: 
-	  print "Error: can\'t find file or read it" 
+	  print "Error: can\'t find file ", fileName, " or read it" 
 	finally: 
 	  self.file.close()
 
