@@ -54,10 +54,11 @@ class PacketDeliveryRateAnalysis:
       percent = "  0.00%%"
     
     name += ":"
-    return "%(name)-26s %(value)3d\t" % {"name": name, "value": value} + percent + "\n" 
+    maxNumberOfDigits = len(str(self.sent))
+    return "%-26s %*d\t" % (name, maxNumberOfDigits, value) + percent + "\n" 
 
   def get_packet_delivery_rate(self):
     if self.sent > 0:
-      result = (float(self.received)/float(self.sent))*100.0
+      result = (float(self.received)/float(self.sent)) * 100.0
       return round(result, 2) 
     return 0.0
