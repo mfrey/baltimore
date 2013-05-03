@@ -14,8 +14,6 @@ class ScalarFile:
     self.currentLineNr = 0
     self.nodes = {}
     
-    print 'Parsing "%s"' % fileName
-    
     self.read_preamble()
     self.read_body()
     

@@ -9,18 +9,18 @@ from configuration import configuration as cfg
 def main():
   parser = argparse.ArgumentParser(description='baltimore - an evaluation script for the ara-sim framework')
   parser.add_argument('-d', dest='directory', type=str, default=".", action='store', help='a directory which contains OMNeT++ result files')
+  parser.add_argument('-v', dest='verbose', default=False, const=True, action='store_const', help="print out verbose information for each iteration")
 
   arguments = parser.parse_args()
-  directory = arguments.directory
   configuration = cfg.Configuration()
-  configuration.read_directory(directory)
+  configuration.read_directory(arguments.directory)
   
   currentExperimentNr = 1
   for experimentName in configuration.experiments:
     nrOfIterations = len(configuration.experiments[experimentName])
     print
-    print 'Processing experiment %d "%s" with %d iterations' % (currentExperimentNr, experimentName, nrOfIterations)
-    print '=' * 54
+    print 'Processing experiment %d "%s"' % (currentExperimentNr, experimentName)
+    print '=' * 55
     
     pdrSum = 0
     sumOfSentPackets = 0
@@ -41,8 +41,13 @@ def main():
       sumOfFailedDiscoveries += analyser.routeDiscoveryFailed
       sumOfTTLDrops += analyser.timeToLiveExpired
       sumOfInexplicableLosses += analyser.inexplicableLoss
+      
+      if arguments.verbose:
+        print replication.run
+        print analyser
     
     avgNrOfSentPackets = sumOfSentPackets/float(nrOfIterations)
+    print "Overall statistics (averaged over %d iterations)" % nrOfIterations
     print_statistics("Sent Packets", avgNrOfSentPackets, avgNrOfSentPackets)
     print_statistics("Received Packets", avgNrOfSentPackets, sumOfReceivedPackets/float(nrOfIterations))
     print_statistics("Routing Loops", avgNrOfSentPackets, sumOfLoops/float(nrOfIterations))
