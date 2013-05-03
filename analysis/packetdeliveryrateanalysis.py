@@ -27,6 +27,8 @@ class PacketDeliveryRateAnalysis:
 
     if self.inexplicableLoss < 0:
       self.inexpclicableLoss = 0
+      
+    self.pdr = float(self.received)/float(self.sent)
 
   def get_metric(self, database, identifier, metric):
     result = -1
@@ -43,8 +45,7 @@ class PacketDeliveryRateAnalysis:
     result += self.get_result_line("Failed Route Discoveries", self.routeDiscoveryFailed)
     result += self.get_result_line("Dropped Packets (TTL = 0)", self.timeToLiveExpired) 
     result += self.get_result_line("Inexplicable loss", self.inexplicableLoss)
-    result += "\n"
-    result += "Packet Delivery Rate was %.2f%%" % self.get_packet_delivery_rate();
+    result += '=' * 39 + "\n"
     return result
 
   def get_result_line(self, name, value):
@@ -56,9 +57,3 @@ class PacketDeliveryRateAnalysis:
     name += ":"
     maxNumberOfDigits = len(str(self.sent))
     return "%-26s %*d\t" % (name, maxNumberOfDigits, value) + percent + "\n" 
-
-  def get_packet_delivery_rate(self):
-    if self.sent > 0:
-      result = (float(self.received)/float(self.sent)) * 100.0
-      return round(result, 2) 
-    return 0.0
