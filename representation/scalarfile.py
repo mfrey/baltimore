@@ -8,16 +8,19 @@ from representation import node as n
 
 class ScalarFile:
 
-  def __init__(self, fileName):
-    self.fileName = fileName
-    self.file = open(fileName, "r")
-    self.currentLineNr = 0
-    self.nodes = {}
-    
-    self.read_preamble()
-    self.read_body()
-    
-    self.file.close()
+  def __init__(self, fileName): 
+	self.fileName = fileName
+	self.currentLineNr = 0
+	self.nodes = {}
+
+	try:
+	  self.file = open(fileName, "r")
+	  self.read_preamble()
+	  self.read_body()
+	except IOError: 
+	  print "Error: can\'t find file or read it" 
+	finally: 
+	  self.file.close()
 
   def read_preamble(self):
     self.version = self.parse_key_value("version")
