@@ -1,4 +1,5 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
 
 import re
 import shlex
@@ -6,58 +7,74 @@ import shlex
 from representation import node as n
 
 class ScalarFile:
-  def __init__(self):
-    self.version = -1
-    self.run = "Scenario05-0-20130429-11:11:04-21740"
-    self.configname = "uninitialized configuration name"
-    self.datetime = "20130429-11:11:04"
-    self.experiment = "uninitialized experiment" 
-    self.inifile = "no ini file set" 
-    self.measurement = ""
-    self.network = "uninitialized network name"
-    self.processid = -1
-    self.repetition = -1
-    self.replication = "uninitialized"
-    self.resultdir = "uninitialized"
-    self.runnumber = -1
-    self.seedset = -1
+
+  def __init__(self, fileName):
+    self.fileName = fileName
+    self.file = open(fileName, "r")
+    self.currentLineNr = 0
     self.nodes = {}
+    
+    self.read_preamble()
+    self.read_body()
+    
+    self.file.close()
 
-  def read(self, filename):
-    result_arr = []
-    with open(filename, "r") as f:
-      # handle the preamble of the scalar file
-#      preamble = f.readlines()[:16]
- #     self.handle_preamble(preamble)
+  def read_preamble(self):
+    self.version = self.parse_key_value("version")
+    self.run = self.parse_key_value("run")
+    self.configname = self.parse_attribute("configname");
+    self.datetime = self.parse_attribute("datetime");
+    self.experiment = self.parse_attribute("experiment");
+    self.inifile = self.parse_attribute("inifile");
+    self.iterationvars = self.parse_attribute("iterationvars");
+    self.iterationvars2 = self.parse_attribute("iterationvars2");
+    self.measurement = self.parse_attribute("measurement");
+    self.network = self.parse_attribute("network");
+    self.processid = self.parse_attribute("processid");
+    self.repetition = self.parse_attribute("repetition");
+    self.replication = self.parse_attribute("replication");
+    self.resultdir = self.parse_attribute("resultdir");
+    self.runnumber = self.parse_attribute("runnumber");
+    self.seedset = self.parse_attribute("seedset");
+    
+  def read_next_line(self):
+    self.currentLineNr += 1
+    return self.file.readline()
+    
+  def parse_key_value(self, key):
+    words = self.file.readline().split(' ')
+    if len(words) != 2:
+      print "Could not parse key value line %d from %s because there are %d words" % (self.currentLineNr, self.fileName, len(words))
+      raise
+  
+    if words[0] != key:
+      print "Error while parsing key value line: Expected %s but got %s" % (key, words[0])
+      raise
+    
+    return words[1].strip()
 
-      for _ in xrange(17):
-        next(f)
+  def parse_attribute(self, name):
+    words = self.read_next_line().split(' ')
+    if len(words) != 3:
+      print "Could not parse attribute line %d from %s because there are %d words" % (self.currentLineNr, self.fileName, len(words))
+      raise
+        
+    if words[0] != 'attr' or words[1] != name:
+      print "Could not parse line %d from %s for attribute %s" % (self.currentLineNr, self.fileName, name)
+      raise
+    
+    return words[2].strip()
 
-      for line in f:
-        self.handle_line(line)
-      
+  def read_body(self):
+    line = self.read_next_line()
+    while line:
+        line = self.read_next_line()
+        self.parse(line)
 
-  def get_node_identifier(self, line):
-    # TODO: fix that (that's quite aweful)
-    return line.split(' ')[1].split('.')[1].split('[')[1].split(']')[0]
-
-  def handle_line(self, line):
+  def parse(self, line):
     if line.startswith('scalar'):
        self.handle_scalar(line)
-#     elif line.startswith('field'):
-#       self.handle_field(line)
-#     elif line.startswith('bin'):
-#       self.handle_bin(line)
-#     elif line.startswith('attr'):
-#       self.handle_attr(line)
-    #else:
-      #raise "unkown entry type in scalar file"
-
-#  def handle_field(self, line):
-#    raise NotImplemented, "method not implemented"
-
-#  def handle_bin(self, line):
-#    raise NotImplemented, "method not implemented"
+    # else ignore this line for now
 
   def handle_scalar(self, line):
 	identifier = self.get_node_identifier(line)
@@ -66,30 +83,9 @@ class ScalarFile:
 	  self.nodes[identifier] = n.Node()
 	  self.nodes[identifier].identifier = identifier
 
-#	if identifier == 0:
-
 	key, value = shlex.split(line)[2], shlex.split(line)[3]
 	self.nodes[identifier].results[key] = value
 
-#  def handle_bin(self, attr):
-#    raise NotImplemented, "method not implemented"
-
-  def handle_preamble(self, preamble):
-    # remove the new lines from the entries
-    preamble = map(lambda s: s.strip(), preamble)
-
-    # parse the preamble array
-    version = preamble[0].split(' ')[1] 
-    configname = preamble[2].split(' ')[2]
-    # datetime = ...
-    experiment = preamble[4].split(' ')[2]
-    inifile = preamble[5].split(' ')[2]
-    network = preamble[9].split(' ')[2]
-    processid = preamble[10].split(' ')[2]
-    repetition = preamble[11].split(' ')[2]
-    # replication = preamble[5].split(' ')[2]
-    resultdir = preamble[13].split(' ')[2]
-    runnumber = preamble[14].split(' ')[2]
-
-  def handle_node(self, node):
-     print "not implemented"
+  def get_node_identifier(self, line):
+    # TODO: fix that (that's quite aweful)
+    return line.split(' ')[1].split('.')[1].split('[')[1].split(']')[0]
