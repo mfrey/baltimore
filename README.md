@@ -10,7 +10,8 @@ Installation from git
 
 2. Please install the required dependencies
 
-		matplotlib	
+		matplotlib
+		rpy2
 
 3. Run the program
 
