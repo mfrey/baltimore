@@ -41,6 +41,7 @@ class PacketDeliveryRateAnalysis:
   def __str__(self):
     result  = self.get_result_line("Sent Packets", self.sent)
     result += self.get_result_line("Received Packets", self.received)
+    result += self.get_result_line("Routing Loops", self.routingLoopDetected)
     result += self.get_result_line("Route Failures", self.routeFailures)
     result += self.get_result_line("Failed Route Discoveries", self.routeDiscoveryFailed)
     result += self.get_result_line("Dropped Packets (TTL = 0)", self.timeToLiveExpired) 
