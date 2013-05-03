@@ -35,11 +35,6 @@ class ScalarFile:
 
       for line in f:
         self.handle_line(line)
-      
-
-  def get_node_identifier(self, line):
-    # TODO: fix that (that's quite aweful)
-    return line.split(' ')[1].split('.')[1].split('[')[1].split(']')[0]
 
   def handle_line(self, line):
     if line.startswith('scalar'):
@@ -70,6 +65,10 @@ class ScalarFile:
 
 	key, value = shlex.split(line)[2], shlex.split(line)[3]
 	self.nodes[identifier].results[key] = value
+
+  def get_node_identifier(self, line):
+    # TODO: fix that (that's quite aweful)
+    return line.split(' ')[1].split('.')[1].split('[')[1].split(']')[0]
 
 #  def handle_bin(self, attr):
 #    raise NotImplemented, "method not implemented"
