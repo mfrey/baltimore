@@ -2,7 +2,7 @@
 
 import unittest
 
-from representation.scalarfile import scalarfile as scalar
+from representation import scalarfile as scalar
 
 class TestScalarFile(unittest.TestCase):
   def setUp(self):

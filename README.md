@@ -11,11 +11,15 @@ Installation from git
 2. Please install the required dependencies
 
 		matplotlib
-		rpy2
+		nose	
 
 3. Run the program
 
 		python2.7 main.py
+
+4. Tests are executed using nose. From the root of the project call
+
+		nosetests
 
 Documentation
 -------------
