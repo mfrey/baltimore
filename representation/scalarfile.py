@@ -11,12 +11,14 @@ class ScalarFile:
 	self.currentLineNr = 0
 	self.nodes = {}
 
+
+  def read_file(self):
 	try:
-	  self.file = open(fileName, "r")
+	  self.file = open(self.fileName, "r")
 	  self.read_preamble()
 	  self.read_body()
 	except IOError: 
-	  print "Error: can\'t find file ", fileName, " or read it" 
+	  print "Error: can\'t find file ", self.fileName, " or read it" 
 	finally: 
 	  self.file.close()
 

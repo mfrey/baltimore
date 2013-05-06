@@ -26,6 +26,7 @@ class Configuration:
           sys.stdout.write(".")
           sys.stdout.flush()
           resultFile = scalar.ScalarFile(current_directory + "/" + file)
+          resultFile.read_file()
           nrOfReadScalarFiles += 1
           #self.scalar_files.append(current_directory + "/" + f)
           
