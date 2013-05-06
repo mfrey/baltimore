@@ -17,7 +17,8 @@ def main():
   configuration = expm.ExperimentManager()
 
   configuration.read_directory(arguments.directory, arguments.scenario)
-  
+  configuration.evaluate()  
+
   currentExperimentNr = 1
   for experimentName in configuration.experiments:
     nrOfIterations = len(configuration.experiments[experimentName])

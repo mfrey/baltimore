@@ -12,12 +12,16 @@ class Experiment:
     self.packet_delivery_rate_analysis = {}
 
   def evaluate(self):
-	for repetition in self.scalar_files:
-	  self.evaluate_packet_delivery_rate(repetition)
+    # first we aggregate
+    for repetition in self.scalar_files:
+      self.aggregate_packet_delivery_rate(repetition)
+
+    # than we analyze/evaluate
+    self.analyze_packet_delivery_rate()
 
   def evaluate_packet_delivery_rate(self, repetition):
-     self.aggregate_packet_delivery_rate(repetition)
-     self.analyze_packet_delivery_rate(repetition)
+    self.aggregate_packet_delivery_rate(repetition)
+    self.analyze_packet_delivery_rate(repetition)
 
   """ the method aggregates the packet delivery rate over all repetitions """
   def aggregate_packet_delivery_rate(self, repetition):
@@ -28,12 +32,35 @@ class Experiment:
 	 self.packet_delivery_rate_analysis[repetition] = packetDeliveryRateAnalysis.to_list()
 
   """ the method analyzes the packet delivery rate over all repetitions """
-  def analyze_packet_delivery_rate():
-	if len(self.packet_delivery_rate_analysis) > 1:
-	  sum_pdr = [sum(entries) for entries in zip(*self.packet_delivery_rate_analysis.values())]
-	else:
-	  sum_pdr = self.packet_delivery_rate_analysis.values()[0]
-	return sum_pdr
+  def analyze_packet_delivery_rate(self):
+    if len(self.packet_delivery_rate_analysis) > 1:
+      sum_pdr = [sum(entries) for entries in zip(*self.packet_delivery_rate_analysis.values())]
+    else:
+      sum_pdr = self.packet_delivery_rate_analysis.values()[0]
+
+    avg_pdr = [entry/float(len(self.packet_delivery_rate_analysis)) for entry in sum_pdr]
+
+    print
+    print 'Processing experiment ', self.name
+    print '=' * 55
+    print "Overall statistics (averaged over %d iterations)" % len(self.packet_delivery_rate_analysis)
+    self.print_statistics("Sent Packets", avg_pdr[0], avg_pdr[0])
+    self.print_statistics("Received Packets", avg_pdr[0], avg_pdr[1])
+    self.print_statistics("Routing Loops", avg_pdr[0], avg_pdr[3])
+    self.print_statistics("Route Failures", avg_pdr[0], avg_pdr[2])
+    self.print_statistics("Failed Route Discoveries", avg_pdr[0], avg_pdr[4])
+    self.print_statistics("Dropped Packets (TTL = 0)", avg_pdr[0], avg_pdr[5])
+    self.print_statistics("Inexplicable loss", avg_pdr[0], avg_pdr[6])
+    print "\n"
+    
+  def print_statistics(self, name, avgNrOfSentPackets, value):
+    if avgNrOfSentPackets > 0:
+      percent = "%6.2f%%" % ((value/float(avgNrOfSentPackets)) * 100.0)
+    else:
+      percent = "  0.00%%"
+ 
+    maxNumberOfDigits = len(str(avgNrOfSentPackets))
+    print "%-26s %*d\t" % (name, maxNumberOfDigits, value) + percent
 	   
   def draw_packet_delivery_rate(self):
     xlist = []

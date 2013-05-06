@@ -4,7 +4,9 @@ import os
 import sys
 import logging
 
-from experiment import experiment as exp
+# TODO: check that
+import experiment as exp
+
 from representation import scalarfile as scalar
 
 class ExperimentManager:
@@ -58,4 +60,9 @@ class ExperimentManager:
       self.evaluate_experiment(experiment)  
 
   def evaluate_experiment(self, experiment_identifier):
+    # TODO: we should directly create a experiment object while reading the scalar files. This is a temporary fix
     experiment = exp.Experiment()
+    experiment.name = experiment_identifier
+    experiment.scalar_files = self.experiments[experiment_identifier]
+
+    experiment.evaluate()
