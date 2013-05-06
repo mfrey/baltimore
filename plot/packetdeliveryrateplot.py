@@ -16,7 +16,7 @@ class PacketDeliveryRatePlot:
     plt.ylabel(self.ylabel,va="center",ha="center")
     plt.xlabel(self.xlabel)
     plt.grid(axis="y")
-    plt.savefig('test.png')
+    plt.savefig(filename)
 
 
 #foo = PacketDeliveryRatePlot()

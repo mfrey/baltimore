@@ -1,5 +1,7 @@
 #!/usr/bin/env python2.7
 
+import re
+
 from plot import packetdeliveryrateplot as pdrplot
 from analysis import packetdeliveryrateanalysis as pdr
 
@@ -40,6 +42,8 @@ class Experiment:
 
     avg_pdr = [entry/float(len(self.packet_delivery_rate_analysis)) for entry in sum_pdr]
 
+
+    # TODO: make a seperate method for that
     print
     print 'Processing experiment ', self.name
     print '=' * 55
@@ -61,16 +65,20 @@ class Experiment:
  
     maxNumberOfDigits = len(str(avgNrOfSentPackets))
     print "%-26s %*d\t" % (name, maxNumberOfDigits, value) + percent
-	   
+
+  # TODO: fixme	   
   def draw_packet_delivery_rate(self):
     xlist = []
     ylist = []
-    for key, value in self.packet_delivery_rates:
-      xlist.append(key)
-      ylist.append(value)
+    
+    for key in self.packet_delivery_rate_analysis:
+      # TODO: make a better reg exp
+      numbers = re.findall(r'\d+', key.fileName)
+      xlist.append(numbers[len(numbers)-1])
+      ylist.append(self.packet_delivery_rate_analysis[key][1]/float(self.packet_delivery_rate_analysis[key][0]))
 
     plot = pdrplot.PacketDeliveryRatePlot()
     plot.xlist = xlist
     plot.ylist = ylist
-    plot.draw("todo.png")
+    plot.draw("todo_" + self.name + ".png")
 
