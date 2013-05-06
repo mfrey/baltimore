@@ -12,8 +12,10 @@ class Experiment:
     self.scalar_files = [] 
     self.vector_files = [] 
     self.packet_delivery_rate_analysis = {}
+    self.verbose = False
 
-  def evaluate(self):
+  def evaluate(self, verbose):
+    self.verbose = verbose
     # first we aggregate
     for repetition in self.scalar_files:
       self.aggregate_packet_delivery_rate(repetition)
@@ -21,17 +23,16 @@ class Experiment:
     # than we analyze/evaluate
     self.analyze_packet_delivery_rate()
 
-  def evaluate_packet_delivery_rate(self, repetition):
-    self.aggregate_packet_delivery_rate(repetition)
-    self.analyze_packet_delivery_rate(repetition)
-
   """ the method aggregates the packet delivery rate over all repetitions """
   def aggregate_packet_delivery_rate(self, repetition):
-	 # analyze the current repetition
-	 packetDeliveryRateAnalysis = pdr.PacketDeliveryRateAnalysis()
-	 packetDeliveryRateAnalysis.evaluate(repetition.nodes)
-	 # store the result of the analysis as a list
-	 self.packet_delivery_rate_analysis[repetition] = packetDeliveryRateAnalysis.to_list()
+    # analyze the current repetition
+    packetDeliveryRateAnalysis = pdr.PacketDeliveryRateAnalysis()
+    packetDeliveryRateAnalysis.evaluate(repetition.nodes)
+	# store the result of the analysis as a list
+    self.packet_delivery_rate_analysis[repetition] = packetDeliveryRateAnalysis.to_list()
+    if self.verbose:
+      print repetition.run
+      print packetDeliveryRateAnalysis
 
   """ the method analyzes the packet delivery rate over all repetitions """
   def analyze_packet_delivery_rate(self):

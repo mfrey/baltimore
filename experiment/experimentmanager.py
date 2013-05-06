@@ -55,14 +55,14 @@ class ExperimentManager:
           
        self.experiments[result_file.experiment].append(result_file)
 
-  def evaluate(self):
+  def evaluate(self, verbose):
     for experiment in self.experiments:
-      self.evaluate_experiment(experiment)  
+      self.evaluate_experiment(experiment, verbose)  
 
-  def evaluate_experiment(self, experiment_identifier):
+  def evaluate_experiment(self, experiment_identifier, verbose):
     # TODO: we should directly create a experiment object while reading the scalar files. This is a temporary fix
     experiment = exp.Experiment()
     experiment.name = experiment_identifier
     experiment.scalar_files = self.experiments[experiment_identifier]
 
-    experiment.evaluate()
+    experiment.evaluate(verbose)
