@@ -15,6 +15,10 @@ class Experiment:
 	for repetition in self.scalar_files:
 	  self.evaluate_packet_delivery_rate(repetition)
 
+  def evaluate_packet_delivery_rate(self, repetition):
+     self.aggregate_packet_delivery_rate(repetition)
+     self.analyze_packet_delivery_rate(repetition)
+
   """ the method aggregates the packet delivery rate over all repetitions """
   def aggregate_packet_delivery_rate(self, repetition):
 	 # analyze the current repetition
