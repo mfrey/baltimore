@@ -13,6 +13,7 @@ class PacketDeliveryRateAnalysis:
     self.route_discovery_failed = 0
     self.time_to_live_expired = 0
     self.inexplicable_loss = 0
+    self.nr_of_route_discoveries = 0
 
   def evaluate(self, nodes):
     for node in nodes:
@@ -22,6 +23,7 @@ class PacketDeliveryRateAnalysis:
       self.routing_loop_detected += int(self.get_metric(nodes, node, "routingLoopDetected:count"))
       self.route_discovery_failed += int(self.get_metric(nodes, node, "packetUnDeliverable:count"))
       self.time_to_live_expired += int(self.get_metric(nodes, node, "dropZeroTTLPacket:count"))
+      self.nr_of_route_discoveries += int(self.get_metric(nodes, node, "newRouteDiscovery:count"))
     
     self.inexplicable_loss = self.sent - self.received - self.routing_loop_detected - self.route_failures - self.route_discovery_failed - self.time_to_live_expired
 
@@ -47,6 +49,7 @@ class PacketDeliveryRateAnalysis:
     result += self.get_result_line("Dropped Packets (TTL = 0)", self.time_to_live_expired) 
     result += self.get_result_line("Inexplicable loss", self.inexplicable_loss)
     result += '=' * 39 + "\n"
+    result += "Number of route discoveries: %d\n" % self.nr_of_route_discoveries
     return result
 
   def get_result_line(self, name, value):
@@ -61,4 +64,4 @@ class PacketDeliveryRateAnalysis:
 
   """ the method returns a list of the attributes of the packet delivery rate analysis"""
   def to_list(self):
-	return [self.sent, self.received, self.route_failures, self.routing_loop_detected, self.route_discovery_failed, self.time_to_live_expired, self.inexplicable_loss]
+	return [self.sent, self.received, self.route_failures, self.routing_loop_detected, self.route_discovery_failed, self.time_to_live_expired, self.inexplicable_loss, self.nr_of_route_discoveries]

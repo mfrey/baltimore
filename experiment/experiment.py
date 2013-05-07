@@ -28,7 +28,7 @@ class Experiment:
     # analyze the current repetition
     packetDeliveryRateAnalysis = pdr.PacketDeliveryRateAnalysis()
     packetDeliveryRateAnalysis.evaluate(repetition.nodes)
-	# store the result of the analysis as a list
+    # store the result of the analysis as a list
     self.packet_delivery_rate_analysis[repetition] = packetDeliveryRateAnalysis.to_list()
     if self.verbose:
       print repetition.run
@@ -57,6 +57,7 @@ class Experiment:
     self.print_statistics("Dropped Packets (TTL = 0)", avg_pdr[0], avg_pdr[5])
     self.print_statistics("Inexplicable loss", avg_pdr[0], avg_pdr[6])
     print "\n"
+    print "Average nr of route discoveries: %d\n" % avg_pdr[7]
     
   def print_statistics(self, name, avgNrOfSentPackets, value):
     if avgNrOfSentPackets > 0:
