@@ -2,7 +2,7 @@
 
 import argparse
 
-from experiment import experiment as exp
+from experiment.experimentmanager import ExperimentManager
 from representation import scalarfile as scalar
 from analysis import packetdeliveryrateanalysis as pdr
 from configuration import configuration as cfg
@@ -14,11 +14,8 @@ def main():
     parser.add_argument('-s', dest='scenario', type=str, default="", action='store', help="evaluate a specific scenario")
     arguments = parser.parse_args()
     
-    experiment = exp.Experiment(arguments.directory+'/results', 'midSizeScenario')
-    experiment.get_results()
-    #experiment_manager = expm.ExperimentManager()
-    #experiment_manager.read_directory(arguments.directory, arguments.scenario)
-    #experiment_manager.evaluate(arguments.verbose)  
+    experiment_manager = ExperimentManager()
+    experiment_manager.process(arguments.directory, arguments.scenario)
 
 if __name__ == "__main__":
     main()

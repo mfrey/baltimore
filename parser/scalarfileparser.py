@@ -81,7 +81,7 @@ class ScalarFileParser:
                 self.nodes[node_identifier] = {}
             
             metric_name, value = shlex.split(line)[2], shlex.split(line)[3]
-            self.nodes[node_identifier][metric_name] = value
+            self.nodes[node_identifier][metric_name] = float(value)
     
     def _get_node_identifier(self, line):
         # TODO: fix that (that's quite aweful)

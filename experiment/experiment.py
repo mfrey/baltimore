@@ -25,7 +25,9 @@ class Experiment:
                 result = scalar_parser.read(file_path)
                 experiment_results.add_repetition(result)
                 self.print_progress()
-    
+        
+        return experiment_results
+        
     def print_progress(self):
         sys.stdout.write(".")
         sys.stdout.flush()
