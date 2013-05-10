@@ -1,9 +1,6 @@
 #!/usr/bin/env python2.7
 
-import re
 import shlex
-
-from representation import node as n
 
 class ScalarFileParser:
     def read(self, file_path):

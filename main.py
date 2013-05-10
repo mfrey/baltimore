@@ -1,11 +1,7 @@
 #!/usr/bin/env python2.7
 
 import argparse
-
 from experiment.experimentmanager import ExperimentManager
-from representation import scalarfile as scalar
-from analysis import packetdeliveryrateanalysis as pdr
-from configuration import configuration as cfg
 
 def main():
     parser = argparse.ArgumentParser(description='baltimore - an evaluation script for the ara-sim framework')
