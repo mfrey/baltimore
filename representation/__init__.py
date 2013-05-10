@@ -1,2 +1,2 @@
-__all__ = ["database", "node", "scalarfile"]
+__all__ = ["database", "node", "scalarfile", "scalarfileparser"]
 
