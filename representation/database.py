@@ -3,6 +3,6 @@
 import sqlite3
 
 class Database:
-  def __init__(self, database):
-    database_name = database
+    def __init__(self, database):
+        database_name = database
 
