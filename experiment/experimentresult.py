@@ -31,3 +31,34 @@ class ExperimentResult:
             sum += results[metric_name];
         
         return sum
+    
+    def get_minimum(self, metric_name):
+        minimum = None
+        for repetition in self.repetitions:
+            candidate = self.get_metric(metric_name, repetition)
+            if(minimum is None or candidate < minimum):
+                minimum = candidate
+            
+        return minimum
+
+    def get_maximum(self, metric_name):
+        maximum = None
+        for repetition in self.repetitions:
+            candidate = self.get_metric(metric_name, repetition)
+            if(maximum is None or candidate > maximum):
+                maximum = candidate
+            
+        return maximum
+    
+    def get_median(self, metric_name):
+        all_values = sorted(self.get_metric(metric_name, repetition) for repetition in self.repetitions)
+        nr_of_values = len(all_values)
+        if nr_of_values % 2 == 0:
+            # There is no single median so we calculate the average of the two median candidates
+            # note that the arrays are zero based
+            first_median = all_values[(nr_of_values/2) -1]
+            second_median = all_values[((nr_of_values+2)/2) -1]
+            return (first_median + second_median) / 2
+        else:
+            # just take the one element in the middle of the sorted list
+            return all_values[(nr_of_values+1)/2]
