@@ -11,7 +11,7 @@ class ExperimentManager:
     def __init__(self):
         self.experiments = {}
     
-    def process(self, directory, scenario): 
+    def process(self, directory, scenario, is_verbose=False): 
         # TODO: change this to logging, so we only print it if required
         print 'Scanning directory "%s" for simulation result files.\nThis may take some time depending on the number of files...' % directory
         
@@ -21,7 +21,7 @@ class ExperimentManager:
         
         # TODO: use some kind of configuration to run more than one analysis
         pdrAnalyser = PacketDeliveryRateAnalysis()
-        pdrAnalyser.evaluate(experiment_results)
+        pdrAnalyser.evaluate(experiment_results, is_verbose)
         
         # TODO: change this to logging, so we only print it if required
         nr_of_parsed_files = experiment_results.get_number_of_repetitions()

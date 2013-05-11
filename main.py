@@ -11,7 +11,7 @@ def main():
     arguments = parser.parse_args()
     
     experiment_manager = ExperimentManager()
-    experiment_manager.process(arguments.directory, arguments.scenario)
+    experiment_manager.process(arguments.directory, arguments.scenario, arguments.verbose)
 
 if __name__ == "__main__":
     main()
