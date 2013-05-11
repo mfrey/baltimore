@@ -26,6 +26,7 @@ class Experiment:
                 experiment_results.add_repetition(result)
                 self.print_progress()
         
+        print
         return experiment_results
         
     def print_progress(self):

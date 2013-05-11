@@ -3,6 +3,7 @@
 class PacketDeliveryRateAnalysis:
 
     def evaluate(self, experiment_results):
+        print "\nRunning PDR analysis.."
         self.nr_of_repetitions = experiment_results.get_number_of_repetitions()
         self.nr_of_sent_packets = experiment_results.get_average('trafficSent');
         self.nr_of_received_packets = experiment_results.get_average('trafficReceived')
@@ -13,12 +14,15 @@ class PacketDeliveryRateAnalysis:
         self.nr_of_route_discoveries = experiment_results.get_average('newRouteDiscovery:count')
         self.inexplicable_loss = self.nr_of_sent_packets - self.nr_of_received_packets - self.nr_of_detected_routing_loops - self.nr_of_route_failures - self.nr_of_failed_route_discoveries - self.nr_of_expired_TTLs
         
+        #TODO: if is_verbose
+        #for repitition in experiment_results:
+            #print experiment_results.get_metric_from_all_nodes(repitition, )
+        
+        print "Overall statistics (averaged over %d iterations)" % self.nr_of_repetitions
         self._print_statistics()
         
     def _print_statistics(self):
-        print "\nRunning PDR analysis.."
         print '=' * 55
-        print "Overall statistics (averaged over %d iterations)" % self.nr_of_repetitions
         self.print_statistics("Sent Packets", self.nr_of_sent_packets, self.nr_of_sent_packets)
         self.print_statistics("Received Packets", self.nr_of_sent_packets, self.nr_of_received_packets)
         self.print_statistics("Routing Loops", self.nr_of_sent_packets, self.nr_of_detected_routing_loops)

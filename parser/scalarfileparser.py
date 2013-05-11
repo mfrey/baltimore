@@ -1,40 +1,42 @@
 #!/usr/bin/env python2.7
 
 import shlex
+from experiment.repetitiondata import RepetitionData
 
 class ScalarFileParser:
     def read(self, file_path):
         try:
             self.file_path = file_path
             self.current_line_nr = 0
-            self.nodes = {}
             self.file = open(self.file_path, "r")
-            self._read_preamble()
-            self._read_body()
             
-            return self.nodes
+            parameters = self._read_preamble()
+            nodes = self._read_body()
+            
+            return RepetitionData(parameters, nodes)
+        
         except IOError: 
             print "Error: can\'t find file ", self.file_path, " or read it" 
         finally: 
             self.file.close()
     
     def _read_preamble(self):
-        self.version = self._parse_key_value("version")
-        self.run = self._parse_key_value("run")
-        self.configname = self._parse_attribute("configname");
-        self.datetime = self._parse_attribute("datetime");
-        self.experiment = self._parse_attribute("experiment");
-        self.inifile = self._parse_attribute("inifile");
-        self.iterationvars = self._parse_attribute("iterationvars");
-        self.iterationvars2 = self._parse_attribute("iterationvars2");
-        self.measurement = self._parse_attribute("measurement");
-        self.network = self._parse_attribute("network");
-        self.processid = self._parse_attribute("processid");
-        self.repetition = self._parse_attribute("repetition");
-        self.replication = self._parse_attribute("replication");
-        self.resultdir = self._parse_attribute("resultdir");
-        self.runnumber = self._parse_attribute("runnumber");
-        self.seedset = self._parse_attribute("seedset");
+        return {'version': self._parse_key_value("version"),
+                'run': self._parse_key_value("run"),
+                'configname': self._parse_attribute("configname"),
+                'datetime': self._parse_attribute("datetime"),
+                'experiment': self._parse_attribute("experiment"),
+                'inifile': self._parse_attribute("inifile"),
+                'iterationvars': self._parse_attribute("iterationvars"),
+                'iterationvars2': self._parse_attribute("iterationvars2"),
+                'measurement': self._parse_attribute("measurement"),
+                'network': self._parse_attribute("network"),
+                'processid': self._parse_attribute("processid"),
+                'repetition': self._parse_attribute("repetition"),
+                'replication': self._parse_attribute("replication"),
+                'resultdir': self._parse_attribute("resultdir"),
+                'runnumber': self._parse_attribute("runnumber"),
+                'seedset': self._parse_attribute("seedset")}
     
     def _parse_key_value(self, key):
         words = self.file.readline().split(' ')
@@ -61,24 +63,27 @@ class ScalarFileParser:
         return words[2].strip()
     
     def _read_body(self):
+        nodes = {}
         line = self._read_next_line()
         while line:
             line = self._read_next_line()
-            self._parse(line)
+            self._parse(line, nodes)
+            
+        return nodes
     
     def _read_next_line(self):
         self.current_line_nr += 1
         return self.file.readline()
     
-    def _parse(self, line):
+    def _parse(self, line, nodes):
         if line.startswith('scalar'):
             node_identifier = self._get_node_identifier(line)
             
-            if node_identifier not in self.nodes:
-                self.nodes[node_identifier] = {}
+            if node_identifier not in nodes:
+                nodes[node_identifier] = {}
             
             metric_name, value = shlex.split(line)[2], shlex.split(line)[3]
-            self.nodes[node_identifier][metric_name] = float(value)
+            nodes[node_identifier][metric_name] = float(value)
     
     def _get_node_identifier(self, line):
         # TODO: fix that (that's quite aweful)
