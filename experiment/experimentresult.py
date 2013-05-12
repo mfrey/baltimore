@@ -53,7 +53,9 @@ class ExperimentResult:
     def get_median(self, metric_name):
         all_values = sorted(self.get_metric(metric_name, repetition) for repetition in self.repetitions)
         nr_of_values = len(all_values)
-        if nr_of_values % 2 == 0:
+        if nr_of_values == 1:
+            return all_values[0]
+        elif nr_of_values % 2 == 0:
             # There is no single median so we calculate the average of the two median candidates
             # note that the arrays are zero based
             first_median = all_values[(nr_of_values/2) -1]
