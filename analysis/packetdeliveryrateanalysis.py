@@ -76,7 +76,7 @@ class PacketDeliveryRateAnalysis:
         print "Number of route discoveries: %d\n" % results.get_metric('newRouteDiscovery:count', repetition)
         
     def _print_statistics_line(self, name, metric_name, results, repetition):
-        nr_of_sent_packets = results.get_average('trafficSent')
+        nr_of_sent_packets = results.get_metric('trafficSent', repetition)
         nr_of_digits = self.get_max_nr_of_digits(nr_of_sent_packets)
         
         value = results.get_metric(metric_name, repetition)
