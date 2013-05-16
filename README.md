@@ -1,15 +1,15 @@
 baltimore
 =========
 
-
 Installation from git
 ---------------------
 1. Clone the repository:
 
 		git clone git://github.com/mfrey/flow.git
 
-2. Please install the required dependencies
+2. Please install the required (python) dependencies
 
+		networkx
 		matplotlib
 		nose	
 
