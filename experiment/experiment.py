@@ -36,7 +36,7 @@ class Experiment:
             network_file_parser.read(self.directory + '/' + file_name)
 
             positions = nx.get_node_attributes(network_file_parser.network,'pos')
-            nx.draw(network_file_parser.network, positions)
+            nx.draw(network_file_parser.network, positions, node_color="#99CC00")
             plt.savefig(self.scenario_name + 'network.png')
 
     def print_progress(self):
