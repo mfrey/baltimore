@@ -36,9 +36,6 @@ class Experiment:
                     positions = nx.get_node_attributes(network_file_parser.network,'pos')
                     nx.draw(network_file_parser.network, positions, node_color="#99CC00")
                     plt.savefig(self.directory + '/' + self.scenario_name + '_network.png')
-            else:
-               print
-               # do nothing
 
         print
         return experiment_results
