@@ -11,15 +11,12 @@ class ExperimentManager:
     def __init__(self):
         self.experiments = {}
     
-    def process(self, directory, scenario, is_verbose=False, draw_network=False): 
+    def process(self, directory, scenario, is_verbose=False, visualize=False): 
         # TODO: change this to logging, so we only print it if required
         print 'Scanning directory "%s" for simulation result files.\nThis may take some time depending on the number of files...' % directory
         
         # TODO: use some kind of configuration to run more than one experiment
-        experiment = Experiment(directory + '/results', scenario)
-
-        if draw_network:
-            experiment.draw_network(scenario + '.net')
+        experiment = Experiment(directory + '/results', scenario, visualize)
         experiment_results = experiment.get_results()
         
         # TODO: use some kind of configuration to run more than one analysis
