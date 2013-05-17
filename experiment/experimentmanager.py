@@ -46,4 +46,7 @@ class ExperimentManager:
         nr_of_parsed_files = experiment_results.get_number_of_repetitions()
         print "\n\nSuccessfully read %d experiment(s) from %d scalar file(s)." % (1, nr_of_parsed_files)
 
+        # we are going most likely to store also the result data
+        self.experiments[scenario] = experiment
+
    
