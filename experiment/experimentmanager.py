@@ -3,9 +3,11 @@
 import os
 import sys
 import logging
+import multiprocessing
 
 from experiment import Experiment
 from analysis.packetdeliveryrateanalysis import PacketDeliveryRateAnalysis 
+from persistence.baltimorejsonencoder import BaltimoreJSONEncoder
 
 class ExperimentManager:
     def __init__(self):
@@ -25,10 +27,14 @@ class ExperimentManager:
 	  if scenario != "":
 		self._process_scenario(directory, scenario, is_verbose, visualize)
 	  else:
+		jobs = []
 		scenarios = self._get_scenarios(directory + '/results')
 
 		for s in scenarios:
-		  self._process_scenario(directory, s, is_verbose, visualize)
+		  process = multiprocessing.Process(target=self._process_scenario, args=(directory,s, is_verbose, visualize,)) 
+		  jobs.append(process)
+		  process.start()
+#		  self._process_scenario(directory, s, is_verbose, visualize)
 
     def _process_scenario(self, directory, scenario, is_verbose=False, visualize=False): 
         # TODO: change this to logging, so we only print it if required
@@ -47,6 +53,8 @@ class ExperimentManager:
         print "\n\nSuccessfully read %d experiment(s) from %d scalar file(s)." % (1, nr_of_parsed_files)
 
         # we are going most likely to store also the result data
-        self.experiments[scenario] = experiment
+        self.experiments[scenario] = (experiment, pdrAnalyser)
 
-   
+    def write_json(self, filename):
+	  encoder = BaltimoreJSONEncoder()
+	  print encoder.encode(self.experiments)
