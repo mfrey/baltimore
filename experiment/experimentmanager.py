@@ -3,7 +3,9 @@
 import os
 import sys
 import logging
-import multiprocessing
+
+from Queue import Empty
+from multiprocessing import Process, Queue
 
 from experiment import Experiment
 from experimentmanagerworker import ExperimentManagerWorker
@@ -24,16 +26,35 @@ class ExperimentManager:
 	  return scenarios
 
     def process(self, directory, scenario, is_verbose=False, visualize=False):
+	  queue = Queue()
+	  jobs = []
+
+      # single scenario to handle
 	  if scenario != "":
-		self._process_scenario(directory, scenario, is_verbose, visualize)
+		process = ExperimentManagerWorker(directory, scenario, queue, is_verbose, visualize)
+		jobs.append(process)
+		process.start()
+      # multiple scenarios in a directory
 	  else:
-		jobs = []
 		scenarios = self._get_scenarios(directory + '/results')
 
 		for s in scenarios:
-		  process = ExperimentManagerWorker(directory, s, is_verbose, visualize) 
+		  process = ExperimentManagerWorker(directory, s, queue, is_verbose, visualize) 
 		  jobs.append(process)
 		  process.start()
+
+      # storing the results in an class attribute
+	  for job in jobs:
+		job.join()
+		# TODO: It might be better to remove the try/except and put an error code in the code (by the producer)
+		# instead over an timeout
+		try:
+		  result = queue.get(True, 1)
+		  self.experiments[result[0].scenario_name] = result
+		except Empty:
+		  print "no entry in queue for scenario ", job.scenario
+
+		print self.experiments
 
     def write_json(self, filename):
 	  encoder = BaltimoreJSONEncoder()

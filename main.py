@@ -14,7 +14,7 @@ def main():
     
     experiment_manager = ExperimentManager()
     experiment_manager.process(arguments.directory, arguments.scenario, arguments.verbose, arguments.network)
-    experiment_manager.write_json("")
+#    experiment_manager.write_json("")
 
 if __name__ == "__main__":
     main()
