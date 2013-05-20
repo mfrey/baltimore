@@ -1,6 +1,8 @@
 #!/usr/bin/env python2.7
 
+import sys
 import argparse
+
 from experiment.experimentmanager import ExperimentManager
 
 def main():
@@ -11,7 +13,11 @@ def main():
     parser.add_argument('-s', dest='scenario', type=str, default="", action='store', help="evaluate a specific scenario")
     parser.add_argument('-j', dest='json', type=str, default="", action='store', help="specify location for json export")
     arguments = parser.parse_args()
-    
+
+    if len(sys.argv) == 1:
+      parser.print_help()
+      sys.exit(1)
+
     experiment_manager = ExperimentManager()
     experiment_manager.process(arguments.directory, arguments.scenario, arguments.verbose, arguments.network)
 #    experiment_manager.write_json("")
