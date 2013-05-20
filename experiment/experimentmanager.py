@@ -26,12 +26,12 @@ class ExperimentManager:
 
 	  return scenarios
 
-	def run_simulations(self, scenarios, repetitions):
-	  self.pool = Pool()
+    def run_simulations(self, configuration):
+      self.pool = Pool()
 	  # build up a tuple consisting of scenarios and repetitions
-	  argument = iteratools.product(scenarios, range(repetitions))
+      argument = itertools.product(configuration['scenarios'], range(configuration['repetitions']), configuration)
 	  # run the simulations
-	  self.pool.map(Runner.run_simulation, argument))
+      self.pool.map(Runner.run_simulation, argument)
 
     def process(self, directory, scenario, is_verbose=False, visualize=False):
 	  queue = Queue()
