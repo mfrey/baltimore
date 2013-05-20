@@ -5,7 +5,7 @@ Installation from git
 ---------------------
 1. Clone the repository:
 
-		git clone git://github.com/mfrey/flow.git
+		git clone git://github.com/mfrey/baltimore.git
 
 2. Please install the required (python) dependencies
 
