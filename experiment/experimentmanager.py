@@ -5,8 +5,9 @@ import sys
 import logging
 
 from Queue import Empty
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Queue, Pool
 
+from runner import Runner
 from experiment import Experiment
 from experimentmanagerworker import ExperimentManagerWorker
 from persistence.baltimorejsonencoder import BaltimoreJSONEncoder
@@ -24,6 +25,13 @@ class ExperimentManager:
 			scenarios.append(scenario)
 
 	  return scenarios
+
+	def run_simulations(self, scenarios, repetitions):
+	  self.pool = Pool()
+	  # build up a tuple consisting of scenarios and repetitions
+	  argument = iteratools.product(scenarios, range(repetitions))
+	  # run the simulations
+	  self.pool.map(Runner.run_simulation, argument))
 
     def process(self, directory, scenario, is_verbose=False, visualize=False):
 	  queue = Queue()
