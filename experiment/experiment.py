@@ -3,6 +3,9 @@
 import os
 import sys
 
+import matplotlib
+matplotlib.use("Agg")
+
 from networkx import networkx as nx
 from matplotlib import pyplot as plt
 from fnmatch import fnmatch as file_name_match

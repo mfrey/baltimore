@@ -3,6 +3,7 @@
 import os
 import sys
 import logging
+import itertools
 
 from Queue import Empty
 from multiprocessing import Process, Queue, Pool
