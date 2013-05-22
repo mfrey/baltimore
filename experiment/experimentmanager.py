@@ -8,7 +8,7 @@ import itertools
 from Queue import Empty
 from multiprocessing import Process, Queue, Pool
 
-from runner import Runner
+from runner import Runner, run_simulation
 from experiment import Experiment
 from experimentmanagerworker import ExperimentManagerWorker
 from persistence.baltimorejsonencoder import BaltimoreJSONEncoder
@@ -30,9 +30,9 @@ class ExperimentManager:
     def run_simulations(self, configuration):
       self.pool = Pool()
 	  # build up a tuple consisting of scenarios and repetitions
-      argument = itertools.product(configuration['scenarios'], range(configuration['repetitions']), configuration)
+      argument = itertools.product(configuration['scenarios'], range(configuration['repetitions']), [configuration])
 	  # run the simulations
-      self.pool.map(Runner.run_simulation, argument)
+      self.pool.map(run_simulation, argument)
 
     def process(self, directory, scenario, is_verbose=False, visualize=False):
 	  queue = Queue()
