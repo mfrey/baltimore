@@ -21,11 +21,14 @@ def main():
       sys.exit(1)
 
     experiment_manager = ExperimentManager()
-    experiment_manager.process(arguments.directory, arguments.scenario, arguments.verbose, arguments.network)
 
     # check if the argument has been set 
     if arguments.configuration.endswith("ini"):
-      configuration_test = Configuration(arguments.configuration)
+      configuration = Configuration(arguments.configuration)
+      experiment_manager.run_simulations(configuration.settings):
+
+    experiment_manager.process(arguments.directory, arguments.scenario, arguments.verbose, arguments.network)
+
 
 if __name__ == "__main__":
     main()

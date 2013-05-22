@@ -5,14 +5,14 @@ import os
 from subprocess import call
 
 class Runner(object):
-  def __init__(self, scenario, repetition, ned_path, omnetpp_ini, binary, ld_library_path, cwd):
-	self.scenario = scenario
-	self.repetition = repetition
-	self.ned_path = ned_path
-	self.omnetpp_ini = omnetpp_ini
-	self.binary = binary
-	self.ld_library_path = ld_library_path
-	self.cwd = cwd
+  def __init__(self, settings):
+	self.scenario = settings['scenario']
+	self.repetition = settings['repetition']
+	self.ned_path = settings['ned_path']
+	self.omnetpp_ini = settings['omnetpp_ini']
+	self.binary = settings['binary']
+	self.ld_library_path = settings['ld_library_path']
+	self.cwd = settings['cwd']
 
   @classmethod
   def run_simulation(cls, args):
@@ -22,7 +22,6 @@ class Runner(object):
   def run(self):
 	environment = dict(os.environ)
 	environment["LD_LIBRARY_PATH"] = self.ld_library_path
-
 	call([self.binary, "-r", self.repetition, "-u", "Cmdenv", "-c", self.scenario, "-n", self.ned_path, self.omnetpp_ini], env=environment, cwd=self.cwd)
 
 # this is just for testing purposes and will be removed soon
