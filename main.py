@@ -23,9 +23,9 @@ def main():
     experiment_manager = ExperimentManager()
 
     # check if the argument has been set 
-    if arguments.configuration.endswith("ini"):
-      configuration = Configuration(arguments.configuration)
-      experiment_manager.run_simulations(configuration.settings):
+#    if arguments.configuration.endswith("ini"):
+#      configuration = Configuration(arguments.configuration)
+#      experiment_manager.run_simulations(configuration.settings)
 
     experiment_manager.process(arguments.directory, arguments.scenario, arguments.verbose, arguments.network)
 

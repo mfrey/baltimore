@@ -6,6 +6,7 @@ class Configuration(object):
   def __init__(self, file_name):
 	self.config = ConfigParser.ConfigParser()
 	self.config.read(file_name)
+        self.settings = {}
 	# absolut path to the ara-sim simulation binary
 	self.settings["simulation_binary"] = self.config.get('General', 'binary')
 	# absolut path to the omnetpp.ini
@@ -13,7 +14,7 @@ class Configuration(object):
 	# a list of ned files which shall be considered for the simulation
 	self.settings["ned_files"] = self.config.get('General', 'ned_files')
 	# the total number of repetitions to execute
-	self.settings["repetitions"] = self.config.get('General', 'repetitions')
+	self.settings["repetitions"] = int(self.config.get('General', 'repetitions'))
 	# the name of the scenarios to run (currently only supporting one) 
 	self.settings["scenarios"] = self.config.get('General', 'scenarios')
         # the ld_library_path
