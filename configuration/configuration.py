@@ -12,6 +12,7 @@ class Configuration(object):
         self.settings["ara_home"] = self.config.get('General', 'ara_home')
         self.settings['scenario_home'] = self.config.get('General', 'scenario_home')
 	self.settings["repetitions"] = int(self.config.get('General', 'repetitions'))
+        self.settings['omnetpp_home'] = self.config.get('General', 'omnetpp_home')
 
 	self._build_ned_path()
 	self._build_omnetpp_ini_path()
@@ -26,7 +27,7 @@ class Configuration(object):
         self.settings['omnetpp_ini'] = self.settings['ara_home'] + '/simulations/' + self.settings['scenario_home'] + '/omnetpp.ini'
 
     def _build_ld_library_path(self):
-        self.settings['ld_library_path'] = "$LD_LIBRARY_PATH:" + self.settings['ara_home'] + '/src:' + self.settings['ara_home'] + '/inetmanet/src'
+        self.settings['ld_library_path'] = "$LD_LIBRARY_PATH:" + self.settings['ara_home'] + '/src:' + self.settings['ara_home'] + '/inetmanet/src:' + self.settings['omnetpp_home'] + '/lib'  
 
     def _build_cwd(self):
         self.settings['cwd'] = self.settings['ara_home'] + '/simulations/' + self.settings['scenario_home'] 
