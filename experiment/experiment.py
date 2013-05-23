@@ -43,7 +43,6 @@ class Experiment:
         print
         return experiment_results
 
-
     def print_progress(self):
         sys.stdout.write(".")
         sys.stdout.flush()

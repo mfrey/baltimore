@@ -84,7 +84,6 @@ class ExperimentManager:
         for setting in settings:
             print setting[0], ' = ', setting[1]
         
-
     def write_json(self, filename):
         encoder = BaltimoreJSONEncoder()
         print encoder.encode(self.experiments)
