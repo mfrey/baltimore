@@ -26,7 +26,7 @@ def main():
     if arguments.configuration.endswith("ini"):
         configuration = Configuration(arguments.configuration)
         experiment_manager.run_simulations(configuration.settings)
-        experiment_manager.process(configuration.settings['cwd'], self.settings['scenarios'], arguments.verbose, arguments.network)
+        experiment_manager.process(configuration.settings['cwd'], configuration.settings['scenarios'], arguments.verbose, arguments.network)
     # if not run the script in evaluation mode
     else:
         experiment_manager.process(arguments.directory, [arguments.scenario], arguments.verbose, arguments.network)
