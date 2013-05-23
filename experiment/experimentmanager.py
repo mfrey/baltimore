@@ -18,52 +18,52 @@ class ExperimentManager:
         self.experiments = {}
 
     def _get_scenarios(self, directory):
-	  scenarios = []
-	  for file_name in os.listdir(directory):
-		if file_name.endswith('sca'):
-		  scenario = file_name.split('-')[0]
-		  if scenario not in scenarios:
-			scenarios.append(scenario)
-
-	  return scenarios
+        scenarios = []
+	for file_name in os.listdir(directory):
+            if file_name.endswith('sca'):
+                scenario = file_name.split('-')[0]
+		if scenario not in scenarios:
+                    scenarios.append(scenario)
+	return scenarios
 
     def run_simulations(self, configuration):
-      self.pool = Pool()
-	  # build up a tuple consisting of scenarios and repetitions
-      argument = itertools.product(configuration['scenarios'], range(configuration['repetitions']), [configuration])
-	  # run the simulations
-      self.pool.map(run_simulation, argument)
+        self.pool = Pool()
+	# build up a tuple consisting of scenarios and repetitions
+        argument = itertools.product(configuration['scenarios'], range(configuration['repetitions']), [configuration])
+        # run the simulations
+        self.pool.map(run_simulation, argument)
 
-    def process(self, directory, scenario, is_verbose=False, visualize=False):
-	  queue = Queue()
-	  jobs = []
+    def process(self, directory, scenarios, is_verbose=False, visualize=False):
+        queue = Queue()
+        jobs = []
 
-      # single scenario to handle
-	  if scenario != "":
-		process = ExperimentManagerWorker(directory, scenario, queue, is_verbose, visualize)
-		jobs.append(process)
-		process.start()
-      # multiple scenarios in a directory
-	  else:
-		scenarios = self._get_scenarios(directory + '/results')
+        # single scenario to handle
+        if len(scenarios) == 1 and scenarios[0] != '.': 
+            process = ExperimentManagerWorker(directory, scenarios[0], queue, is_verbose, visualize)
+            jobs.append(process)
+            process.start()
+        # multiple scenarios in a directory
+        else:
+            if len(scenarios) == 1 and scenarios[0] == '.':
+                scenarios = self._get_scenarios(directory + '/results')
 
-		for s in scenarios:
-		  process = ExperimentManagerWorker(directory, s, queue, is_verbose, visualize) 
-		  jobs.append(process)
-		  process.start()
+            for scenario in scenarios:
+                process = ExperimentManagerWorker(directory, s, queue, is_verbose, visualize) 
+                jobs.append(process)
+                process.start()
 
-      # storing the results in an class attribute
-	  for job in jobs:
-		job.join()
-		# TODO: It might be better to remove the try/except and put an error code in the code (by the producer)
-		# instead over an timeout
-		try:
-		  result = queue.get(True, 1)
-		  self.experiments[result[0].scenario_name] = result
-		except Empty:
-		  print "no entry in queue for scenario ", job.scenario
+        # storing the results in an class attribute
+        for job in jobs:
+            job.join()
+            # TODO: It might be better to remove the try/except and put an error code in the code (by the producer)
+            # instead over an timeout
+            try:
+                result = queue.get(True, 1)
+                self.experiments[result[0].scenario_name] = result
+            except Empty:
+                print "no entry in queue for scenario ", job.scenario
+                print self.experiments
 
-		print self.experiments
 
     def write_json(self, filename):
 	  encoder = BaltimoreJSONEncoder()
