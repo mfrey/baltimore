@@ -38,17 +38,19 @@ class ExperimentManager:
         jobs = []
 
         # single scenario to handle
-        if len(scenarios) == 1 and scenarios[0] != '.': 
+        if len(scenarios) == 1 and scenarios[0] != '': 
             process = ExperimentManagerWorker(directory, scenarios[0], queue, is_verbose, visualize)
             jobs.append(process)
             process.start()
         # multiple scenarios in a directory
         else:
-            if len(scenarios) == 1 and scenarios[0] == '.':
+            if len(scenarios) == 1 and scenarios[0] == '':
                 scenarios = self._get_scenarios(directory + '/results')
 
+            print scenarios
+
             for scenario in scenarios:
-                process = ExperimentManagerWorker(directory, s, queue, is_verbose, visualize) 
+                process = ExperimentManagerWorker(directory, scenario, queue, is_verbose, visualize) 
                 jobs.append(process)
                 process.start()
 
