@@ -11,10 +11,9 @@ class Runner(object):
   def __init__(self, scenario, repetition, settings):
 	self.scenario = scenario
 	self.repetition = repetition
-	# todo
-	self.ned_path = settings['ned_files']
+	self.ned_path = settings['ned_path']
 	self.omnetpp_ini = settings['omnetpp_ini']
-	self.binary = settings['binary']
+	self.binary = settings['ara_home'] + '/omnetpp/ara-sim'
 	self.ld_library_path = settings['ld_library_path']
 	self.cwd = settings['cwd']
 
