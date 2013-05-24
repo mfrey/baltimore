@@ -26,22 +26,10 @@ class ExperimentResult:
         return sum
     
     def get_minimum(self, metric_name):
-        minimum = None
-        for repetition in self.repetitions:
-            candidate = self.get_metric(metric_name, repetition)
-            if(minimum is None or candidate < minimum):
-                minimum = candidate
-            
-        return minimum
+        return np.amin([self.get_metric(metric_name, repetition) for repetition in self.repetitions])
 
     def get_maximum(self, metric_name):
-        maximum = None
-        for repetition in self.repetitions:
-            candidate = self.get_metric(metric_name, repetition)
-            if(maximum is None or candidate > maximum):
-                maximum = candidate
-            
-        return maximum
+        return np.amax([self.get_metric(metric_name, repetition) for repetition in self.repetitions])
     
     def get_median(self, metric_name):
         return np.median([self.get_metric(metric_name, repetition) for repetition in self.repetitions])
