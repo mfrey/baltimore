@@ -9,36 +9,35 @@ from experiment import Experiment
 from analysis.packetdeliveryrateanalysis import PacketDeliveryRateAnalysis 
 
 class ExperimentManagerWorker(multiprocessing.Process):
-    def __init__(self, directory, scenario, queue, is_verbose=False, visualize=False):
-	  super(ExperimentManagerWorker,self).__init__()
-	  self.directory = directory
-	  self.scenario = scenario
-	  self.verbose = is_verbose
-	  self.visualize = visualize
-	  self.queue = queue
-
+    
+    def __init__(self, simulations_directory, scenario_name, queue, is_verbose=False, visualize=False):
+        super(ExperimentManagerWorker,self).__init__()
+        self.simulations_directory = simulations_directory
+        self.scenario_name = scenario_name
+        self.verbose = is_verbose
+        self.visualize = visualize
+        self.results_queue = queue
+    
     def run(self): 
-      try:
-		# TODO: change this to logging, so we only print it if required
-        print 'Scanning directory "%s" for simulation result files.\nThis may take some time depending on the number of files...' % self.directory
-        # TODO: use some kind of configuration to run more than one experiment
-        experiment = Experiment(self.directory + '/results', self.scenario, self.visualize)
-        experiment_results = experiment.get_results()
+        try:
+		    # TODO: change this to logging, so we only print it if required
+            print 'Scanning directory "%s" for simulation result files.\nThis may take some time depending on the number of files...' % self.directory
+            # TODO: use some kind of configuration to run more than one experiment
+            experiment = Experiment(self.directory + '/results', self.scenario, self.visualize)
+            experiment_results = experiment.get_results()
         
-        # TODO: use some kind of configuration to run more than one analysis
-        pdrAnalyser = PacketDeliveryRateAnalysis()
-        pdrAnalyser.get_packet_delivery_rate(experiment_results)
-        pdrAnalyser.evaluate(experiment_results, self.verbose)
+            # TODO: use some kind of configuration to run more than one analysis
+            pdrAnalyser = PacketDeliveryRateAnalysis()
+            pdrAnalyser.get_packet_delivery_rate(experiment_results)
+            pdrAnalyser.evaluate(experiment_results, self.verbose)
         
-        # TODO: change this to logging, so we only print it if required
-        nr_of_parsed_files = experiment_results.get_number_of_repetitions()
-        print "\n\nSuccessfully read %d experiment(s) from %d scalar file(s)." % (1, nr_of_parsed_files)
+            # TODO: change this to logging, so we only print it if required
+            nr_of_parsed_files = experiment_results.get_number_of_repetitions()
+            print "\n\nSuccessfully read %d experiment(s) from %d scalar file(s)." % (1, nr_of_parsed_files)
 
-        # store the result
-        self.queue.put((experiment, pdrAnalyser))
-      except:
-	    # improve error handling
-        print "an error occurred"
-
-
+            # store the result
+            self.queue.put((experiment, pdrAnalyser))
+        except:
+	        # improve error handling
+            print "an error occurred"
 
