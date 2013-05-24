@@ -3,6 +3,7 @@
 import argparse
 
 from parser.routingtabledataparser import RoutingTableDataParser
+from plot.routingtableplot import RoutingTablePlot
 
 def main():
     parser = argparse.ArgumentParser(description='foo')
@@ -10,8 +11,9 @@ def main():
     arguments = parser.parse_args()
     
     parser = RoutingTableDataParser()
-    for tuple in parser.read_data_from(arguments.file, "192.168.0.2"):
-        print tuple
+    data = parser.read_data_from(arguments.file, "192.168.0.2")
+    plot = RoutingTablePlot()
+    plot.draw(data, "test.png")
         
 if __name__ == "__main__":
     main()
