@@ -61,9 +61,8 @@ class ExperimentManager:
 		  result = queue.get(True, 1)
 		  self.experiments[result[0].scenario_name] = result
 		except Empty:
-		  print "no entry in queue for scenario ", job.scenario
+		  print "Could not retrieve result data for scenario", job.scenario_name, "(might have failed earlier)"
 
-		print self.experiments
 
     def write_json(self, filename):
 	  encoder = BaltimoreJSONEncoder()
