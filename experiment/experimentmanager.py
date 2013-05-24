@@ -9,6 +9,7 @@ from Queue import Empty
 from multiprocessing import Process, Queue, Pool
 
 from runner import Runner, run_simulation
+from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
 from experiment import Experiment
 from experimentmanagerworker import ExperimentManagerWorker
 from persistence.baltimorejsonencoder import BaltimoreJSONEncoder
@@ -55,6 +56,7 @@ class ExperimentManager:
 
         omnetpp_ini = OMNeTConfiguration(directory + '/omnetpp.ini')
 
+        # FIXME: that's a bug if no config.ini file is added
         if is_verbose:
             self._print_general_settings(omnetpp_ini.get_section('General'))
 
@@ -67,12 +69,26 @@ class ExperimentManager:
                 result = queue.get(True, 1)
                 self.experiments[result[0].scenario_name] = result
 
+                # FIXME: that's a bug if no config.ini file is added
                 if is_verbose:
                     self._print_scenario_settings(omnetpp_ini.get_scenario(result[0].scenario_name))
 
             except Empty:
                 print "no entry in queue for scenario ", job.scenario
                 print self.experiments
+
+        self.generate_packet_delivery_plots()
+        
+
+    def generate_packet_delivery_plots(self):
+        scenario_list = [e for e in xrange(len(self.experiments))]
+        pdr_list = []
+        for experiment in self.experiments:
+            pdr_list.append(self.experiments[experiment][1].pdr)
+        plot = PacketDeliveryRatePlot()
+        plot.xlist = [scenario_list]
+        plot.ylist = [pdr_list]
+        plot.draw('test.png')
 
     def _print_general_settings(self, general_settings):
         self._print_tuple(general_settings)
