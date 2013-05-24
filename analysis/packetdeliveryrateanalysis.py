@@ -13,6 +13,11 @@ class PacketDeliveryRateAnalysis:
         self.check_no_inexplicable_loss(experiment_results)
         self.analyse_average_values(experiment_results)
     
+    def get_packet_delivery_rate(self, results):
+       avg_traffic_sent = results.get_average("trafficSent")
+       avg_traffic_received = results.get_average("trafficReceived")
+       self.pdr = float(avg_traffic_received/avg_traffic_sent)
+
     def check_no_inexplicable_loss(self, result):
         for repetition in result:
             inexplicable_loss = result.get_metric('trafficSent', repetition) - result.get_metric('trafficReceived', repetition) - result.get_metric('routingLoopDetected:count', repetition)- result.get_metric('routeFailure:count', repetition) - result.get_metric('packetUnDeliverable:count', repetition) - result.get_metric('dropZeroTTLPacket:count', repetition)
