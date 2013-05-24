@@ -40,6 +40,7 @@ class Experiment:
                 plot = RoutingTablePlot()
                 plot_filename = self.results_directory + "/" + filename + '.png' 
                 plot.draw(data, plot_filename)
+                self.print_progress()
             elif file_name_match(filename, self.scenario_name + '*.net'):
                 if self.visualize:
                     network_file_parser = NetworkFileParser()
