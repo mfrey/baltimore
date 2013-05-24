@@ -1,15 +1,15 @@
 [General]
-# absolute path to the libARA home
-ara_home = <INSERT_SOME_PATH>
+# path to the libARA home (absolute or relative)
+ara_home = ../ara-sim
 
-# absolute path to the OMNeT++ home
-omnetpp_home = <INSERT_SOME_PATH>
+# path to the OMNeT++ home (absolute or relative)
+omnetpp_home = ~/Programs/omnetpp-4.3
 
-# the relative path to the scenario directory
+# the path to the scenario directory relative to the libARA simulations folder
 scenario_home = static
-
-# the number of repetitions
-repetitions = 5
 
 # a comma separated list of scenarios which should be executed
 scenarios = midStatic
+
+# the number of repetitions (only used with -r parameter)
+repetitions = 5

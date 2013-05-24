@@ -1,5 +1,6 @@
 #!/usr/bin/env python2.7
 
+from os import path 
 from ConfigParser import ConfigParser
 
 class Configuration(object):
@@ -10,8 +11,8 @@ class Configuration(object):
             parser.read(file_name)
             
             self.settings = {
-                'ara_home': parser.get('General', 'ara_home'),
-                'omnetpp_home': parser.get('General', 'omnetpp_home'),
+                'ara_home': path.expanduser(parser.get('General', 'ara_home')),
+                'omnetpp_home': path.expanduser(parser.get('General', 'omnetpp_home')),
                 'scenario_home': parser.get('General', 'scenario_home'),
                 'repetitions': parser.get('General', 'repetitions')
             }
