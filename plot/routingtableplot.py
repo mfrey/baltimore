@@ -3,25 +3,38 @@
 import matplotlib.pyplot as plt
 
 class RoutingTablePlot:
-    def __init__(self):
-        self.ylabel = "Pheromone value"
-        self.xlabel = "Time"
-        self.xlist = []
-        self.ylist = []
-
+    
     def draw(self, data, filename):
         plt.figure()
-        plt.ylabel(self.ylabel,va="center",ha="center")
-        plt.xlabel(self.xlabel)
+        plt.ylabel("Pheromone value", va="center", ha="center")
+        plt.xlabel("Time")
         plt.grid(axis="y")
         
+        timestamps = []
+        next_hop_values = {}
+        zero_list = []
+        
+        # read in the data and sort them into different lists for each next_hop
         for tuple in data:
             timestamp = tuple[0]
             next_hops = tuple[1]
-            #TODO just a test
-            if '192.168.0.2' in next_hops:
-                plt.plot(timestamp, next_hops['192.168.0.2'], 'bo-')
-                
-            #plt.plot(value, self.ylist[timestamp], drawstyle="line", marker="s", color=(0./256,55./256,108./256), lw=2.5)
+            
+            for next_hop, pheromone_value in next_hops.iteritems():
+                if next_hop not in next_hop_values:
+                    next_hop_values[next_hop] = list(zero_list)
+                    
+                next_hop_values[next_hop].append(pheromone_value)
+            
+            timestamps.append(timestamp)
+            zero_list.append(0)
+        
+        nr_of_x_values = len(timestamps)
+        
+        #  now just plot everything
+        for address, values in next_hop_values.iteritems():
+            # we need to fill up those lists where a next_hop has been removed
+            values = values + [0] * (nr_of_x_values - len(values))
+            
+            plt.plot(timestamps, values, '-')
         
         plt.savefig(filename)
