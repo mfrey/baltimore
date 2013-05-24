@@ -31,6 +31,5 @@ def main():
     else:
         experiment_manager.process(arguments.directory, [arguments.scenario], arguments.verbose, arguments.network)
 
-
 if __name__ == "__main__":
     main()

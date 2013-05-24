@@ -29,7 +29,7 @@ class ExperimentManager:
 
     def run_simulations(self, configuration):
         self.pool = Pool()
-	# build up a tuple consisting of scenarios and repetitions
+	    # build up a tuple consisting of scenarios and repetitions
         argument = itertools.product(configuration['scenarios'], range(configuration['repetitions']), [configuration])
         # run the simulations
         self.pool.map(run_simulation, argument)
@@ -71,8 +71,7 @@ class ExperimentManager:
                     self._print_scenario_settings(omnetpp_ini.get_scenario(result[0].scenario_name))
 
             except Empty:
-                print "no entry in queue for scenario ", job.scenario
-                print self.experiments
+                print "Could not retrieve result data for scenario", job.scenario_name, "(might have failed earlier)"
 
     def _print_general_settings(self, general_settings):
         self._print_tuple(general_settings)
