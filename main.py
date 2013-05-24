@@ -27,7 +27,7 @@ def main():
       configuration = Configuration(arguments.configuration)
       experiment_manager.run_simulations(configuration.settings)
 
-#    experiment_manager.process(arguments.directory, arguments.scenario, arguments.verbose, arguments.network)
+    experiment_manager.process(arguments.directory, arguments.scenario, arguments.verbose, arguments.network)
 
 
 if __name__ == "__main__":
