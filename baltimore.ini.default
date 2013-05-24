@@ -1,0 +1,15 @@
+[General]
+# absolute path to the libARA home
+ara_home = <INSERT_SOME_PATH>
+
+# absolute path to the OMNeT++ home
+omnetpp_home = <INSERT_SOME_PATH>
+
+# the relative path to the scenario directory
+scenario_home = static
+
+# the number of repetitions
+repetitions = 5
+
+# a comma separated list of scenarios which should be executed
+scenarios = midStatic

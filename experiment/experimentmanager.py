@@ -19,15 +19,6 @@ class ExperimentManager:
     def __init__(self):
         self.experiments = {}
 
-    def _get_scenarios(self, directory):
-        scenarios = []
-	for file_name in os.listdir(directory):
-            if file_name.endswith('sca'):
-                scenario = file_name.split('-')[0]
-		if scenario not in scenarios:
-                    scenarios.append(scenario)
-	return scenarios
-
     def run_simulations(self, configuration):
         self.pool = Pool()
 	    # build up a tuple consisting of scenarios and repetitions
@@ -88,6 +79,15 @@ class ExperimentManager:
         plot.xlist = [scenario_list]
         plot.ylist = [pdr_list]
         plot.draw('test.png')
+
+    def _get_scenarios(self, directory):
+        scenarios = []
+        for file_name in os.listdir(directory):
+            if file_name.endswith('sca'):
+                scenario = file_name.split('-')[0]
+                if scenario not in scenarios:
+                    scenarios.append(scenario)
+        return scenarios
 
     def _print_general_settings(self, general_settings):
         self._print_tuple(general_settings)

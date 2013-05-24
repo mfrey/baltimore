@@ -1,24 +1,28 @@
 #!/usr/bin/env python2.7
 
-import ConfigParser
+from ConfigParser import ConfigParser
 
 class Configuration(object):
+    
     def __init__(self, file_name):
-        self.config = ConfigParser.ConfigParser()
-        self.config.read(file_name)
+        if(file_name is not None):
+            parser = ConfigParser()
+            parser.read(file_name)
+            
+            self.settings = {
+                'ara_home': parser.get('General', 'ara_home'),
+                'omnetpp_home': parser.get('General', 'omnetpp_home'),
+                'scenario_home': parser.get('General', 'scenario_home'),
+                'repetitions': parser.get('General', 'repetitions')
+            }
         
-        self.settings = {}
-        
-        self.settings["ara_home"] = self.config.get('General', 'ara_home')
-        self.settings['scenario_home'] = self.config.get('General', 'scenario_home')
-        self.settings["repetitions"] = int(self.config.get('General', 'repetitions'))
-        self.settings['omnetpp_home'] = self.config.get('General', 'omnetpp_home')
-        
-        self._build_ned_path()
-        self._build_omnetpp_ini_path()
-        self._build_ld_library_path()
-        self._build_cwd()
-        self._build_scenarios()
+            self._build_ned_path()
+            self._build_omnetpp_ini_path()
+            self._build_ld_library_path()
+            self._build_cwd()
+            self._build_scenarios(parser.get('General', 'scenarios'))
+        else:
+            self.settings = {}
     
     def _build_ned_path(self):
         self.settings['ned_path'] =  self.settings['ara_home'] + '/inetmanet/src:' + self.settings['ara_home'] + '/inetmanet/examples:' + self.settings['ara_home'] + '/omnetpp:' + self.settings['ara_home'] + '/simulations/' + self.settings['scenario_home']
@@ -32,5 +36,11 @@ class Configuration(object):
     def _build_cwd(self):
         self.settings['cwd'] = self.settings['ara_home'] + '/simulations/' + self.settings['scenario_home'] 
     
-    def _build_scenarios(self):
-        self.settings['scenarios'] = [scenario.strip() for scenario in self.config.get('General', 'scenarios').split(',')]
+    def _build_scenarios(self, scenarios):
+        self.settings['scenarios'] = [scenario.strip() for scenario in scenarios.split(',')]
+
+    @staticmethod
+    def createDefaultConfiguration():
+        config = Configuration(None);
+        config.settings['cwd'] = "."
+        return config

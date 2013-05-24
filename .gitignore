@@ -37,3 +37,5 @@ nosetests.xml
 # Generated plots
 *.png
 
+# user specific configuration files
+*.ini
