@@ -4,6 +4,9 @@ import os
 import sys
 import argparse
 
+import matplotlib
+matplotlib.use("Agg")
+
 from configuration.configuration import Configuration
 from experiment.experimentmanager import ExperimentManager
 
