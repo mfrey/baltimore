@@ -1,5 +1,7 @@
 #!/usr/bin/env python2.7
 
+import multiprocessing
+
 from os import path 
 from ConfigParser import ConfigParser
 
@@ -14,7 +16,8 @@ class Configuration(object):
                 'ara_home': self._get_absolute_path(parser.get('General', 'ara_home')),
                 'omnetpp_home': self._get_absolute_path(parser.get('General', 'omnetpp_home')),
                 'scenario_home': parser.get('General', 'scenario_home'),
-                'repetitions': int(parser.get('General', 'repetitions'))
+                'repetitions': int(parser.get('General', 'repetitions')),
+                'cpu_cores' : self._check_cpu_cores(int(parser.get('General', 'cpu_cores')))
             }
         
             self._build_ned_path()
@@ -25,6 +28,16 @@ class Configuration(object):
         else:
             self.settings = {}
     
+    def _check_cpu_cores(self, cores):
+        existing_cpu_cores = multiprocessing.cpu_count()
+
+        if existing_cpu_cores == 1:
+           return 1
+        else if existing_cpu_cores < cores:
+           return int(existing_cpu_cores / 2)
+        else
+           return cores
+
     def _get_absolute_path(self, some_path):
         return path.abspath(path.expanduser(some_path))
     

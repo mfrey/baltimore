@@ -13,3 +13,6 @@ scenarios = midStatic
 
 # the number of repetitions (only used with -r parameter)
 repetitions = 5
+
+# the number of cpu cores which should be used for parallelization
+cpu_cores = 2
