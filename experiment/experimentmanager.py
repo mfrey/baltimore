@@ -4,11 +4,12 @@ import os
 import sys
 import logging
 import itertools
+import runner
 
 from Queue import Empty
 from multiprocessing import Process, Queue, Pool
 
-from runner import Runner, run_simulation
+from runner import Runner
 from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
 from experiment import Experiment
 from experimentmanagerworker import ExperimentManagerWorker
@@ -24,7 +25,7 @@ class ExperimentManager:
 	    # build up a tuple consisting of scenarios and repetitions
         argument = itertools.product(configuration['scenarios'], range(configuration['repetitions']), [configuration])
         # run the simulations
-        self.pool.map(run_simulation, argument)
+        self.pool.map(runner.run_simulation, argument)
 
     def process(self, directory, scenarios, is_verbose=False, visualize=False):
         queue = Queue()

@@ -11,10 +11,10 @@ class Configuration(object):
             parser.read(file_name)
             
             self.settings = {
-                'ara_home': path.expanduser(parser.get('General', 'ara_home')),
-                'omnetpp_home': path.expanduser(parser.get('General', 'omnetpp_home')),
+                'ara_home': self._get_absolute_path(parser.get('General', 'ara_home')),
+                'omnetpp_home': self._get_absolute_path(parser.get('General', 'omnetpp_home')),
                 'scenario_home': parser.get('General', 'scenario_home'),
-                'repetitions': parser.get('General', 'repetitions')
+                'repetitions': int(parser.get('General', 'repetitions'))
             }
         
             self._build_ned_path()
@@ -24,6 +24,9 @@ class Configuration(object):
             self._build_scenarios(parser.get('General', 'scenarios'))
         else:
             self.settings = {}
+    
+    def _get_absolute_path(self, some_path):
+        return path.abspath(path.expanduser(some_path))
     
     def _build_ned_path(self):
         self.settings['ned_path'] =  self.settings['ara_home'] + '/inetmanet/src:' + self.settings['ara_home'] + '/inetmanet/examples:' + self.settings['ara_home'] + '/omnetpp:' + self.settings['ara_home'] + '/simulations/' + self.settings['scenario_home']
@@ -44,4 +47,6 @@ class Configuration(object):
     def createDefaultConfiguration():
         config = Configuration(None);
         config.settings['cwd'] = "."
+        config.settings['repetitions'] = 1
+        config.settings['ld_library_path'] = "$LD_LIBRARY_PATH"
         return config
