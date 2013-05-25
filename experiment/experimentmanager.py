@@ -78,7 +78,6 @@ class ExperimentManager:
 
         self.generate_packet_delivery_plots()
         
-
     def generate_packet_delivery_plots(self):
         scenario_list = [e for e in xrange(len(self.experiments))]
         pdr_list = []
