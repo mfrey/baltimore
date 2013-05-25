@@ -49,4 +49,5 @@ class Configuration(object):
         config.settings['cwd'] = "."
         config.settings['repetitions'] = 1
         config.settings['ld_library_path'] = "$LD_LIBRARY_PATH"
+        config.settings['scenarios'] = ['']
         return config
