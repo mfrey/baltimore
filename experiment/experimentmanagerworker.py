@@ -21,9 +21,9 @@ class ExperimentManagerWorker(multiprocessing.Process):
     def run(self): 
         try:
 		    # TODO: change this to logging, so we only print it if required
-            print 'Scanning directory "%s" for simulation result files.\nThis may take some time depending on the number of files...' % self.directory
+            print 'Scanning directory "%s" for simulation result files.\nThis may take some time depending on the number of files...' % self.simulations_directory
             # TODO: use some kind of configuration to run more than one experiment
-            experiment = Experiment(self.directory + '/results', self.scenario, self.visualize)
+            experiment = Experiment(self.simulations_directory + '/results', self.scenario_name, self.visualize)
             experiment_results = experiment.get_results()
         
             # TODO: use some kind of configuration to run more than one analysis
@@ -36,8 +36,6 @@ class ExperimentManagerWorker(multiprocessing.Process):
             print "\n\nSuccessfully read %d experiment(s) from %d scalar file(s)." % (1, nr_of_parsed_files)
 
             # store the result
-            self.queue.put((experiment, pdrAnalyser))
-        except:
-	        # improve error handling
-            print "an error occurred"
-
+            self.results_queue.put((experiment, pdrAnalyser))
+        except Exception as exception:
+            print "An error occurred while evaluating experiment", self.scenario_name, ": ", exception

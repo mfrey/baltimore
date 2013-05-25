@@ -4,11 +4,12 @@ import os
 import sys
 import logging
 import itertools
+import runner
 
 from Queue import Empty
 from multiprocessing import Process, Queue, Pool
 
-from runner import Runner, run_simulation
+from runner import Runner
 from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
 from experiment import Experiment
 from experimentmanagerworker import ExperimentManagerWorker
@@ -19,21 +20,12 @@ class ExperimentManager:
     def __init__(self):
         self.experiments = {}
 
-    def _get_scenarios(self, directory):
-        scenarios = []
-	for file_name in os.listdir(directory):
-            if file_name.endswith('sca'):
-                scenario = file_name.split('-')[0]
-		if scenario not in scenarios:
-                    scenarios.append(scenario)
-	return scenarios
-
     def run_simulations(self, configuration):
         self.pool = Pool()
 	    # build up a tuple consisting of scenarios and repetitions
         argument = itertools.product(configuration['scenarios'], range(configuration['repetitions']), [configuration])
         # run the simulations
-        self.pool.map(run_simulation, argument)
+        self.pool.map(runner.run_simulation, argument)
 
     def process(self, directory, scenarios, is_verbose=False, visualize=False):
         queue = Queue()
@@ -87,6 +79,15 @@ class ExperimentManager:
         plot.xlist = [scenario_list]
         plot.ylist = [pdr_list]
         plot.draw('test.png')
+
+    def _get_scenarios(self, directory):
+        scenarios = []
+        for file_name in os.listdir(directory):
+            if file_name.endswith('sca'):
+                scenario = file_name.split('-')[0]
+                if scenario not in scenarios:
+                    scenarios.append(scenario)
+        return scenarios
 
     def _print_general_settings(self, general_settings):
         self._print_tuple(general_settings)
