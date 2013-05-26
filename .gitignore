@@ -33,3 +33,9 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Generated plots
+*.png
+
+# user specific configuration files
+*.ini

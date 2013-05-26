@@ -1,2 +1,2 @@
-__all__ = ["packetdeliveryrateplot"]
+__all__ = ["packetdeliveryrateplot", "routingtableplot"]
 

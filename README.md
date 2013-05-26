@@ -9,13 +9,14 @@ Installation from git
 
 2. Please install the required (python) dependencies
 
-		networkx
 		matplotlib
+		networkx
+		numpy
 		nose	
 
 3. Run the program
 
-		python2.7 main.py
+		./main.py
 
 4. Tests are executed using nose. From the root of the project call
 
