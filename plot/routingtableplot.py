@@ -38,3 +38,4 @@ class RoutingTablePlot:
             plt.plot(timestamps, values, '-')
         
         plt.savefig(filename)
+        plt.close()
