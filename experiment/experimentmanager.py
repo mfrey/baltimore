@@ -21,7 +21,7 @@ class ExperimentManager:
         self.experiments = {}
 
     def run_simulations(self, configuration):
-        self.pool = Pool(configuration.cpu_cores)
+        self.pool = Pool(configuration['cpu_cores'])
 	    # build up a tuple consisting of scenarios and repetitions
         argument = itertools.product(configuration['scenarios'], range(configuration['repetitions']), [configuration])
         # run the simulations
