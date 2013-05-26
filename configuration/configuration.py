@@ -33,9 +33,9 @@ class Configuration(object):
 
         if existing_cpu_cores == 1:
            return 1
-        else if existing_cpu_cores < cores:
+        elif existing_cpu_cores < cores:
            return int(existing_cpu_cores / 2)
-        else
+        else:
            return cores
 
     def _get_absolute_path(self, some_path):

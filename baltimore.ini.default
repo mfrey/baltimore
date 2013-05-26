@@ -1,4 +1,8 @@
 [General]
+
+# Number of cores to use when running simulations and evaluating results
+cpu_cores = 1
+
 # path to the libARA home (absolute or relative)
 ara_home = ../ara-sim
 
