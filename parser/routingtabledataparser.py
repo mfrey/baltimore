@@ -9,6 +9,9 @@ class RoutingTableDataParser:
     NUMBER_OF_ADDRESS_BYTES = 4
     NUMBER_OF_PHEROMONE_BYTES = 4
 
+    def __init__(self):
+        self.single_entry_size = 2 * self.NUMBER_OF_ADDRESS_BYTES + self.NUMBER_OF_PHEROMONE_BYTES
+
     def read_data_from(self, filename, routing_destination):
         with open(filename, "rb") as self.file:
             self.total_file_size = os.fstat(self.file.fileno()).st_size
@@ -47,11 +50,8 @@ class RoutingTableDataParser:
     def _read_nr_of_entries(self, byte_stream):
         return struct.unpack("B", byte_stream.next())[0]
     
-    def _get_single_entry_size(self):
-        return 2 * self.NUMBER_OF_ADDRESS_BYTES + self.NUMBER_OF_PHEROMONE_BYTES
-    
     def _read_entries(self, nr_of_entries, routing_destination):
-        byte_stream = self._request_next_bytes(nr_of_entries * self._get_single_entry_size())
+        byte_stream = self._request_next_bytes(nr_of_entries * self.single_entry_size)
         
         entries = {}
         while nr_of_entries > 0:
