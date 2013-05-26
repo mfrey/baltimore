@@ -17,7 +17,7 @@ class Configuration(object):
                 'omnetpp_home': self._get_absolute_path(parser.get('General', 'omnetpp_home')),
                 'scenario_home': parser.get('General', 'scenario_home'),
                 'repetitions': int(parser.get('General', 'repetitions')),
-                'cpu_cores' : self._check_cpu_cores(int(parser.get('General', 'cpu_cores')))
+                'cpu_cores' : self._get_nr_of_cpus(parser.get('General', 'cpu_cores'))
             }
         
             self._build_ned_path()
@@ -28,18 +28,22 @@ class Configuration(object):
         else:
             self.settings = {}
     
-    def _check_cpu_cores(self, cores):
-        existing_cpu_cores = multiprocessing.cpu_count()
-
-        if existing_cpu_cores == 1:
-           return 1
-        elif existing_cpu_cores < cores:
-           return int(existing_cpu_cores / 2)
-        else:
-           return cores
-
     def _get_absolute_path(self, some_path):
         return path.abspath(path.expanduser(some_path))
+
+    def _get_nr_of_cpus(self, wanted_cores):
+        nr_of_existing_cpu_cores = multiprocessing.cpu_count()
+        
+        if wanted_cores == '*':
+            return nr_of_existing_cpu_cores
+        else:
+            wanted_cores = int(wanted_cores)
+            if nr_of_existing_cpu_cores == 1:
+               return 1
+            elif nr_of_existing_cpu_cores < wanted_cores:
+               return int(nr_of_existing_cpu_cores / 2)
+            else:
+               return wanted_cores
     
     def _build_ned_path(self):
         self.settings['ned_path'] =  self.settings['ara_home'] + '/inetmanet/src:' + self.settings['ara_home'] + '/inetmanet/examples:' + self.settings['ara_home'] + '/omnetpp:' + self.settings['ara_home'] + '/simulations/' + self.settings['scenario_home']
@@ -63,4 +67,5 @@ class Configuration(object):
         config.settings['repetitions'] = 1
         config.settings['ld_library_path'] = "$LD_LIBRARY_PATH"
         config.settings['scenarios'] = ['']
+        config.settings['cpu_cores'] = self._get_nr_of_cpus('*')
         return config

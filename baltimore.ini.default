@@ -1,7 +1,10 @@
 [General]
 
 # Number of cores to use when running simulations and evaluating results
-cpu_cores = 1
+# You can define an integer <= your available number of  cores or * to use all of
+# them (default). If this option does exceed the actual number of cores in your
+# system the script will automatically use half of them. 
+cpu_cores = *
 
 # path to the libARA home (absolute or relative)
 ara_home = ../ara-sim
