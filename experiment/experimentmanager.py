@@ -14,7 +14,7 @@ from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
 from experiment import Experiment
 from experimentmanagerworker import ExperimentManagerWorker
 from persistence.baltimorejsonencoder import BaltimoreJSONEncoder
-from representation.omnetppini import OMNeTConfiguration
+from parser.omnetconfigurationfileparser import OMNeTConfigurationFileParser
 
 class ExperimentManager:
     def __init__(self):
@@ -46,7 +46,7 @@ class ExperimentManager:
                 jobs.append(process)
                 process.start()
 
-        omnetpp_ini = OMNeTConfiguration(directory + '/omnetpp.ini')
+        omnetpp_ini = OMNeTConfigurationFileParser(directory + '/omnetpp.ini')
 
         # FIXME: that's a bug if no config.ini file is added
         if is_verbose:
