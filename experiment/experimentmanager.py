@@ -115,6 +115,7 @@ class ExperimentManager:
         obj = []
 
         with open(file_name, 'r') as json_file:
-            obj.append(decoder.dict_to_object(json.load(json_file)))
+            obj.append(json.load(json_file))
 
-        print obj
+        ist = decoder.dict_to_object(obj)
+        print ist
