@@ -20,8 +20,8 @@ class ExperimentManager:
     def __init__(self):
         self.experiments = {}
 
-    def check_settings(self, directory):
-        self._check_result_directory(directory)
+    def check_settings(self, directory, scenarios):
+        self._check_result_directory(directory, scenarios)
 
     def run_simulations(self, configuration):
         self.pool = Pool(configuration['cpu_cores'])

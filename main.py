@@ -25,7 +25,7 @@ def main():
 
     experiment_manager = ExperimentManager()
 	# check if there are already files from past runs in the directory
-    experiment_manager.check(configuration.settings['cwd'] + '/results')
+    experiment_manager.check(configuration.settings['cwd'] + '/results', configuration.settinsg['scenarios'])
 
     if arguments.run == True:
         experiment_manager.run_simulations(configuration.settings)
