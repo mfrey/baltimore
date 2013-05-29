@@ -80,12 +80,14 @@ class PacketDeliveryRateAnalysis:
             
     def _print_statistics(self, results, repetition):
         print '=' * 55
-        self._print_statistics_line("Sent Packets",              'trafficSent', results, repetition)
-        self._print_statistics_line("Received Packets",          'trafficReceived', results, repetition)
-        self._print_statistics_line("Routing Loops",             'routingLoopDetected:count', results, repetition)
-        self._print_statistics_line("Route Failures",            'routeFailure:count', results, repetition)
-        self._print_statistics_line("Failed Route Discoveries",  'packetUnDeliverable:count', results, repetition)
-        self._print_statistics_line("Dropped Packets (TTL = 0)", 'dropZeroTTLPacket:count', results, repetition)
+        self._print_statistics_line("Sent Packets",                      'trafficSent', results, repetition)
+        self._print_statistics_line("Received Packets",                  'trafficReceived', results, repetition)
+        self._print_statistics_line("Routing Loops",                     'routingLoopDetected:count', results, repetition)
+        self._print_statistics_line("Route Failures (all routes broke)", 'routeFailure:count', results, repetition)
+        self._print_statistics_line("Route Failures (no routes at all)", 'nonSourceRouteDiscovery:count', results, repetition)
+        self._print_statistics_line("Failed Route Discoveries",          'packetUnDeliverable:count', results, repetition)
+        self._print_statistics_line("Dropped Packets (TTL = 0)",         'dropZeroTTLPacket:count', results, repetition)
+        self._print_statistics_line("Trapped packets after finish",      'nrOfTrappedPacketsAfterFinish', results, repetition)
         print "Number of route discoveries: %d\n" % results.get_metric('newRouteDiscovery:count', repetition)
         
     def _print_statistics_line(self, name, metric_name, results, repetition):
