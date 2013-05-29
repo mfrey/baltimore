@@ -111,9 +111,10 @@ class ExperimentManager:
 
     def read_json(self, file_name):
         data = {}
+        decoder = BaltimoreJSONDecoder()
+        obj = []
 
         with open(file_name, 'r') as json_file:
-            data = json.load(json_file)
+            obj.append(decoder.dict_to_object(json.load(json_file)))
 
-        print data 
-#        decoder = BaltimoreJSONDecoder(data)
+        print obj
