@@ -20,7 +20,13 @@ class PacketDeliveryRateAnalysis:
 
     def check_no_inexplicable_loss(self, result):
         for repetition in result:
-            inexplicable_loss = result.get_metric('trafficSent', repetition) - result.get_metric('trafficReceived', repetition) - result.get_metric('routingLoopDetected:count', repetition)- result.get_metric('routeFailure:count', repetition) - result.get_metric('packetUnDeliverable:count', repetition) - result.get_metric('dropZeroTTLPacket:count', repetition)
+            inexplicable_loss  = result.get_metric('trafficSent', repetition) - result.get_metric('trafficReceived', repetition)
+            inexplicable_loss -= result.get_metric('routingLoopDetected:count', repetition)
+            inexplicable_loss -= result.get_metric('routeFailure:count', repetition)
+            inexplicable_loss -= result.get_metric('packetUnDeliverable:count', repetition)
+            inexplicable_loss -= result.get_metric('dropZeroTTLPacket:count', repetition)
+            inexplicable_loss -= result.get_metric('nonSourceRouteDiscovery:count', repetition)
+
             if inexplicable_loss > 0:
                 sys.stderr.write('~' * 74 + "\n")
                 sys.stderr.write("WARNING: The loss of %d packets could not be explained (bug in simulation?)\n" % inexplicable_loss)
@@ -33,10 +39,11 @@ class PacketDeliveryRateAnalysis:
         print '=' * 82
         print " " * 31 + "#   Average    Median   Std.Dev       Min       Max"
         print '-' * 82
-        self._print_avg_statistics_line("Sent Packets",              'trafficSent', results)
-        self._print_avg_statistics_line("Received Packets",          'trafficReceived', results)
-        self._print_avg_statistics_line("Routing Loops",             'routingLoopDetected:count', results)
-        self._print_avg_statistics_line("Route Failures",            'routeFailure:count', results)
+        self._print_avg_statistics_line("Sent Packets",                      'trafficSent', results)
+        self._print_avg_statistics_line("Received Packets",                  'trafficReceived', results)
+        self._print_avg_statistics_line("Routing Loops",                     'routingLoopDetected:count', results)
+        self._print_avg_statistics_line("Route Failures (all routes broke)", 'routeFailure:count', results)
+        self._print_avg_statistics_line("Route Failures (no routes at all)", 'nonSourceRouteDiscovery:count', result)
         self._print_avg_statistics_line("Failed Route Discoveries",  'packetUnDeliverable:count', results)
         self._print_avg_statistics_line("Dropped Packets (TTL = 0)", 'dropZeroTTLPacket:count', results)
         print "Average number of route discoveries: %d\n" % results.get_average('newRouteDiscovery:count')
