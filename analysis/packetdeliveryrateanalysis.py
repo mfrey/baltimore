@@ -46,6 +46,7 @@ class PacketDeliveryRateAnalysis:
         self._print_avg_statistics_line("Route Failures (no routes at all)", 'nonSourceRouteDiscovery:count', results)
         self._print_avg_statistics_line("Failed Route Discoveries",  'packetUnDeliverable:count', results)
         self._print_avg_statistics_line("Dropped Packets (TTL = 0)", 'dropZeroTTLPacket:count', results)
+        self._print_avg_statistics_line("Trapped packets after finish", 'nrOfTrappedPacketsAfterFinish', results)
         print "Average number of route discoveries: %d\n" % results.get_average('newRouteDiscovery:count')
     
     def _print_avg_statistics_line(self, name, metric_name, results):
