@@ -37,7 +37,7 @@ class PacketDeliveryRateAnalysis:
         nr_of_repetitions = results.get_number_of_repetitions()
         print "Overall statistics (averaged over %d iterations)" % nr_of_repetitions
         print '=' * 100
-        print " " * 31 + "#   Average    Median   Std.Dev       Min       Max"
+        print " " * 41 + "#   Average    Median   Std.Dev       Min       Max"
         print '-' * 100
         self._print_avg_statistics_line("Sent Packets",                      'trafficSent', results)
         self._print_avg_statistics_line("Received Packets",                  'trafficReceived', results)
