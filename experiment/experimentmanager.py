@@ -20,6 +20,9 @@ class ExperimentManager:
     def __init__(self):
         self.experiments = {}
 
+    def check_settings(self, directory):
+        self._check_result_directory(directory)
+
     def run_simulations(self, configuration):
         self.pool = Pool(configuration['cpu_cores'])
 	    # build up a tuple consisting of scenarios and repetitions
@@ -88,6 +91,20 @@ class ExperimentManager:
                 if scenario not in scenarios:
                     scenarios.append(scenario)
         return scenarios
+
+    def _check_result_directory(self, directory, scenarios):
+        existing_scenarios = self._get_scenarios(directory)
+		for scenario in scenarios:
+            if scenario in existing_scenarios:
+			  print "There seems already to be a scenario ", scenario, " in the results directory" 
+			  reply = raw_input("Shall I remove the existing scenario ? [Y/n]").lower()
+              if reply.startswith("y"):
+                  self._remove_scenario(directory, scenario)
+
+    def _remove_scenario(self, directory, scenario):
+       files = [f for f in os.listdir(directory) if f.beginswith(scenario + "-")]
+       for f in files:
+           os.remove(f)
 
     def _print_general_settings(self, general_settings):
         self._print_tuple(general_settings)

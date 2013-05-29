@@ -19,6 +19,16 @@ class Configuration(object):
                 'repetitions': int(parser.get('General', 'repetitions')),
                 'cpu_cores' : self._get_nr_of_cpus(parser.get('General', 'cpu_cores'))
             }
+
+            try:
+                self.settings['db_host'] = parser.get('Database', 'host_name')
+				self.settings['db_port'] = int(parser.get('Database', 'port'))
+                self.settings['db_db'] = parser.get('Database', 'database')
+                self.settings['db_user'] = parser.get('Database', 'user')
+                self.settings['db_password'] = parser.get('Database', 'password')
+                self.settings['db_settings'] = True
+            except NoSectionError:
+                self.settings['db_settings'] = False
         
             self._build_ned_path()
             self._build_omnetpp_ini_path()
@@ -27,7 +37,7 @@ class Configuration(object):
             self._build_scenarios(parser.get('General', 'scenarios'))
         else:
             self.settings = {}
-    
+
     def _get_absolute_path(self, some_path):
         return path.abspath(path.expanduser(some_path))
 
