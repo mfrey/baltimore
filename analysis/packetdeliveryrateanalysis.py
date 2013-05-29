@@ -43,7 +43,7 @@ class PacketDeliveryRateAnalysis:
         self._print_avg_statistics_line("Received Packets",                  'trafficReceived', results)
         self._print_avg_statistics_line("Routing Loops",                     'routingLoopDetected:count', results)
         self._print_avg_statistics_line("Route Failures (all routes broke)", 'routeFailure:count', results)
-        self._print_avg_statistics_line("Route Failures (no routes at all)", 'nonSourceRouteDiscovery:count', result)
+        self._print_avg_statistics_line("Route Failures (no routes at all)", 'nonSourceRouteDiscovery:count', results)
         self._print_avg_statistics_line("Failed Route Discoveries",  'packetUnDeliverable:count', results)
         self._print_avg_statistics_line("Dropped Packets (TTL = 0)", 'dropZeroTTLPacket:count', results)
         print "Average number of route discoveries: %d\n" % results.get_average('newRouteDiscovery:count')
