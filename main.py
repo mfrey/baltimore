@@ -17,17 +17,25 @@ def main():
     parser.add_argument('-s', dest='scenario', type=str, default="", action='store', help="evaluate a specific scenario")
     parser.add_argument('-v', '--verbose', dest='verbose', default=False, const=True, action='store_const', help="print out verbose information for each iteration")
     parser.add_argument('-n', '--network', dest='network', default=False, const=True, action='store_const', help="draw network graph for scenario(s)")
-    parser.add_argument('-j', '--json', dest='json', type=str, default="", action='store', help="specify location for json export")
+    parser.add_argument('-j', '--json-write', dest='json_write', type=str, default="", action='store', help="specify location for json export")
+    parser.add_argument('-J', '--json-read', dest='json_read', type=str, default="", action='store', help="specify location for json import")
     parser.add_argument('-r', '--run', dest='run', default=False, const=True, action='store_const', help="first run the simulations as specified via the configuration then analyse the results")
     arguments = parser.parse_args()
 
     configuration = get_configuration(arguments)
 
     experiment_manager = ExperimentManager()
+
     if arguments.run == True:
         experiment_manager.run_simulations(configuration.settings)
     
     experiment_manager.process(configuration.settings['cwd'], configuration.settings['scenarios'], arguments.verbose, arguments.network)
+
+    if arguments.json_write != "":
+		experiment_manager.write_json(arguments.json_write)
+
+    if arguments.json_read != "":
+        experiment_manager.read_json(arguments.json_read)
 
 def get_configuration(arguments):
     if arguments.configuration != "":
