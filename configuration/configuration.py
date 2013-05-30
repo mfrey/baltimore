@@ -3,7 +3,7 @@
 import multiprocessing
 
 from os import path 
-from ConfigParser import ConfigParser
+from ConfigParser import ConfigParser, NoSectionError
 
 class Configuration(object):
     

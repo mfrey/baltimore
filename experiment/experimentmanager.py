@@ -99,14 +99,14 @@ class ExperimentManager:
         for scenario in scenarios:
             if scenario in existing_scenarios:
                 print "There seems already to be a scenario ", scenario, " in the results directory" 
-                reply = raw_input("Shall I remove the existing scenario ? [Y/n]").lower()
+                reply = raw_input("Shall I remove the existing scenario ? [Y/n] ").lower()
                 if reply.startswith("y"):
                     self._remove_scenario(directory, scenario)
 
     def _remove_scenario(self, directory, scenario):
-       files = [f for f in os.listdir(directory) if f.beginswith(scenario + "-")]
+       files = [f for f in os.listdir(directory) if f.startswith(scenario + "-")]
        for f in files:
-           os.remove(f)
+           os.remove(directory + '/' + f)
 
     def _print_general_settings(self, general_settings):
         self._print_tuple(general_settings)
