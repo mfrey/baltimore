@@ -2,9 +2,10 @@
 
 import os
 import sys
+import json
+import runner
 import logging
 import itertools
-import runner
 
 from Queue import Empty
 from multiprocessing import Process, Queue, Pool
@@ -14,6 +15,7 @@ from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
 from experiment import Experiment
 from experimentmanagerworker import ExperimentManagerWorker
 from persistence.baltimorejsonencoder import BaltimoreJSONEncoder
+from persistence.baltimorejsondecoder import BaltimoreJSONDecoder
 from parser.omnetconfigurationfileparser import OMNeTConfigurationFileParser
 
 class ExperimentManager:
@@ -116,6 +118,21 @@ class ExperimentManager:
         for setting in settings:
             print setting[0], ' = ', setting[1]
         
-    def write_json(self, filename):
+    def write_json(self, file_name):
         encoder = BaltimoreJSONEncoder()
-        print encoder.encode(self.experiments)
+        data = encoder.encode(self.experiments)
+        print data
+
+        with open(file_name, 'w') as json_file:
+            json.dump(data, json_file)
+
+    def read_json(self, file_name):
+        data = {}
+        decoder = BaltimoreJSONDecoder()
+        obj = []
+
+        with open(file_name, 'r') as json_file:
+            obj.append(json.load(json_file))
+
+        ist = decoder.dict_to_object(obj)
+        print ist
