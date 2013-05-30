@@ -118,6 +118,12 @@ class ExperimentManager:
        for f in files:
            os.remove(directory + '/' + f)
 
+    def result_dir_exists(self, directory):
+        if not os.path.exists(directory + '/results'):
+            os.makedirs(directory + '/results')
+            return False
+        return True
+
     def _print_general_settings(self, general_settings):
         self._print_tuple(general_settings)
 
