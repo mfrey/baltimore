@@ -22,8 +22,14 @@ class ExperimentManager:
     def __init__(self):
         self.experiments = {}
 
-    def check_settings(self, directory, scenarios):
-        self._check_result_directory(directory, scenarios)
+    def check_result_files(self, directory, scenarios):
+        result = self._check_result_directory_for_results(directory, scenarios)
+        # probably a better way to do it
+        non_existing_scenarios = [scenario[0] for scenario in result if scenario[1] == False]
+        for scenario in non_existing_scenarios:
+            print "There is no scenario", scenario, "to analyze!"
+        # return a list of the remaining scenarios
+        return list(set(scenarios) - set(non_existing_scenarios)) 
 
     def run_simulations(self, configuration):
         self.pool = Pool(configuration['cpu_cores'])
@@ -94,12 +100,16 @@ class ExperimentManager:
                     scenarios.append(scenario)
         return scenarios
 
-    def _check_result_directory(self, directory, scenarios):
+    def _check_result_directory_for_results(self, directory, scenarios):
+        existing_scenarios = self._get_scenarios(directory)
+        return [(scenario, scenario in existing_scenarios) for scenario in scenarios]
+
+    def check_result_directory(self, directory, scenarios):
         existing_scenarios = self._get_scenarios(directory)
         for scenario in scenarios:
             if scenario in existing_scenarios:
                 print "There seems already to be a scenario ", scenario, " in the results directory" 
-                reply = raw_input("Shall I remove the existing scenario ? [Y/n] ").lower()
+                reply = raw_input("Shall the existing scenario be removed? [Y/n] ").lower()
                 if reply.startswith("y"):
                     self._remove_scenario(directory, scenario)
 
