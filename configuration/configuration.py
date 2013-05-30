@@ -22,7 +22,7 @@ class Configuration(object):
 
             try:
                 self.settings['db_host'] = parser.get('Database', 'host_name')
-				self.settings['db_port'] = int(parser.get('Database', 'port'))
+                self.settings['db_port'] = int(parser.get('Database', 'port'))
                 self.settings['db_db'] = parser.get('Database', 'database')
                 self.settings['db_user'] = parser.get('Database', 'user')
                 self.settings['db_password'] = parser.get('Database', 'password')

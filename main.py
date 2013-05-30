@@ -25,10 +25,10 @@ def main():
     configuration = get_configuration(arguments)
 
     experiment_manager = ExperimentManager()
-	# check if there are already files from past runs in the directory
-    experiment_manager.check(configuration.settings['cwd'] + '/results', configuration.settinsg['scenarios'])
 
     if arguments.run == True:
+	    # check if there are already files from past runs in the directory
+        experiment_manager.check(configuration.settings['cwd'] + '/results', configuration.settings['scenarios'])
         experiment_manager.run_simulations(configuration.settings)
     
     experiment_manager.process(configuration.settings['cwd'], configuration.settings['scenarios'], arguments.verbose, arguments.network)
