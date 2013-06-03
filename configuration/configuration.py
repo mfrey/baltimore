@@ -29,7 +29,7 @@ class Configuration(object):
                 self.settings['db_settings'] = True
             except NoSectionError:
                 self.settings['db_settings'] = False
-        
+          
             self._build_ned_path()
             self._build_omnetpp_ini_path()
             self._build_ld_library_path()
@@ -79,3 +79,6 @@ class Configuration(object):
         config.settings['scenarios'] = ['']
         config.settings['cpu_cores'] = self._get_nr_of_cpus('*')
         return config
+
+    #def _get_analysis_sections(self, sections):
+    #    return [section for section in sections if section.startswith("Analysis:")]
