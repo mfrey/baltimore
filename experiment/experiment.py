@@ -27,18 +27,18 @@ class Experiment:
         
         for filename in listdir(self.results_directory):
             file_path = self.results_directory + '/' + filename
-            if file_name_match(filename, self.scenario_name + '*.sca'):
+            if file_name_match(filename, self.scenario_name + '-' + '*.sca'):
                 result = scalar_parser.read(file_path)
                 experiment_results.add_repetition(result)
                 self.print_progress()
-            elif file_name_match(filename, self.scenario_name + '*.rtd'):
+            elif file_name_match(filename, self.scenario_name + '-'+'*.rtd'):
                 parser = RoutingTableDataParser()
                 data = parser.read_data_from(self.results_directory + "/" + filename, "192.168.0.2") #FIXME make the destination a parameter
                 plot = RoutingTablePlot()
                 plot_filename = self.results_directory + "/" + filename + '.png' 
                 plot.draw(data, plot_filename)
                 self.print_progress()
-            elif file_name_match(filename, self.scenario_name + '*.net'):
+            elif file_name_match(filename, self.scenario_name + '-' + '*.net'):
                 if self.visualize:
                     network_file_parser = NetworkFileParser()
                     network_file_parser.read(file_path)

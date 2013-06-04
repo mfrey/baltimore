@@ -6,6 +6,7 @@ import json
 import runner
 import logging
 import itertools
+import collections
 
 from Queue import Empty
 from multiprocessing import Process, Queue, Pool
@@ -84,10 +85,15 @@ class ExperimentManager:
     def generate_packet_delivery_plots(self):
         scenario_list = [e for e in xrange(len(self.experiments))]
         pdr_list = []
-        for experiment in self.experiments:
+        experiment_list = []
+        experiments = collections.OrderedDict(sorted(self.experiments.items()))
+        #for experiment in self.experiments:
+        for experiment in experiments:
+            experiment_list.append(experiment)
             pdr_list.append(self.experiments[experiment][1].pdr)
         plot = PacketDeliveryRatePlot()
         plot.xlist = [scenario_list]
+        plot.xticklabels = experiment_list
         plot.ylist = [pdr_list]
         plot.draw('test.png')
 

@@ -7,16 +7,19 @@ class PacketDeliveryRatePlot:
         self.ylabel = "Delivery Rate [%]"
         self.xlabel = "Pause Time [sec]"
         self.xlist = []
+        self.xticklabels = []
         self.ylist = []
         self.markers = ['s','^','v','2','*','3','d']
 
     def draw(self, filename):
-        plt.figure()
+        figure = plt.figure()
+        ax = figure.add_subplot(111)
         for index, value in enumerate(self.xlist):
             #plt.plot(value, self.ylist[index], drawstyle="line", marker="s", color=(0./256,55./256,108./256), lw=2.5)
             plt.plot(value, self.ylist[index], drawstyle="line", marker=self.markers[index], lw=2.5)
         plt.ylabel(self.ylabel,va="center",ha="center")
         plt.xlabel(self.xlabel)
+        ax.set_xticklabels(self.xticklabels)
         plt.grid(axis="y")
         plt.savefig(filename)
 
