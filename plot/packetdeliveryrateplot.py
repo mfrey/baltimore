@@ -22,6 +22,7 @@ class PacketDeliveryRatePlot:
         ax.set_xticklabels(self.xticklabels)
         plt.grid(axis="y")
         plt.savefig(filename)
+        plt.close()
 
 if __name__ == "__main__":
     xlist = [[0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3]]
@@ -30,3 +31,4 @@ if __name__ == "__main__":
     plot.xlist = xlist
     plot.ylist = ylist
     plot.draw("test.png")
+   
