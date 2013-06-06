@@ -7,6 +7,7 @@ import multiprocessing
 
 from experiment import Experiment
 from analysis.packetdeliveryrateanalysis import PacketDeliveryRateAnalysis 
+from analysis.overheadanalysis import OverheadAnalysis
 
 class ExperimentManagerWorker(multiprocessing.Process):
     
@@ -26,10 +27,13 @@ class ExperimentManagerWorker(multiprocessing.Process):
             experiment = Experiment(self.simulations_directory + '/results', self.scenario_name, self.visualize)
             experiment_results = experiment.get_results()
         
-            # TODO: use some kind of configuration to run more than one analysis
+            # TODO: use some kind of configuration to run more specific analysations
             pdrAnalyser = PacketDeliveryRateAnalysis()
             pdrAnalyser.get_packet_delivery_rate(experiment_results)
             pdrAnalyser.evaluate(experiment_results, self.verbose)
+            
+            overheadAnalyser = OverheadAnalysis()
+            overheadAnalyser.evaluate(experiment_results, self.verbose)
         
             # TODO: change this to logging, so we only print it if required
             nr_of_parsed_files = experiment_results.get_number_of_repetitions()
