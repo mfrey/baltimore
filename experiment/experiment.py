@@ -22,13 +22,13 @@ class Experiment:
     
     def get_results(self):
         print "Reading results of experiment [%s]" % self.scenario_name
-        scalar_parser = ScalarFileParser()
         experiment_results = ExperimentResult()
         
         for filename in listdir(self.results_directory):
             file_path = self.results_directory + '/' + filename
             if file_name_match(filename, self.scenario_name + '-' + '*.sca'):
-                result = scalar_parser.read(file_path)
+                scalar_parser = ScalarFileParser(file_path)
+                result = scalar_parser.read()
                 experiment_results.add_repetition(result)
                 self.print_progress()
             elif file_name_match(filename, self.scenario_name + '-'+'*.rtd'):

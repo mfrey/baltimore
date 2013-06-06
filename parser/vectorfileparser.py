@@ -3,28 +3,21 @@
 import shlex
 
 from omnetfileparser import OMNeTFileParser
-
 #from experiment.repetitiondata import RepetitionData
 
 class VectorFileParser(OMNeTFileParser):
     def __init__(self, file_name):
         OMNeTFileParser.__init__(self, file_name)
 
-    def read(self, file_path):
+    def read(self):
         try:
-            self.file_path = file_path
-            self.current_line_nr = 0
-#            self.file_name = open(self.file_path, "r")
-            
-#            parameters = self._read_preamble()
+            self.file_handle = open(self.file_path, "r")
             nodes = self._read_body()
-            
 #            return RepetitionData(parameters, nodes)
-        
         except IOError: 
             print "Error: can\'t find file ", self.file_path, " or read it" 
         finally: 
-            self.file.close()
+            self.file_handle.close()
 
     def _read_body(self):
         nodes = {}
@@ -46,4 +39,4 @@ class VectorFileParser(OMNeTFileParser):
             nodes[node_identifier][metric_name] = float(value)
 
 if __name__ == "__main__":
-    parser = VectorFileParser("/home/frey/Desktop/Projekte/code/ara-sim/simulations/ara/results/ARATEST-0.sca")
+    parser = VectorFileParser("/home/frey/Desktop/Projekte/code/ara-sim/simulations/ara/results/ARATEST-0.vec")
