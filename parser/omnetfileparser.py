@@ -1,16 +1,15 @@
 #!/usr/bin/env python2.7
 
 class OMNeTFileParser:
-    def __init__(self, file_name):
+    def __init__(self, file_path):
         try:
             self.file_path = file_path
             self.current_line_nr = 0
             self.file_handle = open(self.file_path, "r")
             self.parameters = self._read_preamble()
-#            self.nodes = self._read_body()
-        except IOError: 
-            print "Error: can\'t find file ", self.file_path, " or read it" 
-        finally: 
+        except IOError:
+            print "Error: can\'t find file ", self.file_path, " or read it"
+        finally:
             self.file_handle.close()
 
     def _read_preamble(self):
@@ -56,3 +55,7 @@ class OMNeTFileParser:
     def _read_next_line(self):
         self.current_line_nr += 1
         return self.file_handle.readline()
+    
+    def _get_node_identifier(self, line):
+        # TODO: fix that (that's quite aweful)
+        return line.split(' ')[1].split('.')[1].split('[')[1].split(']')[0] 
