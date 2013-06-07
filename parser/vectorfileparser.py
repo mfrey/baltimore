@@ -14,9 +14,9 @@ class VectorFileParser(OMNeTFileParser):
 
     def read(self):
         try:
-            nodes = self._read_body()
+            self._read_body()
             self._build_result_dict()
-            return RepetitionData(parameters, nodes)
+            return RepetitionData(self.parameters, self.nodes)
         except IOError: 
             print "Error: can\'t find file ", self.file_path, " or read it" 
         finally: 

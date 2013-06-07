@@ -9,6 +9,7 @@ from os.path import basename
 from os import listdir
 
 from parser.scalarfileparser import ScalarFileParser
+from parser.vectorfileparser import VectorFileParser
 from parser.networkfileparser import NetworkFileParser
 from parser.routingtabledataparser import RoutingTableDataParser
 from experimentresult import ExperimentResult
@@ -34,7 +35,7 @@ class Experiment:
             elif file_name_match(filename, self.scenario_name + '-'+'*.vec'):
                 vector_parser = VectorFileParser(file_path)
                 result = vector_parser.read()
-                experiment_results.add_repetition(result)
+                #experiment_results.add_repetition(result)
                 #self.print_progress()
             elif file_name_match(filename, self.scenario_name + '-'+'*.rtd'):
                 parser = RoutingTableDataParser()
