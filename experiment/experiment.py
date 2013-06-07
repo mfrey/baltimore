@@ -22,15 +22,20 @@ class Experiment:
     
     def get_results(self):
         print "Reading results of experiment [%s]" % self.scenario_name
-        scalar_parser = ScalarFileParser()
         experiment_results = ExperimentResult()
         
         for filename in listdir(self.results_directory):
             file_path = self.results_directory + '/' + filename
             if file_name_match(filename, self.scenario_name + '-' + '*.sca'):
-                result = scalar_parser.read(file_path)
+                scalar_parser = ScalarFileParser(file_path)
+                result = scalar_parser.read()
                 experiment_results.add_repetition(result)
                 self.print_progress()
+            elif file_name_match(filename, self.scenario_name + '-'+'*.vec'):
+                vector_parser = VectorFileParser(file_path)
+                result = vector_parser.read()
+                experiment_results.add_repetition(result)
+                #self.print_progress()
             elif file_name_match(filename, self.scenario_name + '-'+'*.rtd'):
                 parser = RoutingTableDataParser()
                 data = parser.read_data_from(self.results_directory + "/" + filename, "192.168.0.2") #FIXME make the destination a parameter
