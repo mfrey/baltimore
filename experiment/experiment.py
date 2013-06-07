@@ -12,6 +12,7 @@ from parser.scalarfileparser import ScalarFileParser
 from parser.vectorfileparser import VectorFileParser
 from parser.networkfileparser import NetworkFileParser
 from parser.routingtabledataparser import RoutingTableDataParser
+from parser.mobilitydataparser import MobilityDataParser
 from experimentresult import ExperimentResult
 from plot.routingtableplot import RoutingTablePlot
 
@@ -44,6 +45,9 @@ class Experiment:
                 plot_filename = self.results_directory + "/" + filename + '.png' 
                 plot.draw(data, plot_filename)
                 self.print_progress()
+            elif file_name_match(filename, self.scenario_name + '-'+'*.mtr'):
+                parser = MobilityDataParser()
+                data = parser.read(self.results_directory + "/" + filename) 
             elif file_name_match(filename, self.scenario_name + '-' + '*.net'):
                 if self.visualize:
                     network_file_parser = NetworkFileParser()
