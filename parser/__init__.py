@@ -1,1 +1,1 @@
-__all__ = ['scalarfileparser','networkfileparser', 'routingtabledataparser', 'omnetconfigurationfileparser', 'omnetfileparser']
+__all__ = ['scalarfileparser', 'mobilitydataparser', 'networkfileparser', 'routingtabledataparser', 'omnetconfigurationfileparser', 'omnetfileparser']

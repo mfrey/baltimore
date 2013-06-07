@@ -13,6 +13,7 @@ Installation from git
 		networkx
 		numpy
 		nose	
+		pymongo
 
 3. Run the program
 
