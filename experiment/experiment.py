@@ -31,6 +31,11 @@ class Experiment:
                 result = scalar_parser.read()
                 experiment_results.add_repetition(result)
                 self.print_progress()
+            elif file_name_match(filename, self.scenario_name + '-'+'*.vec'):
+                vector_parser = VectorFileParser(file_path)
+                result = vector_parser.read()
+                experiment_results.add_repetition(result)
+                #self.print_progress()
             elif file_name_match(filename, self.scenario_name + '-'+'*.rtd'):
                 parser = RoutingTableDataParser()
                 data = parser.read_data_from(self.results_directory + "/" + filename, "192.168.0.2") #FIXME make the destination a parameter
