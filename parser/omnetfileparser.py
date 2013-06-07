@@ -9,7 +9,7 @@ class OMNeTFileParser:
             self.parameters = self._read_preamble()
         except IOError:
             print "Error: can\'t find file ", self.file_path, " or read it"
-        finally:
+        except:
             self.file_handle.close()
 
     def _read_preamble(self):
@@ -58,4 +58,5 @@ class OMNeTFileParser:
     
     def _get_node_identifier(self, line):
         # TODO: fix that (that's quite aweful)
-        return line.split(' ')[1].split('.')[1].split('[')[1].split(']')[0] 
+        #return line.split(' ')[1].split('.')[1].split('[')[1].split(']')[0] 
+        return line.split('[')[1].split(']')[0] 

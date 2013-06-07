@@ -11,7 +11,6 @@ class ScalarFileParser(OMNeTFileParser):
 
     def read(self):
         try:
-            self.file_handle = open(self.file_path, "r")
             nodes = self._read_body()
             return RepetitionData(self.parameters, nodes)
         except IOError: 
@@ -37,8 +36,3 @@ class ScalarFileParser(OMNeTFileParser):
             
             metric_name, value = shlex.split(line)[2], shlex.split(line)[3]
             nodes[node_identifier][metric_name] = float(value)
-
-#if __name__ == "__main__":
-#    scalarFile = ScalarFileParser("/home/frey/Desktop/Projekte/code/ara-sim/simulations/ara/results/ARATEST-0.sca")
-#    print scalarFile.parameters
-    
