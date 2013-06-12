@@ -67,5 +67,5 @@ class VectorFileParser(OMNeTFileParser):
 
     def _parse_vector_line(self, line):
         content = line.split(' ')
-        vector_identifier, value = content[0], content[3]
+        vector_identifier, value = content[0], float(content[3])
         self.vector_dict[vector_identifier].append(value)
