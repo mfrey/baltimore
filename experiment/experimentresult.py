@@ -4,10 +4,20 @@ import numpy as np
 
 class ExperimentResult:
     def __init__(self):
-        self.repetitions = []
+        self.repetitions = {}
     
     def add_repetition(self, node_results):
-        self.repetitions.append(node_results)
+        repetition = int(node_results.get_parameter("runnumber"))
+
+        if repetition in self.repetitions.keys():
+            for node in node_results.get_node_results().keys():
+                for metric, result in node_results.get_node_results()[node].iteritems():
+                    if node not in self.repetitions[repetition].get_node_results().keys():
+                        self.repetitions[repetition].get_node_results()[node] = {}
+                    self.repetitions[repetition].get_node_results()[node][metric] = result
+        else: 
+            self.repetitions[repetition] = node_results
+
     
     def get_number_of_repetitions(self):
         return len(self.repetitions)
@@ -20,7 +30,7 @@ class ExperimentResult:
     
     def get_metric(self, metric_name, repetition):
         sum = 0
-        for node_identifier, results in repetition.get_node_results().iteritems():
+        for node_identifier, results in self.repetitions[repetition].get_node_results().iteritems():
             sum += results[metric_name];
         
         return sum
