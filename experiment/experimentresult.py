@@ -18,7 +18,6 @@ class ExperimentResult:
         else: 
             self.repetitions[repetition] = node_results
 
-    
     def get_number_of_repetitions(self):
         return len(self.repetitions)
     
