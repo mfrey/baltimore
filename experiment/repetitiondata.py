@@ -1,7 +1,6 @@
 #!/usr/bin/env python2.7
  
 class RepetitionData:
-    
     def __init__(self, parameters, nodes):
         self.parameters = parameters
         self.nodes = nodes

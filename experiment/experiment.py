@@ -36,7 +36,7 @@ class Experiment:
             elif file_name_match(filename, self.scenario_name + '-'+'*.vec'):
                 vector_parser = VectorFileParser(file_path)
                 result = vector_parser.read()
-                #experiment_results.add_repetition(result)
+#                experiment_results.add_repetition(result)
                 #self.print_progress()
             elif file_name_match(filename, self.scenario_name + '-'+'*.rtd'):
                 parser = RoutingTableDataParser()

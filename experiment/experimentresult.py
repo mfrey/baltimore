@@ -8,7 +8,7 @@ class ExperimentResult:
     
     def add_repetition(self, node_results):
         self.repetitions.append(node_results)
-    
+
     def get_number_of_repetitions(self):
         return len(self.repetitions)
     
