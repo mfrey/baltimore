@@ -8,6 +8,7 @@ import multiprocessing
 from experiment import Experiment
 from analysis.packetdeliveryrateanalysis import PacketDeliveryRateAnalysis 
 from analysis.overheadanalysis import OverheadAnalysis
+from analysis.delayanalysis import DelayAnalysis
 
 class ExperimentManagerWorker(multiprocessing.Process):
     
@@ -21,7 +22,7 @@ class ExperimentManagerWorker(multiprocessing.Process):
     
     def run(self): 
         try:
-		    # TODO: change this to logging, so we only print it if required
+	    # TODO: change this to logging, so we only print it if required
             print 'Scanning directory "%s" for simulation result files.\nThis may take some time depending on the number of files...' % self.simulations_directory
             # TODO: use some kind of configuration to run more than one experiment
             experiment = Experiment(self.simulations_directory + '/results', self.scenario_name, self.visualize)
@@ -34,6 +35,9 @@ class ExperimentManagerWorker(multiprocessing.Process):
             
             overheadAnalyser = OverheadAnalysis()
             overheadAnalyser.evaluate(experiment_results, self.verbose)
+
+            delayAnalyser = DelayAnalysis()
+            delayAnalyser.evaluate(experiment_results, self.verbose)
         
             # TODO: change this to logging, so we only print it if required
             nr_of_parsed_files = experiment_results.get_number_of_repetitions()

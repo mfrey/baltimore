@@ -52,6 +52,8 @@ class OMNeTFileParser:
             print "Could not parse line %d from %s for attribute %s" % (self.current_line_nr, self.file_path, name)
             raise
 
+        return words[2].strip()
+
     def _read_next_line(self):
         self.current_line_nr += 1
         return self.file_handle.readline()
