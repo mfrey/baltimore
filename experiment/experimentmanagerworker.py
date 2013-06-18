@@ -37,7 +37,7 @@ class ExperimentManagerWorker(multiprocessing.Process):
             overheadAnalyser = OverheadAnalysis()
             overheadAnalyser.evaluate(experiment_results, self.verbose)
 
-            delayAnalyser = DelayAnalysis()
+            delayAnalyser = DelayAnalysis(self.scenario_name)
             delayAnalyser.evaluate(experiment_results, self.verbose)
         
             # TODO: change this to logging, so we only print it if required

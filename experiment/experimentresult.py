@@ -20,7 +20,7 @@ class ExperimentResult:
 
     def get_number_of_repetitions(self):
         return len(self.repetitions)
-    
+ 
     def get_average(self, metric_name):
         if self.metric_is_list(metric_name):
             nodes = self.nodes_have_metric(metric_name)

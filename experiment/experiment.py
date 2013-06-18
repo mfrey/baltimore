@@ -53,9 +53,9 @@ class Experiment:
 
     def _generate_routing_table_plots(self, target, file_name):
         parser = RoutingTableDataParser()
-        data = parser.read_data_from(self.results_directory + "/" + filename, target) 
+        data = parser.read_data_from(self.results_directory + "/" + file_name, target) 
         plot = RoutingTablePlot()
-        plot_filename = self.results_directory + "/" + filename + '.png' 
+        plot_filename = self.results_directory + "/" + file_name + '.png' 
         plot.draw(data, plot_filename)
 
     def _generate_network_file(self, file_name):

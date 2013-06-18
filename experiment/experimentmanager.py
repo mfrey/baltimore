@@ -13,6 +13,7 @@ from multiprocessing import Process, Queue, Pool
 
 from runner import Runner
 from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
+from plot.boxplot import BoxPlot
 from experiment import Experiment
 from experimentmanagerworker import ExperimentManagerWorker
 from persistence.baltimorejsonencoder import BaltimoreJSONEncoder
@@ -82,6 +83,10 @@ class ExperimentManager:
 
         self.generate_packet_delivery_plots()
         
+#    def generate_delay_boxplots(self):
+        #plot = BoxPlot()
+        #plot.ylabel = "ms" 
+
     def generate_packet_delivery_plots(self):
         scenario_list = [e for e in xrange(len(self.experiments))]
         pdr_list = []
