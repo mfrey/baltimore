@@ -37,28 +37,34 @@ class Experiment:
                 vector_parser = VectorFileParser(file_path)
                 result = vector_parser.read()
                 experiment_results.add_repetition(result)
-                #self.print_progress()
+                self.print_progress()
             elif file_name_match(filename, self.scenario_name + '-'+'*.rtd'):
-                parser = RoutingTableDataParser()
-                data = parser.read_data_from(self.results_directory + "/" + filename, "192.168.0.2") #FIXME make the destination a parameter
-                plot = RoutingTablePlot()
-                plot_filename = self.results_directory + "/" + filename + '.png' 
-                plot.draw(data, plot_filename)
+                self._generate_routing_table_plots("192.168.0.2", filename) #FIXME: make the destination a parameter
                 self.print_progress()
             elif file_name_match(filename, self.scenario_name + '-'+'*.mtr'):
                 parser = MobilityDataParser()
                 data = parser.read(self.results_directory + "/" + filename) 
             elif file_name_match(filename, self.scenario_name + '-' + '*.net'):
                 if self.visualize:
-                    network_file_parser = NetworkFileParser()
-                    network_file_parser.read(file_path)
-
-                    positions = nx.get_node_attributes(network_file_parser.network,'pos')
-                    nx.draw(network_file_parser.network, positions, node_color="#99CC00")
-                    plt.savefig(self.results_directory + '/' + self.scenario_name + '_network.png')
+                    self._generate_network_file(file_path)
 
         print
         return experiment_results
+
+    def _generate_routing_table_plots(self, target, file_name):
+        parser = RoutingTableDataParser()
+        data = parser.read_data_from(self.results_directory + "/" + filename, target) 
+        plot = RoutingTablePlot()
+        plot_filename = self.results_directory + "/" + filename + '.png' 
+        plot.draw(data, plot_filename)
+
+    def _generate_network_file(self, file_name):
+        parser = NetworkFileParser()
+        parser.read(file_name)
+        positions = nx.get_node_attributes(parser.network,'pos')
+        nx.draw(parser.network, positions, node_color="#99CC00")
+        plt.savefig(self.results_directory + '/' + self.scenario_name + '_network.png')
+        plt.close()
 
     def print_progress(self):
         sys.stdout.write(".")
