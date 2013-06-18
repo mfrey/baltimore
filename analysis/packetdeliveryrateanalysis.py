@@ -9,7 +9,6 @@ class PacketDeliveryRateAnalysis:
         
         if is_verbose:
             self.analyse_single_repetitions(experiment_results)
-        
         self.check_no_inexplicable_loss(experiment_results)
         self.analyse_average_values(experiment_results)
     
@@ -31,7 +30,7 @@ class PacketDeliveryRateAnalysis:
             if inexplicable_loss > 0:
                 sys.stderr.write('~' * 74 + "\n")
                 sys.stderr.write("WARNING: The loss of %d packets could not be explained (bug in simulation?)\n" % inexplicable_loss)
-                sys.stderr.write("Scenario: " + repetition.get_parameter('run') + "\n");
+                sys.stderr.write("Scenario: " + str(repetition) + "\n");
                 sys.stderr.write('~' * 74 + "\n\n")
     
     def analyse_average_values(self, results):
