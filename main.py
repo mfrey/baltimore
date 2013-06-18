@@ -28,17 +28,17 @@ def main():
 
     if arguments.run == True:
         experiment_manager.result_dir_exists(configuration.settings['cwd'])
-	    # check if there are already files from past runs in the directory
+	# check if there are already files from past runs in the directory
         experiment_manager.check_result_directory(configuration.settings['cwd'] + '/results', configuration.settings['scenarios'])
         experiment_manager.run_simulations(configuration.settings)
 
     remaining_scenarios = experiment_manager.check_result_files(configuration.settings['cwd'] + '/results', configuration.settings['scenarios'])
     configuration.settings['scenarios'] = remaining_scenarios
     
-    experiment_manager.process(configuration.settings['cwd'], configuration.settings['scenarios'], arguments.verbose, arguments.network)
+    experiment_manager.process(configuration.settings['cwd'], configuration.settings['scenarios'], arguments.verbose, arguments.network, configuration.settings['analysis_routing_table_trace'])
 
     if arguments.json_write != "":
-		experiment_manager.write_json(arguments.json_write)
+        experiment_manager.write_json(arguments.json_write)
 
     if arguments.json_read != "":
         experiment_manager.read_json(arguments.json_read)

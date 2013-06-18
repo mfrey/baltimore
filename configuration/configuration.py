@@ -30,6 +30,14 @@ class Configuration(object):
             except NoSectionError:
                 self.settings['db_settings'] = False
           
+            try:
+                self.settings['analysis_routing_table_trace'] = parser.getboolean('Analysis', 'routing_table_trace')
+                self.settings['analysis_settings'] = True
+            except NoSectionError:
+                self.settings['analysis_routing_table_trace'] = False
+                self.settings['analysis_settings'] = False
+
+        
             self._build_ned_path()
             self._build_omnetpp_ini_path()
             self._build_ld_library_path()

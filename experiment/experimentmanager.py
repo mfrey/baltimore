@@ -40,13 +40,13 @@ class ExperimentManager:
         # run the simulations
         self.pool.map(runner.run_simulation, argument)
 
-    def process(self, directory, scenarios, is_verbose=False, visualize=False):
+    def process(self, directory, scenarios, is_verbose=False, visualize=False, routing_table_trace=False):
         queue = Queue()
         jobs = []
 
         # single scenario to handle
         if len(scenarios) == 1 and scenarios[0] != '': 
-            process = ExperimentManagerWorker(directory, scenarios[0], queue, is_verbose, visualize)
+            process = ExperimentManagerWorker(directory, scenarios[0], queue, is_verbose, visualize, routing_table_trace)
             jobs.append(process)
             process.start()
         # multiple scenarios in a directory
@@ -55,7 +55,7 @@ class ExperimentManager:
                 scenarios = self._get_scenarios(directory + '/results')
 
             for scenario in scenarios:
-                process = ExperimentManagerWorker(directory, scenario, queue, is_verbose, visualize) 
+                process = ExperimentManagerWorker(directory, scenario, queue, is_verbose, visualize, routing_table_trace) 
                 jobs.append(process)
                 process.start()
 

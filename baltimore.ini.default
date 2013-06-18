@@ -21,3 +21,6 @@ scenarios = midStatic
 # the number of repetitions (only used with -r parameter)
 repetitions = 5
 
+
+[Analysis]
+routing_table_trace = false

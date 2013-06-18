@@ -17,10 +17,11 @@ from experimentresult import ExperimentResult
 from plot.routingtableplot import RoutingTablePlot
 
 class Experiment:
-    def __init__(self, results_directory, scenario_name, visualize):
+    def __init__(self, results_directory, scenario_name, visualize, routing_table_trace):
         self.results_directory = results_directory
         self.scenario_name = scenario_name
-        self.visualize = visualize
+        self.enable_network_visualize = visualize
+        self.enable_routing_table_trace = routing_table_trace
     
     def get_results(self):
         print "Reading results of experiment [%s]" % self.scenario_name
@@ -39,13 +40,14 @@ class Experiment:
                 experiment_results.add_repetition(result)
                 self.print_progress()
             elif file_name_match(filename, self.scenario_name + '-'+'*.rtd'):
-                self._generate_routing_table_plots("192.168.0.2", filename) #FIXME: make the destination a parameter
-                self.print_progress()
+                if self.enable_routing_table_trace:
+                    self._generate_routing_table_plots("192.168.0.2", filename) #FIXME: make the destination a parameter
+                    self.print_progress()
             elif file_name_match(filename, self.scenario_name + '-'+'*.mtr'):
                 parser = MobilityDataParser()
                 data = parser.read(self.results_directory + "/" + filename) 
             elif file_name_match(filename, self.scenario_name + '-' + '*.net'):
-                if self.visualize:
+                if self.enable_network_visualize:
                     self._generate_network_file(file_path)
 
         print
