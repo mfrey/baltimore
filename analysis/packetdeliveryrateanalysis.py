@@ -1,8 +1,13 @@
 #!/usr/bin/env python2.7
 
 import sys
+from plot.boxplot import BoxPlot
 
 class PacketDeliveryRateAnalysis:
+    def __init__(self, scenario):
+        self.all_pdr = []
+        self.scenario = scenario
+
 
     def evaluate(self, experiment_results, is_verbose=False):
         print "\nRunning PDR analysis.."
@@ -11,6 +16,17 @@ class PacketDeliveryRateAnalysis:
             self.analyse_single_repetitions(experiment_results)
         self.check_no_inexplicable_loss(experiment_results)
         self.analyse_average_values(experiment_results)
+
+        for repetition in experiment_results:
+            pdr = experiment_results.get_metric('trafficReceived', repetition)/experiment_results.get_metric('trafficSent', repetition)
+            self.all_pdr.append(pdr)
+
+        # make a pdr box plot over all repetitions
+        plot = BoxPlot()
+        plot.title = "Packet Delivery Rate per Scenario"
+        plot.ylabel = "Packet Delivery Rate"
+        plot.draw(self.all_pdr, self.scenario + "_pdr.png")
+
     
     def get_packet_delivery_rate(self, results):
        avg_traffic_sent = results.get_average("trafficSent")

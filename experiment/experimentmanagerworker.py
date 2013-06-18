@@ -31,7 +31,7 @@ class ExperimentManagerWorker(multiprocessing.Process):
         
         
             # TODO: use some kind of configuration to run more specific analysations
-            pdrAnalyser = PacketDeliveryRateAnalysis()
+            pdrAnalyser = PacketDeliveryRateAnalysis(self.scenario_name)
             pdrAnalyser.get_packet_delivery_rate(experiment_results)
             pdrAnalyser.evaluate(experiment_results, self.verbose)
             
