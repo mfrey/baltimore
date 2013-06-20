@@ -1,1 +1,1 @@
-__all__ = ['experiment', 'experimentresult', 'repetitiondata', 'experimentmanger', 'experimentmanagerworker']
+__all__ = ['experiment', 'experimentresult', 'git', 'repetitiondata', 'experimentmanger', 'experimentmanagerworker']
