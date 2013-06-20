@@ -30,15 +30,11 @@ class Experiment:
         for filename in listdir(self.results_directory):
             file_path = self.results_directory + '/' + filename
             if file_name_match(filename, self.scenario_name + '-' + '*.sca'):
-                scalar_parser = ScalarFileParser(file_path)
-                result = scalar_parser.read()
+                result = self._parse_scalar_file(file_path)
                 experiment_results.add_repetition(result)
-                self.print_progress()
             elif file_name_match(filename, self.scenario_name + '-'+'*.vec'):
-                vector_parser = VectorFileParser(file_path)
-                result = vector_parser.read()
+                result = self._parse_vector_file(file_path)
                 experiment_results.add_repetition(result)
-                self.print_progress()
             elif file_name_match(filename, self.scenario_name + '-'+'*.rtd'):
                 if self.enable_routing_table_trace:
                     self._generate_routing_table_plots("192.168.0.2", filename) #FIXME: make the destination a parameter
@@ -48,10 +44,23 @@ class Experiment:
                 data = parser.read(self.results_directory + "/" + filename) 
             elif file_name_match(filename, self.scenario_name + '-' + '*.net'):
                 if self.enable_network_visualize:
-                    self._generate_network_file(file_path)
+                    self._generate_network_plots(file_path)
 
         print
         return experiment_results
+
+
+    def _parse_scalar_file(self, file_name):
+        scalar_parser = ScalarFileParser(file_name)
+        result = scalar_parser.read()
+        self.print_progress()
+        return result
+
+    def _parse_vector_file(self, file_name):
+        vector_parser = VectorFileParser(file_name)
+        result = vector_parser.read()
+        self.print_progress()
+        return result 
 
     def _generate_routing_table_plots(self, target, file_name):
         parser = RoutingTableDataParser()
@@ -60,7 +69,7 @@ class Experiment:
         plot_filename = self.results_directory + "/" + file_name + '.png' 
         plot.draw(data, plot_filename)
 
-    def _generate_network_file(self, file_name):
+    def _generate_network_plots(self, file_name):
         parser = NetworkFileParser()
         parser.read(file_name)
         positions = nx.get_node_attributes(parser.network,'pos')
