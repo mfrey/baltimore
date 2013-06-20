@@ -7,6 +7,7 @@ import argparse
 import matplotlib
 matplotlib.use("Agg")
 
+from experiment.git import Git
 from configuration.configuration import Configuration
 from experiment.experimentmanager import ExperimentManager
 
@@ -23,6 +24,12 @@ def main():
     arguments = parser.parse_args()
 
     configuration = get_configuration(arguments)
+    git = Git()
+
+    # FIXME: check if that works 
+    print "baltimore revision: ", git.get_revision(".")
+    print "libara revision: ", git.get_revision(configuration.settings['ara_home'])
+    
 
     experiment_manager = ExperimentManager()
 
