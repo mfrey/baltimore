@@ -6,7 +6,6 @@ from os import path
 from ConfigParser import ConfigParser, NoSectionError
 
 class Configuration(object):
-    
     def __init__(self, file_name):
         if(file_name is not None):
             parser = ConfigParser()
@@ -32,11 +31,14 @@ class Configuration(object):
           
             try:
                 self.settings['analysis_routing_table_trace'] = parser.getboolean('Analysis', 'routing_table_trace')
+                self.settings['analysis_location'] = parser.get('Analysis', 'location')
+                self.settings['analysis_network'] = parser.getboolean('Analysis', 'network')
                 self.settings['analysis_settings'] = True
             except NoSectionError:
                 self.settings['analysis_routing_table_trace'] = False
+                self.settings['analysis_location'] = ""
+                self.settings['analysis_network'] = False
                 self.settings['analysis_settings'] = False
-
         
             self._build_ned_path()
             self._build_omnetpp_ini_path()

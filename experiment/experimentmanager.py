@@ -40,7 +40,13 @@ class ExperimentManager:
         # run the simulations
         self.pool.map(runner.run_simulation, argument)
 
-    def process(self, directory, scenarios, is_verbose=False, visualize=False, routing_table_trace=False):
+    def process(self, configuration, is_verbose=False):
+        directory = configuration['cwd']
+	scenarios = configuration['scenarios']
+
+	visualize = configuration['analysis_network']
+	routing_table_trace = configuration['analysis_routing_table_trace']
+
         queue = Queue()
         jobs = []
 

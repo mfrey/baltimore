@@ -17,7 +17,6 @@ def main():
     parser.add_argument('-d', dest='directory', type=str, default="", action='store', help='a directory which contains OMNeT++ result files')
     parser.add_argument('-s', dest='scenario', type=str, default="", action='store', help="evaluate a specific scenario")
     parser.add_argument('-v', '--verbose', dest='verbose', default=False, const=True, action='store_const', help="print out verbose information for each iteration")
-    parser.add_argument('-n', '--network', dest='network', default=False, const=True, action='store_const', help="draw network graph for scenario(s)")
     parser.add_argument('-j', '--json-write', dest='json_write', type=str, default="", action='store', help="specify location for json export")
     parser.add_argument('-J', '--json-read', dest='json_read', type=str, default="", action='store', help="specify location for json import")
     parser.add_argument('-r', '--run', dest='run', default=False, const=True, action='store_const', help="first run the simulations as specified via the configuration then analyse the results")
@@ -26,10 +25,8 @@ def main():
     configuration = get_configuration(arguments)
     git = Git()
 
-    # FIXME: check if that works 
     print "baltimore revision: ", git.get_revision(".")
     print "libara revision: ", git.get_revision(configuration.settings['ara_home'])
-    
 
     experiment_manager = ExperimentManager()
 
@@ -42,7 +39,7 @@ def main():
     remaining_scenarios = experiment_manager.check_result_files(configuration.settings['cwd'] + '/results', configuration.settings['scenarios'])
     configuration.settings['scenarios'] = remaining_scenarios
     
-    experiment_manager.process(configuration.settings['cwd'], configuration.settings['scenarios'], arguments.verbose, arguments.network, configuration.settings['analysis_routing_table_trace'])
+    experiment_manager.process(configuration.settings, arguments.verbose)
 
     if arguments.json_write != "":
         experiment_manager.write_json(arguments.json_write)
