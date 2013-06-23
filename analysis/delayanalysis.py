@@ -1,15 +1,16 @@
 #!/usr/bin/env python2.7
 
+import os.path
 import sys
 import numpy as np
 
 from plot.boxplot import BoxPlot
 
 class DelayAnalysis:
-    def __init__(self, scenario):
+    def __init__(self, scenario, location):
         self.delay = []
         self.scenario = scenario
-
+	self.location = location
 
     def evaluate(self, experiment_results, is_verbose=False):
         print "\nRunning delay analysis.."
@@ -23,7 +24,7 @@ class DelayAnalysis:
         plot.title = "Delay per Repetition"
         plot.xlabel = "Repetition"
         plot.xlabel = "Delay [ms]"
-        plot.draw(self.delay, self.scenario + "_delay.png")
+        plot.draw(self.delay, os.path.join(self.location, self.scenario + "_delay.png"))
 
         avg_delay = []
 
@@ -37,18 +38,5 @@ class DelayAnalysis:
         plot.title = "Average Delay"
         plot.xlabel = "Repetition"
         plot.xlabel = "Delay [ms]"
-        plot.draw(avg_delay, self.scenario + "_avg_delay.png")
+        plot.draw(avg_delay, os.path.join(self.location, self.scenario + "_avg_delay.png"))
         
-
-	# determine the nodes 
-	#print experiment_results.get_average('delay')
-#        for node_identifier, results in experiment_results.repetitions[0].get_node_results().iteritems():
-#            print results[node_identifier]['delay'];
-
-        
-    #    if is_verbose:
-    #        self.analyse_single_repetitions(experiment_results)
-        
-    #    self.check_no_inexplicable_loss(experiment_results)
-    #    self.analyse_average_values(experiment_results)
-    

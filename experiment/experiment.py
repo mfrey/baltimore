@@ -17,11 +17,12 @@ from experimentresult import ExperimentResult
 from plot.routingtableplot import RoutingTablePlot
 
 class Experiment:
-    def __init__(self, results_directory, scenario_name, visualize, routing_table_trace):
+    def __init__(self, results_directory, scenario_name, visualize, routing_table_trace, location):
         self.results_directory = results_directory
         self.scenario_name = scenario_name
         self.enable_network_visualize = visualize
         self.enable_routing_table_trace = routing_table_trace
+	self.location = location
     
     def get_results(self):
         print "Reading results of experiment [%s]" % self.scenario_name
@@ -66,7 +67,7 @@ class Experiment:
         parser = RoutingTableDataParser()
         data = parser.read_data_from(self.results_directory + "/" + file_name, target) 
         plot = RoutingTablePlot()
-        plot_filename = self.results_directory + "/" + file_name + '.png' 
+        plot_filename = self.location + "/" + file_name + '.png' 
         plot.draw(data, plot_filename)
 
     def _generate_network_plots(self, file_name):
@@ -74,7 +75,7 @@ class Experiment:
         parser.read(file_name)
         positions = nx.get_node_attributes(parser.network,'pos')
         nx.draw(parser.network, positions, node_color="#99CC00")
-        plt.savefig(self.results_directory + '/' + self.scenario_name + '_network.png')
+        plt.savefig(self.location + '/' + self.scenario_name + '_network.png')
         plt.close()
 
     def print_progress(self):

@@ -35,7 +35,7 @@ class ExperimentManager:
 
     def run_simulations(self, configuration):
         self.pool = Pool(configuration['cpu_cores'])
-	    # build up a tuple consisting of scenarios and repetitions
+        # build up a tuple consisting of scenarios and repetitions
         argument = itertools.product(configuration['scenarios'], range(configuration['repetitions']), [configuration])
         # run the simulations
         self.pool.map(runner.run_simulation, argument)
@@ -84,13 +84,13 @@ class ExperimentManager:
             except Empty:
                 print "Could not retrieve result data for scenario", job.scenario_name, "(might have failed earlier)"
 
-        self.generate_packet_delivery_plots()
+        self.generate_packet_delivery_plots(configuration['analysis_location'])
         
 #    def generate_delay_boxplots(self):
         #plot = BoxPlot()
         #plot.ylabel = "ms" 
 
-    def generate_packet_delivery_plots(self):
+    def generate_packet_delivery_plots(self, location):
         scenario_list = [e for e in xrange(len(self.experiments))]
         pdr_list = []
         experiment_list = []
@@ -103,7 +103,7 @@ class ExperimentManager:
         plot.xlist = [scenario_list]
         plot.xticklabels = experiment_list
         plot.ylist = [pdr_list]
-        plot.draw('test.png')
+        plot.draw(os.path.join(location, 'test.png'))
 
     def _get_scenarios(self, directory):
         scenarios = []

@@ -20,15 +20,19 @@ class ExperimentManagerWorker(multiprocessing.Process):
         self.visualize = configuration['analysis_network']
         self.results_queue = queue
         self.routing_table_trace = configuration['analysis_routing_table_trace']
+
+	if configuration['analysis_location'] == "":
+            self.location = self.simulations_directory
+	else:
+            self.location = configuration['analysis_location']
     
     def run(self): 
         try:
 	    # TODO: change this to logging, so we only print it if required
             print 'Scanning directory "%s" for simulation result files.\nThis may take some time depending on the number of files...' % self.simulations_directory
             # TODO: use some kind of configuration to run more than one experiment
-            experiment = Experiment(self.simulations_directory + '/results', self.scenario_name, self.visualize, self.routing_table_trace)
+            experiment = Experiment(self.simulations_directory + '/results', self.scenario_name, self.visualize, self.routing_table_trace, self.location)
             experiment_results = experiment.get_results()
-        
         
             # TODO: use some kind of configuration to run more specific analysations
             pdrAnalyser = PacketDeliveryRateAnalysis(self.scenario_name)
@@ -38,7 +42,7 @@ class ExperimentManagerWorker(multiprocessing.Process):
             overheadAnalyser = OverheadAnalysis()
             overheadAnalyser.evaluate(experiment_results, self.verbose)
 
-            delayAnalyser = DelayAnalysis(self.scenario_name)
+            delayAnalyser = DelayAnalysis(self.scenario_name, self.location)
             delayAnalyser.evaluate(experiment_results, self.verbose)
         
             # TODO: change this to logging, so we only print it if required
