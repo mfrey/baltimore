@@ -11,15 +11,15 @@ from analysis.overheadanalysis import OverheadAnalysis
 from analysis.delayanalysis import DelayAnalysis
 
 class ExperimentManagerWorker(multiprocessing.Process):
-    
-    def __init__(self, simulations_directory, scenario_name, queue, is_verbose=False, visualize=False, routing_table_trace=False):
+
+    def __init__(self, configuration, scenario_name, queue, is_verbose=False):
         super(ExperimentManagerWorker,self).__init__()
-        self.simulations_directory = simulations_directory
+        self.simulations_directory = configuration['cwd']
         self.scenario_name = scenario_name
         self.verbose = is_verbose
-        self.visualize = visualize
+        self.visualize = configuration['analysis_network']
         self.results_queue = queue
-        self.routing_table_trace = routing_table_trace
+        self.routing_table_trace = configuration['analysis_routing_table_trace']
     
     def run(self): 
         try:

@@ -44,15 +44,12 @@ class ExperimentManager:
         directory = configuration['cwd']
 	scenarios = configuration['scenarios']
 
-	visualize = configuration['analysis_network']
-	routing_table_trace = configuration['analysis_routing_table_trace']
-
         queue = Queue()
         jobs = []
 
         # single scenario to handle
         if len(scenarios) == 1 and scenarios[0] != '': 
-            process = ExperimentManagerWorker(directory, scenarios[0], queue, is_verbose, visualize, routing_table_trace)
+            process = ExperimentManagerWorker(configuration, scenarios[0], queue, is_verbose)
             jobs.append(process)
             process.start()
         # multiple scenarios in a directory
@@ -61,7 +58,7 @@ class ExperimentManager:
                 scenarios = self._get_scenarios(directory + '/results')
 
             for scenario in scenarios:
-                process = ExperimentManagerWorker(directory, scenario, queue, is_verbose, visualize, routing_table_trace) 
+                process = ExperimentManagerWorker(configuration, scenario, queue, is_verbose) 
                 jobs.append(process)
                 process.start()
 
