@@ -22,12 +22,12 @@ class Experiment:
         self.scenario_name = scenario_name
         self.enable_network_visualize = visualize
         self.enable_routing_table_trace = routing_table_trace
-	self.location = location
-    
+        self.location = location
+
     def get_results(self):
         print "Reading results of experiment [%s]" % self.scenario_name
         experiment_results = ExperimentResult()
-        
+
         for filename in listdir(self.results_directory):
             file_path = self.results_directory + '/' + filename
             if file_name_match(filename, self.scenario_name + '-' + '*.sca'):
@@ -42,7 +42,7 @@ class Experiment:
                     self.print_progress()
             elif file_name_match(filename, self.scenario_name + '-'+'*.mtr'):
                 parser = MobilityDataParser()
-                data = parser.read(self.results_directory + "/" + filename) 
+                data = parser.read(self.results_directory + "/" + filename)
             elif file_name_match(filename, self.scenario_name + '-' + '*.net'):
                 if self.enable_network_visualize:
                     self._generate_network_plots(file_path)
@@ -61,13 +61,13 @@ class Experiment:
         vector_parser = VectorFileParser(file_name)
         result = vector_parser.read()
         self.print_progress()
-        return result 
+        return result
 
     def _generate_routing_table_plots(self, target, file_name):
         parser = RoutingTableDataParser()
-        data = parser.read_data_from(self.results_directory + "/" + file_name, target) 
+        data = parser.read_data_from(self.results_directory + "/" + file_name, target)
         plot = RoutingTablePlot()
-        plot_filename = self.location + "/" + file_name + '.png' 
+        plot_filename = self.location + "/" + file_name + '.png'
         plot.draw(data, plot_filename)
 
     def _generate_network_plots(self, file_name):

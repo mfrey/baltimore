@@ -31,4 +31,3 @@ if __name__ == "__main__":
     plot.xlist = xlist
     plot.ylist = ylist
     plot.draw("test.png")
-   

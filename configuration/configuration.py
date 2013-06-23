@@ -2,7 +2,7 @@
 
 import multiprocessing
 
-from os import path 
+from os import path
 from ConfigParser import ConfigParser, NoSectionError
 
 class Configuration(object):
@@ -10,7 +10,7 @@ class Configuration(object):
         if(file_name is not None):
             parser = ConfigParser()
             parser.read(file_name)
-            
+
             self.settings = {
                 'ara_home': self._get_absolute_path(parser.get('General', 'ara_home')),
                 'omnetpp_home': self._get_absolute_path(parser.get('General', 'omnetpp_home')),
@@ -28,7 +28,7 @@ class Configuration(object):
                 self.settings['db_settings'] = True
             except NoSectionError:
                 self.settings['db_settings'] = False
-          
+
             try:
                 self.settings['analysis_routing_table_trace'] = parser.getboolean('Analysis', 'routing_table_trace')
                 self.settings['analysis_location'] = path.expanduser(parser.get('Analysis', 'location'))
@@ -39,7 +39,7 @@ class Configuration(object):
                 self.settings['analysis_location'] = ""
                 self.settings['analysis_network'] = False
                 self.settings['analysis_settings'] = False
-        
+
             self._build_ned_path()
             self._build_omnetpp_ini_path()
             self._build_ld_library_path()
@@ -53,30 +53,30 @@ class Configuration(object):
 
     def _get_nr_of_cpus(self, wanted_cores):
         nr_of_existing_cpu_cores = multiprocessing.cpu_count()
-        
+
         if wanted_cores == '*':
             return nr_of_existing_cpu_cores
         else:
             wanted_cores = int(wanted_cores)
             if nr_of_existing_cpu_cores == 1:
-               return 1
+                return 1
             elif nr_of_existing_cpu_cores < wanted_cores:
-               return int(nr_of_existing_cpu_cores / 2)
+                return int(nr_of_existing_cpu_cores / 2)
             else:
-               return wanted_cores
-    
+                return wanted_cores
+
     def _build_ned_path(self):
         self.settings['ned_path'] =  self.settings['ara_home'] + '/inetmanet/src:' + self.settings['ara_home'] + '/inetmanet/examples:' + self.settings['ara_home'] + '/omnetpp:' + self.settings['ara_home'] + '/simulations/' + self.settings['scenario_home']
-    
+
     def _build_omnetpp_ini_path(self):
         self.settings['omnetpp_ini'] = self.settings['ara_home'] + '/simulations/' + self.settings['scenario_home'] + '/omnetpp.ini'
-    
+
     def _build_ld_library_path(self):
-        self.settings['ld_library_path'] = "$LD_LIBRARY_PATH:" + self.settings['ara_home'] + '/src:' + self.settings['ara_home'] + '/inetmanet/src:' + self.settings['omnetpp_home'] + '/lib'  
-    
+        self.settings['ld_library_path'] = "$LD_LIBRARY_PATH:" + self.settings['ara_home'] + '/src:' + self.settings['ara_home'] + '/inetmanet/src:' + self.settings['omnetpp_home'] + '/lib'
+
     def _build_cwd(self):
-        self.settings['cwd'] = self.settings['ara_home'] + '/simulations/' + self.settings['scenario_home'] 
-    
+        self.settings['cwd'] = self.settings['ara_home'] + '/simulations/' + self.settings['scenario_home']
+
     def _build_scenarios(self, scenarios):
         self.settings['scenarios'] = [scenario.strip() for scenario in scenarios.split(',')]
 

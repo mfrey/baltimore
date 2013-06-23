@@ -10,7 +10,7 @@ class DelayAnalysis:
     def __init__(self, scenario, location):
         self.delay = []
         self.scenario = scenario
-	self.location = location
+        self.location = location
 
     def evaluate(self, experiment_results, is_verbose=False):
         print "\nRunning delay analysis.."
@@ -29,7 +29,7 @@ class DelayAnalysis:
         avg_delay = []
 
         for delay in self.delay:
-           avg_delay.append(np.average(delay))
+            avg_delay.append(np.average(delay))
 
         print "Average Delays per Repetition: ", avg_delay
 
@@ -39,4 +39,3 @@ class DelayAnalysis:
         plot.xlabel = "Repetition"
         plot.xlabel = "Delay [ms]"
         plot.draw(avg_delay, os.path.join(self.location, self.scenario + "_avg_delay.png"))
-        

@@ -31,17 +31,17 @@ class MobilityDataParser:
                     yield byte
             else:
                 break
-    
+
     def _read_time(self, byte_stream):
         return struct.unpack("q", self._read_next_bytes(self.NUMBER_OF_TIMESTAMP_BYTES, byte_stream))[0]
-    
+
     def _read_next_bytes(self, nr_of_bytes, byte_stream):
         result = ""
         for i in range(nr_of_bytes):
             result += byte_stream.next()
-        
+
         return result
-    
+
     def _read_position(self):
         byte_stream = self._request_next_bytes(self.single_entry_size)
 
@@ -50,17 +50,17 @@ class MobilityDataParser:
         z = struct.unpack("d", self._read_next_bytes(8, byte_stream))[0]
 
         return [x, y, z]
-    
+
 class MobilityDataParserException(Exception):
     def __init__(self, message):
         self.message = message
-        
+
     def __str__(self):
         return repr(self.message)
 
 
 if __name__ == "__main__":
-   parser = MobilityDataParser() 
-   data = parser.read("/home/frey/Desktop/Projekte/code/ara-sim/simulations/ara/results/ARATEST-0-node0.mtr")
-   for d in data:
-       print d
+    parser = MobilityDataParser()
+    data = parser.read("/home/frey/Desktop/Projekte/code/ara-sim/simulations/ara/results/ARATEST-0-node0.mtr")
+    for d in data:
+        print d

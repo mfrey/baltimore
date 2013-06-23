@@ -31,7 +31,7 @@ class ExperimentManager:
         for scenario in non_existing_scenarios:
             print "There is no scenario", scenario, "to analyze!"
         # return a list of the remaining scenarios
-        return list(set(scenarios) - set(non_existing_scenarios)) 
+        return list(set(scenarios) - set(non_existing_scenarios))
 
     def run_simulations(self, configuration):
         self.pool = Pool(configuration['cpu_cores'])
@@ -42,13 +42,13 @@ class ExperimentManager:
 
     def process(self, configuration, is_verbose=False):
         directory = configuration['cwd']
-	scenarios = configuration['scenarios']
+        scenarios = configuration['scenarios']
 
         queue = Queue()
         jobs = []
 
         # single scenario to handle
-        if len(scenarios) == 1 and scenarios[0] != '': 
+        if len(scenarios) == 1 and scenarios[0] != '':
             process = ExperimentManagerWorker(configuration, scenarios[0], queue, is_verbose)
             jobs.append(process)
             process.start()
@@ -58,7 +58,7 @@ class ExperimentManager:
                 scenarios = self._get_scenarios(directory + '/results')
 
             for scenario in scenarios:
-                process = ExperimentManagerWorker(configuration, scenario, queue, is_verbose) 
+                process = ExperimentManagerWorker(configuration, scenario, queue, is_verbose)
                 jobs.append(process)
                 process.start()
 
@@ -85,10 +85,10 @@ class ExperimentManager:
                 print "Could not retrieve result data for scenario", job.scenario_name, "(might have failed earlier)"
 
         self.generate_packet_delivery_plots(configuration['analysis_location'])
-        
+
 #    def generate_delay_boxplots(self):
         #plot = BoxPlot()
-        #plot.ylabel = "ms" 
+        #plot.ylabel = "ms"
 
     def generate_packet_delivery_plots(self, location):
         scenario_list = [e for e in xrange(len(self.experiments))]
@@ -122,15 +122,15 @@ class ExperimentManager:
         existing_scenarios = self._get_scenarios(directory)
         for scenario in scenarios:
             if scenario in existing_scenarios:
-                print "There seems already to be a scenario ", scenario, " in the results directory" 
+                print "There seems already to be a scenario ", scenario, " in the results directory"
                 reply = raw_input("Shall the existing scenario be removed? [Y/n] ").lower()
                 if reply.startswith("y"):
                     self._remove_scenario(directory, scenario)
 
     def _remove_scenario(self, directory, scenario):
-       files = [f for f in os.listdir(directory) if f.startswith(scenario + "-")]
-       for f in files:
-           os.remove(directory + '/' + f)
+        files = [f for f in os.listdir(directory) if f.startswith(scenario + "-")]
+        for f in files:
+            os.remove(directory + '/' + f)
 
     def result_dir_exists(self, directory):
         if not os.path.exists(directory + '/results'):
@@ -147,7 +147,7 @@ class ExperimentManager:
     def _print_tuple(self, settings):
         for setting in settings:
             print setting[0], ' = ', setting[1]
-        
+
     def write_json(self, file_name):
         encoder = BaltimoreJSONEncoder()
         data = encoder.encode(self.experiments)
