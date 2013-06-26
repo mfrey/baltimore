@@ -9,6 +9,7 @@ from experiment import Experiment
 from analysis.packetdeliveryrateanalysis import PacketDeliveryRateAnalysis
 from analysis.overheadanalysis import OverheadAnalysis
 from analysis.delayanalysis import DelayAnalysis
+from analysis.energydeadseriesanalysis import EnergyDeadSeriesAnalysis
 
 class ExperimentManagerWorker(multiprocessing.Process):
 
@@ -44,6 +45,10 @@ class ExperimentManagerWorker(multiprocessing.Process):
 
             delayAnalyser = DelayAnalysis(self.scenario_name, self.location)
             delayAnalyser.evaluate(experiment_results, self.verbose)
+
+            energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name)
+            energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
+            energyDeadSeriesAnalyser._create_plot()
 
             # TODO: change this to logging, so we only print it if required
             nr_of_parsed_files = experiment_results.get_number_of_repetitions()
