@@ -1,28 +1,30 @@
 #!/usr/bin/env python2.7
 
-#from pylab import rand, ones, concatenate
 import matplotlib.pyplot as plt
 
-class BoxPlot:
+class LinePlot:
     def __init__(self):
         self.ylabel = ""
         self.xlabel = ""
         self.xticks = []
         self.yticks = []
         self.xticklabels = []
+        self.xlist = []
         self.ylist = []
         self.title = ""
 
-    def draw(self, data, filename):
+    def draw(self, xdata, ydata, filename):
         figure = plt.figure()
-        plt.boxplot(data)
+        plt.plot(xdata, ydata)
         plt.ylabel(self.ylabel,va="center",ha="center")
         plt.xlabel(self.xlabel)
         plt.title(self.title)
+
         if len(self.yticks) != 0:
-            plt.yticks(self.yticks)
+           plt.yticks(self.yticks)
         if len(self.xticks) != 0:
-            plt.xticks(self.xticks)
+           plt.xticks(self.xticks)
+
         plt.grid(axis="y")
         plt.savefig(filename)
         plt.close()
@@ -34,5 +36,5 @@ class BoxPlot:
 #    flier_low = rand(10) * -100
 #    data =concatenate((spread, center, flier_high, flier_low), 0)
 
-#    plot = BoxPlot()
+#    plot = LinePlot()
 #    plot.draw(data, "test.png")

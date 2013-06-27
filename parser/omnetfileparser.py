@@ -35,11 +35,11 @@ class OMNeTFileParser:
         if len(words) != 2:
             print "Could not parse key value line %d from %s because there are %d words" % (self.current_line_nr, self.file_path, len(words))
             raise
-        
+
         if words[0] != key:
             print "Error while parsing key value line: Expected %s but got %s" % (key, words[0])
             raise
-        
+
         return words[1].strip()
 
     def _parse_attribute(self, name):
@@ -47,7 +47,7 @@ class OMNeTFileParser:
         if len(words) != 3:
             print "Could not parse attribute line %d from %s because there are %d words" % (self.current_line_nr, self.file_path, len(words))
             raise
-            
+
         if words[0] != 'attr' or words[1] != name:
             print "Could not parse line %d from %s for attribute %s" % (self.current_line_nr, self.file_path, name)
             raise
@@ -57,8 +57,8 @@ class OMNeTFileParser:
     def _read_next_line(self):
         self.current_line_nr += 1
         return self.file_handle.readline()
-    
+
     def _get_node_identifier(self, line):
         # TODO: fix that (that's quite aweful)
-        #return line.split(' ')[1].split('.')[1].split('[')[1].split(']')[0] 
-        return line.split('[')[1].split(']')[0] 
+        #return line.split(' ')[1].split('.')[1].split('[')[1].split(']')[0]
+        return line.split('[')[1].split(']')[0]

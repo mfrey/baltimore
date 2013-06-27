@@ -17,9 +17,9 @@ class VectorFileParser(OMNeTFileParser):
             self._read_body()
             self._build_result_dict()
             return RepetitionData(self.parameters, self.nodes)
-        except IOError: 
-            print "Error: can\'t find file ", self.file_path, " or read it" 
-        finally: 
+        except IOError:
+            print "Error: can\'t find file ", self.file_path, " or read it"
+        finally:
             self.file_handle.close()
 
     def _build_result_dict(self):
@@ -32,7 +32,7 @@ class VectorFileParser(OMNeTFileParser):
         while line:
             line = self._read_next_line()
             self._parse(line)
-    
+
     def _parse(self, line):
         line = " ".join(line.split())
 
@@ -42,12 +42,12 @@ class VectorFileParser(OMNeTFileParser):
 
             if node_identifier not in self.nodes:
                 self.nodes[node_identifier] = {}
-            
+
             self.nodes[str(node_identifier)][vector_preamble[2]] = []
         elif len(line) > 0 and line[0].isdigit():
             self._parse_vector_line(line)
 
-    
+
     def _parse_vector_preamble(self, line):
         content = line.split(' ')
         vector_identifier, node, vector_type = content[1], content[2], content[3]
@@ -58,7 +58,7 @@ class VectorFileParser(OMNeTFileParser):
             column_spec = content[4]
 
         if vector_identifier not in self.vector_dict:
-            # holds the values of the vector 
+            # holds the values of the vector
             self.vector_dict[vector_identifier] = []
             # denotes the type of the vector and the node it belongs to
             self.vector_settings[vector_identifier] = [self._get_node_identifier(node), vector_type]
