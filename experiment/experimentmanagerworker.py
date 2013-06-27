@@ -48,9 +48,8 @@ class ExperimentManagerWorker(multiprocessing.Process):
             delayAnalyser = DelayAnalysis(self.scenario_name, self.location)
             delayAnalyser.evaluate(experiment_results, self.verbose)
 
-            energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name)
+            energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name, self.location)
             energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
-            energyDeadSeriesAnalyser._create_plot()
 
             lastPacketAnalyser = LastPacketAnalysis(self.scenario_name, self.location)
             lastPacketAnalyser.evaluate(experiment_results, self.verbose)

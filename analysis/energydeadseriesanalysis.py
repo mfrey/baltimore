@@ -3,13 +3,15 @@
 import sys
 import numpy as np
 
+from analysis import Analysis
+
 from plot.lineplot import LinePlot
 from plot.boxplot import BoxPlot
 
-class EnergyDeadSeriesAnalysis:
-    def __init__(self, scenario):
+class EnergyDeadSeriesAnalysis(Analysis):
+    def __init__(self, scenario, location):
+        Analysis.__init__(self, scenario, location, "energy-dead-series")
         self.energy_dead_series = {}
-        self.scenario = scenario
 
     def evaluate(self, experiment_results, is_verbose=False):
         repetitions = len(experiment_results.repetitions)
@@ -29,26 +31,22 @@ class EnergyDeadSeriesAnalysis:
 
         print self.energy_dead_series
 
+        self._create_boxplot()
+
+    def _create_boxplot(self):
+        xdata = []
+        ydata = []
+     
+        for timestamp in sorted(self.energy_dead_series.iterkeys()):       
+            xdata.append(timestamp)
+            ydata.append(np.average(self.energy_dead_series[timestamp]))
+ 
+        ydata = np.cumsum(ydata)
+        self.plot_lineplot("Energy Dead Series", "Time [s]", "Dead Nodes", xdata, ydata)
+
 
     def _timestamp_exists(self, timestamp):
         return self.energy_dead_series.has_key(timestamp)
-
-
-    def _create_plot(self):
-        plot = LinePlot()
-        data = []
-
-        for timestamp in sorted(self.energy_dead_series.iterkeys()):       
-            plot.xlist.append(timestamp)
-            data.append(np.average(self.energy_dead_series[timestamp]))
-
-        plot.title = "Energy Dead Series"
-        plot.xlabel = "Time [s]" 
-        plot.ylabel = "Dead Nodes" 
-
-        plot.ylist = np.cumsum(data)
-        plot.draw(plot.xlist, plot.ylist, "test.png")
-#.append(np.avgerage(self.energy_dead_series[timestamp]))
 
 
     

@@ -22,7 +22,6 @@ class DelayAnalysis(VectorAnalysis):
         # make a plot over all repetitions
         self.plot_boxplot("Delay per Repetition", "Repetition", "Delay [ms]", self.delay)
 
-
         average_delay = [np.average(delay) for delay in self.delay]
         print "Average Delays per Repetition: ", average_delay
         # rename metric for box plot (otherwise the previous plot would get overriden)
