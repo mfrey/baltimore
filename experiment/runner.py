@@ -23,7 +23,7 @@ class Runner(object):
     
     def run(self):
         environment = dict(os.environ)
-        environment['LD_LIBRARY_PATH'] = self.ld_library_path
+        environment['LD_LIBRARY_PATH'] = self.ld_library_path + ':/home/fenn/frey/NO_BACKUP/Software/build/rtf/lib64'
         
         logfile_path = self.cwd + 'results/' + self.scenario + '-' + str(self.repetition) + '-Log.txt' 
         with open(logfile_path, 'w') as logfile:
