@@ -3,7 +3,6 @@
 import sys
 import numpy as np
 
-
 from plot.lineplot import LinePlot
 from plot.boxplot import BoxPlot
 
@@ -18,7 +17,9 @@ class EnergyDeadSeriesAnalysis:
         for repetition in experiment_results:
             nodes = experiment_results.nodes_have_metric("nodeEnergyDepletionTimestamp")
             for node in nodes:
-                timestamp = experiment_results.get_metric_per_node("nodeEnergyDepletionTimestamp", node, repetition)
+                #timestamp = experiment_results.get_metric_per_node("nodeEnergyDepletionTimestamp", node, repetition)
+                # FIXME
+                timestamp = experiment_results.repetitions[repetition].get_node_results()[node]["nodeEnergyDepletionTimestamp"]
 
                 if self._timestamp_exists(timestamp):
                     self.energy_dead_series[timestamp][repetition] = self.energy_dead_series[timestamp][repetition] + 1

@@ -50,7 +50,7 @@ class ExperimentResult:
         return result
 
     def get_metric_per_node(self, metric_name, node, repetition):
-        return self.repetitions[repetition].get_node_results()[node][metric_name]
+        return [pair[1] for pair in self.repetitions[repetition].get_node_results()[node][metric_name]]
 
     def get_metric(self, metric_name, repetition):
         sum = 0

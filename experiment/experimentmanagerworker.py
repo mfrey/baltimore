@@ -11,6 +11,7 @@ from analysis.overheadanalysis import OverheadAnalysis
 from analysis.delayanalysis import DelayAnalysis
 from analysis.energydeadseriesanalysis import EnergyDeadSeriesAnalysis
 from analysis.lastpacketanalysis import LastPacketAnalysis
+from analysis.pathenergyanalysis import PathEnergyAnalysis
 
 class ExperimentManagerWorker(multiprocessing.Process):
 
@@ -53,6 +54,9 @@ class ExperimentManagerWorker(multiprocessing.Process):
 
             lastPacketAnalyser = LastPacketAnalysis(self.scenario_name, self.location)
             lastPacketAnalyser.evaluate(experiment_results, self.verbose)
+
+            pathEnergyAnalyser = PathEnergyAnalysis(self.scenario_name, self.location)
+            pathEnergyAnalyser.evaluate(experiment_results, self.verbose)
 
             # TODO: change this to logging, so we only print it if required
             nr_of_parsed_files = experiment_results.get_number_of_repetitions()
