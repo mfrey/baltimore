@@ -13,7 +13,7 @@ class NetworkFileParser:
                 self._parse_line(line)
 
         self._create_connections()
-   
+
     def _parse_line(self, line):
         entry = line.strip().split()
         self._create_node(entry[0], float(entry[1]), float(entry[2]), float(entry[3]))

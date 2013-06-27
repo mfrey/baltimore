@@ -20,9 +20,9 @@ class BoxPlot:
         plt.xlabel(self.xlabel)
         plt.title(self.title)
         if len(self.yticks) != 0:
-           plt.yticks(self.yticks)
+            plt.yticks(self.yticks)
         if len(self.xticks) != 0:
-           plt.xticks(self.xticks)
+            plt.xticks(self.xticks)
         plt.grid(axis="y")
         plt.savefig(filename)
         plt.close()
