@@ -28,6 +28,6 @@ class DelayAnalysis(Analysis):
             self.plot_boxplot("Delay per Repetition (Node " + str(node) + ")", "Repetition", "Delay [ms]", delay)
 
             average_delay = [np.average(repetition) for repetition in delay]
-            print "Average Delays per Repetitioni (Node " + str(node) + "): ", average_delay
+            print "Average Delays per Repetition (Node " + str(node) + "): ", average_delay
             self.metric = "average_delay_node-" + str(node)
             self.plot_boxplot("Average Delay (Node " + str(node) + ")", "Repetition", "Delay [ms]", average_delay)

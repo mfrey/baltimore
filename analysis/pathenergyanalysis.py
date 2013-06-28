@@ -4,6 +4,8 @@ import sys
 import os.path
 import numpy as np
 
+from collection import OrderedDict
+
 from analysis import Analysis
 
 from plot.lineplot import LinePlot
@@ -17,22 +19,36 @@ class PathEnergyAnalysis(Analysis):
     def evaluate(self, experiment_results, is_verbose=False):
         print "\nRunning path energy analysis.."
 
+        repetitions = experiment_results.get_number_of_repetitions()
+
         for repetition in experiment_results:
             nodes = experiment_results.nodes_have_metric("routeEnergy")
             for node in nodes:
-                self.path_energy[node] = experiment_results.get_vector_metric_per_node("routeEnergy", node, repetition)
+                data = experiment_results.get_tuple_metric_per_node("routeEnergy", node, repetition)
+                timestamp = data[0] 
+                path_energy = data[1]
 
-#        print self.path_energy
+                if node not in self.path_energy.keys():
+                    # we store the timestamp/path_energy in a dict { float:[timestamp] } fashion
+                    self.path_energy[node] = {}
+
+                if timestamp not in self.path_energy[node].keys():
+                    self.path_energy[node][timestamp] = [-1] * repetitions
+
+                self.path_energy[node][timestamp][repetition] = path_energy
+
+        for node in sorted(self.path_energy.iterkeys()):       
+            xdata = []
+            ydata = []
+            for timestamp in sorted(self.path_energy[node].iterkeys()):       
+                xdata.append(timestamp)
+                ydata.append(np.average(self.path_energy[node][timestamp]))
+       #         ydata.append(self.path_energy[node][timestamp])
            
+#            self._fill_missing_data(xdata, ydata)
 
-#        self.data = experiment_results.get_average("routeEnergy")
-#        print self.data
-#        plot = LinePlot()
-
-#        plot.title = "Path Energy (Average)"
-#        plot.xlabel = "Time [s]"
-#        plot.ylabel = "Energy [J]"
-#        plot.draw(self.data, self.data, os.path.join(self.location, self.scenario + "_path_energy.png"))
+            self.metric = "path-energy_node-" + str(node)
+            self.plot_lineplot("Path Energy (Average, Node " + str(node) + ")", "Time [s]", "Energy [J]", xdata, ydata)
 
         
 
