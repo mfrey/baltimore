@@ -12,18 +12,17 @@ from plot.boxplot import BoxPlot
 class PathEnergyAnalysis(Analysis):
     def __init__(self, scenario, location):
         Analysis.__init__(self, scenario, location, "path-energy")
-        self.path_energy = []
+        self.path_energy = {}
 
     def evaluate(self, experiment_results, is_verbose=False):
         print "\nRunning path energy analysis.."
 
-#        for repetition in experiment_results:
-#            nodes = experiment_results.nodes_have_metric("routeEnergy")
-#            print experiment_results.nodes_have_metric("routeEnergy")
-#            for node in nodes:
-#                self.path_energy.append(experiment_results.get_metric_per_node("routeEnergy", node, repetition))
+        for repetition in experiment_results:
+            nodes = experiment_results.nodes_have_metric("routeEnergy")
+            for node in nodes:
+                self.path_energy[node] = experiment_results.get_vector_metric_per_node("routeEnergy", node, repetition)
 
- #       print self.path_energy
+#        print self.path_energy
            
 
 #        self.data = experiment_results.get_average("routeEnergy")
