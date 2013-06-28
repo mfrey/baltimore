@@ -2,6 +2,7 @@
 
 import os.path
 
+from plot.boxplot import BoxPlot
 from plot.lineplot import LinePlot
 
 class Analysis:
@@ -10,12 +11,16 @@ class Analysis:
         self.location = location
         self.metric = metric
 
-    def plot_lineplot(self, title, xlabel, ylabel, xdata, ydata):
+    def plot_lineplot(self, title, x_label, y_label, x_data, y_data):
         plot = LinePlot()
-
         plot.title = title
-        plot.xlabel = xlabel
-        plot.ylabel = ylabel
+        plot.xlabel = x_label
+        plot.ylabel = y_label
+        plot.draw(x_data, y_data, os.path.join(self.location, self.scenario + "_" + self.metric + ".png"))
 
-        plot.draw(xdata, ydata, os.path.join(self.location, self.scenario + "_" + self.metric + ".png"))
-
+    def plot_boxplot(self, title, x_label, y_label, data):
+        plot = BoxPlot()
+        plot.title = title
+        plot.xlabel = x_label
+        plot.ylabel = y_label
+        plot.draw(data, os.path.join(self.location, self.scenario + "_" + self.metric + ".png"))

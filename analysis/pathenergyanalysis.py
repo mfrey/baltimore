@@ -4,14 +4,15 @@ import sys
 import os.path
 import numpy as np
 
+from analysis import Analysis
+
 from plot.lineplot import LinePlot
 from plot.boxplot import BoxPlot
 
-class PathEnergyAnalysis:
+class PathEnergyAnalysis(Analysis):
     def __init__(self, scenario, location):
+        Analysis.__init__(self, scenario, location, "path-energy")
         self.path_energy = []
-        self.scenario = scenario
-        self.location = location
 
     def evaluate(self, experiment_results, is_verbose=False):
         print "\nRunning path energy analysis.."

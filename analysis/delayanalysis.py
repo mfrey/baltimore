@@ -5,11 +5,11 @@ import sys
 import numpy as np
 
 from plot.boxplot import BoxPlot
-from vectoranalysis import VectorAnalysis
+from analysis import Analysis
 
-class DelayAnalysis(VectorAnalysis):
+class DelayAnalysis(Analysis):
     def __init__(self, scenario, location):
-        VectorAnalysis.__init__(self, scenario, location, "delay")
+        Analysis.__init__(self, scenario, location, "delay")
         self.delay = []
 
     def evaluate(self, experiment_results, is_verbose=False):
