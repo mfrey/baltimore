@@ -35,7 +35,7 @@ class PathEnergyAnalysis(Analysis):
                 if timestamp not in self.path_energy[node].keys():
                     self.path_energy[node][timestamp] = [-1] * repetitions
 
-                self.path_energy[node][timestamp][repetition] = path_energy
+#                self.path_energy[node][timestamp][repetition] = path_energy
 
         for node in sorted(self.path_energy.iterkeys()):       
             xdata = []
@@ -49,6 +49,8 @@ class PathEnergyAnalysis(Analysis):
 
             self.metric = "path-energy_node-" + str(node)
             self.plot_lineplot("Path Energy (Average, Node " + str(node) + ")", "Time [s]", "Energy [J]", xdata, ydata)
-
         
-
+#    def sort(self):
+#        for node in self.path_energy:
+#            ordered_timestamps = OrderedDict(sorted(self.path_energy[node].items(), key=lambda t: t[1]))
+#            for timestamp in sorted(self.path_energy[node]): 
