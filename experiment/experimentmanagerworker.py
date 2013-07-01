@@ -1,7 +1,7 @@
 #!/usr/bin/env python2.7
 
 import os
-import sys
+import sys, traceback
 import logging
 import multiprocessing
 
@@ -56,6 +56,7 @@ class ExperimentManagerWorker(multiprocessing.Process):
 
             pathEnergyAnalyser = PathEnergyAnalysis(self.scenario_name, self.location)
             pathEnergyAnalyser.evaluate(experiment_results, self.verbose)
+            pathEnergyAnalyser.evaluate_different(experiment_results)
 
             # TODO: change this to logging, so we only print it if required
             nr_of_parsed_files = experiment_results.get_number_of_repetitions()
@@ -65,3 +66,6 @@ class ExperimentManagerWorker(multiprocessing.Process):
             self.results_queue.put((experiment, pdrAnalyser))
         except Exception as exception:
             print "An error occurred while evaluating experiment", self.scenario_name, ": ", exception
+            print '-'*60
+            traceback.print_exc(file=sys.stdout)
+            print '-'*60
