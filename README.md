@@ -14,6 +14,7 @@ Installation from git
 		numpy
 		nose	
 		pymongo
+		scipy
 
 3. Run the program
 
