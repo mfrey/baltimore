@@ -24,8 +24,6 @@ class Database:
 
     def add_experiment(self, experiment):
         self.database['experiments'].insert(experiment)
-   
-#    def add_experiment(self, experiment):
       
 if __name__ == "__main__":
      database = Database("baltimore_admin", "<add password>", "baltimore", "localhost")

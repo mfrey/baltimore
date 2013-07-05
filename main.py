@@ -25,10 +25,10 @@ def main():
     configuration = get_configuration(arguments)
     git = Git()
 
-    print "baltimore revision: ", git.get_revision(".")
-    print "libara revision: ", git.get_revision(configuration.settings['ara_home'])
+    baltimore_revision = git.get_revision(".")
+    libara_revision = git.get_revision(configuration.settings['ara_home'])
 
-    experiment_manager = ExperimentManager()
+    experiment_manager = ExperimentManager(baltimore_revision, libara_revision)
 
     if arguments.run == True:
         experiment_manager.result_dir_exists(configuration.settings['cwd'])
