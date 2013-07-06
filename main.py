@@ -7,6 +7,7 @@ import argparse
 import matplotlib
 matplotlib.use("Agg")
 
+from persistence.database import Database
 from experiment.git import Git
 from configuration.configuration import Configuration
 from experiment.experimentmanager import ExperimentManager
@@ -46,6 +47,11 @@ def main():
 
     if arguments.json_read != "":
         experiment_manager.read_json(arguments.json_read)
+
+#    database = Database(configuration.settings['db_user'], configuration.settings['db_password'], configuration.settings['db_db'], configuration.settings['db_host'])
+#    database.open()
+#    database.add_experiment(experiment_manager)
+#    database.close()
 
 def get_configuration(arguments):
     if arguments.configuration != "":

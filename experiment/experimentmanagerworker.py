@@ -54,16 +54,17 @@ class ExperimentManagerWorker(multiprocessing.Process):
             lastPacketAnalyser = LastPacketAnalysis(self.scenario_name, self.location)
             lastPacketAnalyser.evaluate(experiment_results, self.verbose)
 
-            pathEnergyAnalyser = PathEnergyAnalysis(self.scenario_name, self.location)
-            pathEnergyAnalyser.evaluate(experiment_results, self.verbose)
-            pathEnergyAnalyser.evaluate_different(experiment_results)
+#            pathEnergyAnalyser = PathEnergyAnalysis(self.scenario_name, self.location)
+#            pathEnergyAnalyser.evaluate(experiment_results, self.verbose)
+#            pathEnergyAnalyser.evaluate_different(experiment_results)
 
             # TODO: change this to logging, so we only print it if required
             nr_of_parsed_files = experiment_results.get_number_of_repetitions()
             print "\n\nSuccessfully read %d experiment(s) from %d scalar file(s)." % (1, nr_of_parsed_files)
 
             # store the result
-            self.results_queue.put((experiment, pdrAnalyser))
+#            self.results_queue.put((experiment, pdrAnalyser, overheadAnalyser))
+            self.results_queue.put((experiment, pdrAnalyser, overheadAnalyser))
         except Exception as exception:
             print "An error occurred while evaluating experiment", self.scenario_name, ": ", exception
             print '-'*60

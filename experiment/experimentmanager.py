@@ -152,7 +152,7 @@ class ExperimentManager:
 
     def write_json(self, file_name):
         encoder = BaltimoreJSONEncoder()
-        data = encoder.encode(self.experiments)
+        data = encoder.encode(self)
 
         print data
 
