@@ -150,11 +150,12 @@ class ExperimentManager:
         for setting in settings:
             print setting[0], ' = ', setting[1]
 
-    def write_json(self, file_name):
+    def create_json(self):
         encoder = BaltimoreJSONEncoder()
-        data = encoder.encode(self)
+        return encoder.encode(self)
 
-        print data
+    def write_json(self, file_name):
+        data = self.crete_json()
 
         with open(file_name, 'w') as json_file:
             json.dump(data, json_file)

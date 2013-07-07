@@ -1,5 +1,7 @@
 #!/usr/bin/env python2.7
 
+import json
+
 from pymongo import MongoClient
 from pymongo.errors import PyMongoError
 
@@ -23,7 +25,8 @@ class Database:
         self.client.close()
 
     def add_experiment(self, experiment):
-        self.database['experiments'].insert(experiment)
+	data = json.loads(experiment)
+        self.database['experiments'].insert(data)
       
 if __name__ == "__main__":
      database = Database("baltimore_admin", "<add password>", "baltimore", "localhost")
