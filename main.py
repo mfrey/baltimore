@@ -48,7 +48,6 @@ def main():
     if arguments.json_read != "":
         experiment_manager.read_json(arguments.json_read)
 
-
     if configuration.settings['db_settings']:
         database = Database(configuration.settings['db_user'], configuration.settings['db_password'], configuration.settings['db_db'], configuration.settings['db_host'])
         database.open()
