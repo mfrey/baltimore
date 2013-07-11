@@ -21,8 +21,10 @@ from persistence.baltimorejsondecoder import BaltimoreJSONDecoder
 from parser.omnetconfigurationfileparser import OMNeTConfigurationFileParser
 
 class ExperimentManager:
-    def __init__(self):
+    def __init__(self, baltimore_revision, libara_revision):
         self.experiments = {}
+        self.baltimore_revision = baltimore_revision
+        self.libara_revision = libara_revision
 
     def check_result_files(self, directory, scenarios):
         result = self._check_result_directory_for_results(directory, scenarios)
@@ -41,6 +43,10 @@ class ExperimentManager:
         self.pool.map(runner.run_simulation, argument)
 
     def process(self, configuration, is_verbose=False):
+        # store the general simulation settings
+	omnetpp_ini= OMNeTConfigurationFileParser(configuration['cwd'] + '/omnetpp.ini')
+	self.omnetpp_ini = omnetpp_ini.get_section("General")
+
         directory = configuration['cwd']
         scenarios = configuration['scenarios']
 
@@ -148,10 +154,12 @@ class ExperimentManager:
         for setting in settings:
             print setting[0], ' = ', setting[1]
 
-    def write_json(self, file_name):
+    def create_json(self):
         encoder = BaltimoreJSONEncoder()
-        data = encoder.encode(self.experiments)
-        print data
+        return encoder.encode(self)
+
+    def write_json(self, file_name):
+        data = self.crete_json()
 
         with open(file_name, 'w') as json_file:
             json.dump(data, json_file)

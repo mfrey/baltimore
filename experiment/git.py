@@ -11,7 +11,7 @@ class Git:
             path_to_repository = home_dir + path_to_repository[1:]
 
         revision =  Popen("git rev-parse HEAD ",  cwd=path_to_repository, stdout=PIPE, shell=True).stdout.read()
-        return revision
+        return revision.rstrip()
 
 
 if __name__ == "__main__":

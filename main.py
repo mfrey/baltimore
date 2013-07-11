@@ -7,6 +7,7 @@ import argparse
 import matplotlib
 matplotlib.use("Agg")
 
+from persistence.database import Database
 from experiment.git import Git
 from configuration.configuration import Configuration
 from experiment.experimentmanager import ExperimentManager
@@ -25,10 +26,10 @@ def main():
     configuration = get_configuration(arguments)
     git = Git()
 
-    print "baltimore revision: ", git.get_revision(".")
-    print "libara revision: ", git.get_revision(configuration.settings['ara_home'])
+    baltimore_revision = git.get_revision(".")
+    libara_revision = git.get_revision(configuration.settings['ara_home'])
 
-    experiment_manager = ExperimentManager()
+    experiment_manager = ExperimentManager(baltimore_revision, libara_revision)
 
     if arguments.run == True:
         experiment_manager.result_dir_exists(configuration.settings['cwd'])
@@ -46,6 +47,12 @@ def main():
 
     if arguments.json_read != "":
         experiment_manager.read_json(arguments.json_read)
+
+    if configuration.settings['db_settings']:
+        database = Database(configuration.settings['db_user'], configuration.settings['db_password'], configuration.settings['db_db'], configuration.settings['db_host'])
+        database.open()
+        database.add_experiment(experiment_manager.create_json())
+        database.close()
 
 def get_configuration(arguments):
     if arguments.configuration != "":

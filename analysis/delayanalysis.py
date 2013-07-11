@@ -10,7 +10,7 @@ from analysis import Analysis
 class DelayAnalysis(Analysis):
     def __init__(self, scenario, location):
         Analysis.__init__(self, scenario, location, "delay")
-        # there can be multiple traffic sinks, we store the delay values by means of 
+	# there can be multiple traffic sinks, we store the delay values by means of { node : [] }
         self.delay = {}
 
     def evaluate(self, experiment_results, is_verbose=False):
