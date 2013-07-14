@@ -1,1 +1,1 @@
-__all__ = ["boxplot", "packetdeliveryrateplot", "routingtableplot"]
+__all__ = ["lineplot", "boxplot", "barchart", "packetdeliveryrateplot", "routingtableplot"]

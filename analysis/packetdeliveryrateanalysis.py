@@ -37,11 +37,11 @@ class PacketDeliveryRateAnalysis:
         for repetition in result:
             inexplicable_loss  = result.get_metric('trafficSent', repetition) - result.get_metric('trafficReceived', repetition)
             inexplicable_loss -= result.get_metric('routingLoopDetected:count', repetition)
-            inexplicable_loss -= result.get_metric('routeFailure:count', repetition)
             inexplicable_loss -= result.get_metric('packetUnDeliverable:count', repetition)
             inexplicable_loss -= result.get_metric('dropZeroTTLPacket:count', repetition)
-            inexplicable_loss -= result.get_metric('routeFailureNextHopIsSender:count', repetition)
+            inexplicable_loss -= result.get_metric('routeFailure:count', repetition)
             inexplicable_loss -= result.get_metric('routeFailureNoHopAvailable:count', repetition)
+            inexplicable_loss -= result.get_metric('routeFailureNextHopIsSender:count', repetition)
 
             if inexplicable_loss > 0:
                 sys.stderr.write('~' * 74 + "\n")
