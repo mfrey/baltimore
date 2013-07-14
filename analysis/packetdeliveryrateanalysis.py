@@ -42,6 +42,7 @@ class PacketDeliveryRateAnalysis:
             inexplicable_loss -= result.get_metric('routeFailure:count', repetition)
             inexplicable_loss -= result.get_metric('routeFailureNoHopAvailable:count', repetition)
             inexplicable_loss -= result.get_metric('routeFailureNextHopIsSender:count', repetition)
+            inexplicable_loss -= result.get_metric('dropPacketBecauseEnergyDepleted:count', repetition)
 
             if inexplicable_loss > 0:
                 sys.stderr.write('~' * 74 + "\n")
@@ -63,6 +64,7 @@ class PacketDeliveryRateAnalysis:
         self._print_avg_statistics_line("Route Failures (next hop=sender)",  'routeFailureNextHopIsSender:count', results)
         self._print_avg_statistics_line("Failed Route Discoveries",  'packetUnDeliverable:count', results)
         self._print_avg_statistics_line("Dropped Packets (TTL = 0)", 'dropZeroTTLPacket:count', results)
+        self._print_avg_statistics_line("Dropped Packets because 0 energy",  'dropPacketBecauseEnergyDepleted:count', results)
         self._print_avg_statistics_line("Trapped packets after finish", 'nrOfTrappedPacketsAfterFinish', results)
         print "Average number of route discoveries: %d\n" % results.get_average('newRouteDiscovery:count')
 
