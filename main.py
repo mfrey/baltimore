@@ -49,10 +49,14 @@ def main():
         experiment_manager.read_json(arguments.json_read)
 
     if configuration.settings['db_settings']:
-        database = Database(configuration.settings['db_user'], configuration.settings['db_password'], configuration.settings['db_db'], configuration.settings['db_host'])
-        database.open()
+        database = setup_database_connection(configuration.settings)
         database.add_experiment(experiment_manager.create_json())
         database.close()
+
+def setup_database_connection(settings):
+    database = Database(settings['db_user'], settings['db_password'], settings['db_db'], settings['db_host'])
+    database.open()
+    return database
 
 def get_configuration(arguments):
     if arguments.configuration != "":

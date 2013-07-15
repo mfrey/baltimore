@@ -15,6 +15,7 @@ Installation from git
 		nose	
 		pymongo (>= 2.4)
 		scipy
+        python-wifi
 
 3. Run the program
 
