@@ -1,10 +1,11 @@
 #!/usr/bin/env python2.7
 
-import ConfigParser
+from ConfigParser import ConfigParser, ParsingError
+
 
 class OMNeTConfigurationFileParser:
     def __init__(self, file_name):
-        self.omnetpp_ini_file = ConfigParser.ConfigParser()
+        self.omnetpp_ini_file = ConfigParser(allow_no_value=True)
         self.omnetpp_ini_file.read(file_name)
 
     def get_section(self, section):
@@ -28,7 +29,7 @@ if __name__ == "__main__":
     for setting in configuration.get_section("General"):
         print setting[0], " = ", setting[1]
 
-    result = configuration.get_scenario("ARA600", {})
+#    result = configuration.get_scenario("ARA600", {})
 
-    for key, value in result.items():
-        print key, " = ", value
+#    for key, value in result.items():
+#        print key, " = ", value
