@@ -93,7 +93,7 @@ class ExperimentManager:
         # FIXME: that's a bug if no config.ini file is added
         if is_verbose:
             self._print_general_settings(omnetpp_ini.get_section('General'))
-        
+
         # storing the results in an class attribute
         for job in jobs:
             job.join()
