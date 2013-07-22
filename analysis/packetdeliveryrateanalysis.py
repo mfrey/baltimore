@@ -9,7 +9,6 @@ class PacketDeliveryRateAnalysis:
         self.all_pdr = []
         self.scenario = scenario
 
-
     def evaluate(self, experiment_results, is_verbose=False):
         print "\nRunning PDR analysis.."
 
