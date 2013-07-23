@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.7
 
 import sys
+
 from plot.boxplot import BoxPlot
 
 class PacketDeliveryRateAnalysis:
@@ -43,6 +44,11 @@ class PacketDeliveryRateAnalysis:
             inexplicable_loss -= result.get_metric('routeFailureNoHopAvailable:count', repetition)
             inexplicable_loss -= result.get_metric('routeFailureNextHopIsSender:count', repetition)
 
+            try:
+                inexplicable_loss -= result.get_metric('dropPacketBecauseEnergyDepleted:count', repetition)
+            except KeyError:
+                print "there is no such metric dropPacketBecauseEnergyDepleted:count"
+
             if inexplicable_loss > 0:
                 sys.stderr.write('~' * 74 + "\n")
                 sys.stderr.write("WARNING: The loss of %d packets could not be explained (bug in simulation?)\n" % inexplicable_loss)
@@ -63,6 +69,7 @@ class PacketDeliveryRateAnalysis:
         self._print_avg_statistics_line("Route Failures (next hop=sender)",  'routeFailureNextHopIsSender:count', results)
         self._print_avg_statistics_line("Failed Route Discoveries",  'packetUnDeliverable:count', results)
         self._print_avg_statistics_line("Dropped Packets (TTL = 0)", 'dropZeroTTLPacket:count', results)
+        self._print_avg_statistics_line("Dropped Packets because 0 energy",  'dropPacketBecauseEnergyDepleted:count', results)
         self._print_avg_statistics_line("Trapped packets after finish", 'nrOfTrappedPacketsAfterFinish', results)
         print "Average number of route discoveries: %d\n" % results.get_average('newRouteDiscovery:count')
 
@@ -70,14 +77,17 @@ class PacketDeliveryRateAnalysis:
         nr_of_sent_packets = results.get_average('trafficSent')
         nr_of_digits = self.get_max_nr_of_digits(nr_of_sent_packets)
 
-        average_metric = results.get_average(metric_name)
-        percent = self._get_percent_string(average_metric, nr_of_sent_packets)
-        median = self._get_percent_string(results.get_median(metric_name), nr_of_sent_packets)
-        std_deviation = self._get_percent_string(results.get_standard_deviation(metric_name), nr_of_sent_packets)
-        min = self._get_percent_string(results.get_minimum(metric_name), nr_of_sent_packets)
-        max = self._get_percent_string(results.get_maximum(metric_name), nr_of_sent_packets)
+        try:
+            average_metric = results.get_average(metric_name)
+            percent = self._get_percent_string(average_metric, nr_of_sent_packets)
+            median = self._get_percent_string(results.get_median(metric_name), nr_of_sent_packets)
+            std_deviation = self._get_percent_string(results.get_standard_deviation(metric_name), nr_of_sent_packets)
+            min = self._get_percent_string(results.get_minimum(metric_name), nr_of_sent_packets)
+            max = self._get_percent_string(results.get_maximum(metric_name), nr_of_sent_packets)
 
-        print "%-34s %*d   %s   %s   %s   %s   %s" % (name, nr_of_digits, average_metric, percent, median, std_deviation, min, max)
+            print "%-34s %*d   %s   %s   %s   %s   %s" % (name, nr_of_digits, average_metric, percent, median, std_deviation, min, max)
+        except KeyError:
+            print "there is no such metric ", metric_name
 
     def _print_calculated_statistics_line(self, name, value, results):
         nr_of_sent_packets = results.get_average('trafficSent')
@@ -119,3 +129,4 @@ class PacketDeliveryRateAnalysis:
 
     def get_max_nr_of_digits(self, nr_of_packets):
         return len(str(nr_of_packets))
+

@@ -44,8 +44,8 @@ class ExperimentManager:
 
     def process(self, configuration, is_verbose=False):
         # store the general simulation settings
-#	omnetpp_ini= OMNeTConfigurationFileParser(configuration['cwd'] + '/omnetpp.ini')
-#	self.omnetpp_ini = omnetpp_ini.get_section("General")
+        omnetpp_ini= OMNeTConfigurationFileParser(configuration['cwd'] + '/omnetpp.ini')
+        self.omnetpp_ini = omnetpp_ini.get_section("General")
 
         directory = configuration['cwd']
         scenarios = configuration['scenarios']
