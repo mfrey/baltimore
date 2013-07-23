@@ -199,7 +199,7 @@ class ExperimentManager:
 
             self._write_csv(file_name, header, data)
 
-    def self._generate_csv_file_name(self, name)
+    def _generate_csv_file_name(self, name):
         # do sth. with the name 
         return name + '.csv'
 
