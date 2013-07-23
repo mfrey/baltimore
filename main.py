@@ -50,7 +50,7 @@ def main():
 
     if configuration.settings['db_settings']:
         database = setup_database_connection(configuration.settings)
-        database.add_experiment(experiment_manager.create_json())
+        # database.add_experiment(experiment_manager.create_json())
         database.close()
 
 def setup_database_connection(settings):

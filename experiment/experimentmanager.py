@@ -9,6 +9,7 @@ import itertools
 import collections
 
 from Queue import Empty
+
 from multiprocessing import Process, Queue, Pool
 
 from runner import Runner
@@ -50,7 +51,7 @@ class ExperimentManager:
         directory = configuration['cwd']
         scenarios = configuration['scenarios']
 
-        queue = Queue()
+        queue = Queue(30)
         jobs = []
 
         # single scenario to handle
@@ -92,9 +93,6 @@ class ExperimentManager:
 
         self.generate_packet_delivery_plots(configuration['analysis_location'])
 
-#    def generate_delay_boxplots(self):
-        #plot = BoxPlot()
-        #plot.ylabel = "ms"
 
     def generate_packet_delivery_plots(self, location):
         scenario_list = [e for e in xrange(len(self.experiments))]
