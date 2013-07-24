@@ -44,3 +44,17 @@ class Analysis:
 
     def __setstate__(self, d):
         self.__dict__.update(d)
+
+
+    def print_analysis_header(self, results):
+        nr_of_repetitions = results.get_number_of_repetitions()
+        print "Overall statistics (averaged over %d iterations)" % nr_of_repetitions
+        print '=' * 100
+        print " " * 42 + "#   Average    Median   Std.Dev       Min       Max"
+        print '-' * 100
+
+    def _get_percent_string(self, value, nr_of_packets):
+        if nr_of_packets > 0:
+            return "%6.2f%%" % ((value/float(nr_of_packets)) * 100.0)
+        else:
+            return "  0.00%%"

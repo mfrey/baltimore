@@ -11,7 +11,7 @@ class PacketDeliveryRateAnalysis(Analysis):
     def __init__(self, scenario, location):
         Analysis.__init__(self, scenario, location, "pdr")
         self.logger = logging.getLogger('baltimore.analysis.PacketDeliveryRateAnalysis')
-        self.logger.debug('creating an instance of PacketDeliveryRateAnalysis for scenario ', scenario)
+        self.logger.debug('creating an instance of PacketDeliveryRateAnalysis for scenario %s', scenario)
         self.all_pdr = []
         self.scenario = scenario
        
@@ -69,11 +69,8 @@ class PacketDeliveryRateAnalysis(Analysis):
                 sys.stderr.write('~' * 74 + "\n\n")
 
     def analyse_average_values(self, results):
-        nr_of_repetitions = results.get_number_of_repetitions()
-        print "Overall statistics (averaged over %d iterations)" % nr_of_repetitions
-        print '=' * 100
-        print " " * 41 + "#   Average    Median   Std.Dev       Min       Max"
-        print '-' * 100
+        self.print_analysis_header(results)
+
         self._print_avg_statistics_line("Sent Packets",                      'trafficSent', results)
         self._print_avg_statistics_line("Received Packets",                  'trafficReceived', results)
         self._print_avg_statistics_line("Routing Loops",                     'routingLoopDetected:count', results)
@@ -107,12 +104,6 @@ class PacketDeliveryRateAnalysis(Analysis):
     #    nr_of_sent_packets = results.get_average('trafficSent')
     #    nr_of_digits = self.get_max_nr_of_digits(nr_of_sent_packets)
     #    print "%-26s %*d   %s" % (name, nr_of_digits, value, percent)
-
-    def _get_percent_string(self, value, nr_of_packets):
-        if nr_of_packets > 0:
-            return "%6.2f%%" % ((value/float(nr_of_packets)) * 100.0)
-        else:
-            return "  0.00%%"
 
     def analyse_single_repetitions(self, results):
         for repetition in results:
