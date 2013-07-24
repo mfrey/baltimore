@@ -24,6 +24,8 @@ class ExperimentManagerWorker(multiprocessing.Process):
         self.visualize = configuration['analysis_network']
         self.results_queue = queue
         self.routing_table_trace = configuration['analysis_routing_table_trace']
+        self.logger = logging.getLogger('baltimore.experiment.ExperimentManagerWorker')
+        self.logger.debug('creating an instance of ExperimentManagerWorker')
 
         if configuration['analysis_location'] == "":
             self.location = self.simulations_directory
@@ -31,9 +33,10 @@ class ExperimentManagerWorker(multiprocessing.Process):
             self.location = configuration['analysis_location']
 
     def run(self):
+        pid = os.getpid()
         try:
             # TODO: change this to logging, so we only print it if required
-            print 'Scanning directory "%s" for simulation result files.\nThis may take some time depending on the number of files...' % self.simulations_directory
+            self.logger.info('[%d] Scanning directory "%s" for simulation result files. This may take some time depending on the number of files...' %  (pid, self.simulations_directory))
             # TODO: use some kind of configuration to run more than one experiment
             experiment = Experiment(self.simulations_directory + '/results', self.scenario_name, self.visualize, self.routing_table_trace, self.location)
             experiment_results = experiment.get_results()
@@ -61,14 +64,14 @@ class ExperimentManagerWorker(multiprocessing.Process):
 
             # TODO: change this to logging, so we only print it if required
             nr_of_parsed_files = experiment_results.get_number_of_repetitions()
-            print "\n\nSuccessfully read %d experiment(s) from %d scalar file(s)." % (1, nr_of_parsed_files)
+            self.logger.info("[%d] successfully read %d experiment(s) from %d scalar file(s)." % (pid, 1, nr_of_parsed_files))
            
             result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser)
 #            result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser, delayAnalyser)
             self.results_queue.put(result)
 
         except Exception as exception:
-            print "An error occurred while evaluating experiment", self.scenario_name, ": ", exception
+            self.logger.error("[%d] an error occurred while evaluating experiment %s" % (pid, str(self.scenario_name) + " : " + str(exception)))
             print '-'*60
             traceback.print_exc(file=sys.stdout)
             print '-'*60

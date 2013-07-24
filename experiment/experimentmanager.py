@@ -31,10 +31,11 @@ class ExperimentManager:
 
     def check_result_files(self, directory, scenarios):
         result = self._check_result_directory_for_results(directory, scenarios)
-        # probably a better way to do it
         non_existing_scenarios = [scenario[0] for scenario in result if scenario[1] == False]
+
         for scenario in non_existing_scenarios:
-            print "There is no scenario", scenario, "to analyze!"
+            self.logger.error("There is no scenario", scenario, "to analyze!")
+
         # return a list of the remaining scenarios
         return list(set(scenarios) - set(non_existing_scenarios))
 
@@ -92,10 +93,10 @@ class ExperimentManager:
                     self._print_scenario_settings(omnetpp_ini.get_scenario(result[0].scenario_name))
 
             except Empty:
-                print "Could not retrieve result data for scenario", job.scenario_name, "(might have failed earlier)"
+                self.logger.error("Could not retrieve result data for scenario", job.scenario_name, "(might have failed earlier)")
 
 
-#        self.generate_packet_delivery_plots(configuration['analysis_location'])
+        self.generate_packet_delivery_plots(configuration['analysis_location'])
 
 
     def generate_packet_delivery_plots(self, location):
