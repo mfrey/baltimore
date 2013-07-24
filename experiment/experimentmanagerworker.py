@@ -32,8 +32,10 @@ class ExperimentManagerWorker(multiprocessing.Process):
         else:
             self.location = configuration['analysis_location']
 
+
     def run(self):
         pid = os.getpid()
+
         try:
             # TODO: change this to logging, so we only print it if required
             self.logger.info('[%d] Scanning directory "%s" for simulation result files. This may take some time depending on the number of files...' %  (pid, self.simulations_directory))
@@ -46,9 +48,7 @@ class ExperimentManagerWorker(multiprocessing.Process):
             pdrAnalyser.evaluate(experiment_results, self.verbose)
             pdrAnalyser.get_packet_delivery_rate(experiment_results)
 
-            print pdrAnalyser.__dict__
-
-            overheadAnalyser = OverheadAnalysis()
+            overheadAnalyser = OverheadAnalysis(self.scenario_name, self.location)
             overheadAnalyser.evaluate(experiment_results, self.verbose)
 
             delayAnalyser = DelayAnalysis(self.scenario_name, self.location)

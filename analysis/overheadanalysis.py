@@ -1,14 +1,45 @@
 #!/usr/bin/env python2.7
 
 import sys
+import logging
 
-class OverheadAnalysis:
+import numpy as np
+
+from analysis import Analysis
+
+class OverheadAnalysis(Analysis):
+    def __init__(self, scenario, location):
+        Analysis.__init__(self, scenario, location, "overhead")
+        self.logger = logging.getLogger('baltimore.analysis.OverheadAnalysis')
+        self.logger.debug('creating an instance of OverheadAnalysis for scenario ', scenario)
 
     def evaluate(self, experiment_results, is_verbose=False):
-        print "\nRunning Overhead analysis.."
+        self.logger.info("running overhead analysis..")
 
         # TODO printout single repetition data
         self.analyse_average_values(experiment_results)
+
+    # add support for bitwise overhead (and not only packetwise)
+    def _compute_overhead(self, results):
+        self.overhead = []
+
+        for repetition in results:
+           data_packets = results.get_metric('nrOfDataPackets', repetition)
+           control_packets = results.get_metric('nrOfControlPackets', repetition)
+           all_packets = data_packets + control_packets
+           overhead.append(control_packets/all_packets)
+
+
+    def _get_overhead(self, results):
+        if len(self.overhead) == 0:
+            self._compute_overhead(results)
+
+        self.data_min = np.amin(self.overhead)
+        self.data_max = np.amax(self.overhead)
+        self.data_median = np.median(self.overhead)
+        self.data_std = np.std(self.overhead)
+        self.data_avg = np.average(self.overhead)
+           
 
     def analyse_average_values(self, results):
         self.print_analysis_header(results)
