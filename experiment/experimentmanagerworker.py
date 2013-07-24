@@ -66,8 +66,9 @@ class ExperimentManagerWorker(multiprocessing.Process):
             nr_of_parsed_files = experiment_results.get_number_of_repetitions()
             self.logger.info("[%d] successfully read %d experiment(s) from %d scalar file(s)." % (pid, 1, nr_of_parsed_files))
            
-            result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser)
+#            result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser)
 #            result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser, delayAnalyser)
+            result = (experiment, delayAnalyser)
             self.results_queue.put(result)
 
         except Exception as exception:
