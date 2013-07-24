@@ -10,7 +10,7 @@ from analysis import Analysis
 class DelayAnalysis(Analysis):
     def __init__(self, scenario, location):
         Analysis.__init__(self, scenario, location, "delay")
-	# there can be multiple traffic sinks, we store the delay values by means of { node : [] }
+	    # there can be multiple traffic sinks, we store the delay values by means of { node : [] }
         self.delay = {}
 
     def evaluate(self, experiment_results, is_verbose=False):
@@ -20,7 +20,8 @@ class DelayAnalysis(Analysis):
             for node in nodes:
                 if node not in self.delay:
                     self.delay[node] = []
-                self.delay[node].append(experiment_results.get_metric_per_node("delay", node, repetition))
+                result = experiment_results.get_metric_per_node("delay", node, repetition)
+                self.delay[node].append(result)
                       
         for node, delay in self.delay.iteritems():
             self.metric = "delay_node-" + str(node)

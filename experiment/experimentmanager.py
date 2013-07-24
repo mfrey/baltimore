@@ -24,6 +24,8 @@ from parser.omnetconfigurationfileparser import OMNeTConfigurationFileParser
 class ExperimentManager:
     def __init__(self, baltimore_revision, libara_revision):
         self.experiments = {}
+        self.logger = logging.getLogger('baltimore.experiment.ExperimentManager')
+        self.logger.debug('creating an instance of ExperimentManager')
         self.baltimore_revision = baltimore_revision
         self.libara_revision = libara_revision
 
@@ -51,7 +53,7 @@ class ExperimentManager:
         directory = configuration['cwd']
         scenarios = configuration['scenarios']
 
-        queue = Queue(30)
+        queue = Queue()
         jobs = []
 
         # single scenario to handle
@@ -74,11 +76,12 @@ class ExperimentManager:
         # FIXME: that's a bug if no config.ini file is added
         if is_verbose:
             self._print_general_settings(omnetpp_ini.get_section('General'))
-
+        
         # storing the results in an class attribute
         for job in jobs:
             job.join()
-            # TODO: It might be better to remove the try/except and put an error code in the code (by the producer)
+
+            # TODO: It might be better to remove the try/except and put an error code in the queue (by the producer)
             # instead over an timeout
             try:
                 result = queue.get(True, 1)
@@ -91,7 +94,8 @@ class ExperimentManager:
             except Empty:
                 print "Could not retrieve result data for scenario", job.scenario_name, "(might have failed earlier)"
 
-        self.generate_packet_delivery_plots(configuration['analysis_location'])
+
+#        self.generate_packet_delivery_plots(configuration['analysis_location'])
 
 
     def generate_packet_delivery_plots(self, location):
@@ -157,7 +161,7 @@ class ExperimentManager:
         return encoder.encode(self)
 
     def write_json(self, file_name):
-        data = self.crete_json()
+        data = self.create_json()
 
         with open(file_name, 'w') as json_file:
             json.dump(data, json_file)

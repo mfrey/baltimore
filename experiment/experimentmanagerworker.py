@@ -62,9 +62,10 @@ class ExperimentManagerWorker(multiprocessing.Process):
             # TODO: change this to logging, so we only print it if required
             nr_of_parsed_files = experiment_results.get_number_of_repetitions()
             print "\n\nSuccessfully read %d experiment(s) from %d scalar file(s)." % (1, nr_of_parsed_files)
-
-            # store the result
-            self.results_queue.put((experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser, delayAnalyser), True, 1)
+           
+            result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser)
+#            result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser, delayAnalyser)
+            self.results_queue.put(result)
 
         except Exception as exception:
             print "An error occurred while evaluating experiment", self.scenario_name, ": ", exception

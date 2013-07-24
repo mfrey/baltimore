@@ -2,6 +2,7 @@
 
 import os
 import sys
+import logging
 import argparse
 
 import matplotlib
@@ -13,6 +14,14 @@ from configuration.configuration import Configuration
 from experiment.experimentmanager import ExperimentManager
 
 def main():
+    logger = logging.getLogger('baltimore')
+    logger.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.DEBUG)
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+
     parser = argparse.ArgumentParser(description='baltimore - an evaluation script for the ara-sim framework')
     parser.add_argument('-c', dest='configuration', type=str, default="", action='store', help='a configuarion file for baltimore')
     parser.add_argument('-d', dest='directory', type=str, default="", action='store', help='a directory which contains OMNeT++ result files')
