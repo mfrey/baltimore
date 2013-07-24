@@ -1,16 +1,13 @@
 #!/usr/bin/env python2.7
 
-import os.path
-import sys
 import numpy as np
 
-from plot.boxplot import BoxPlot
 from analysis import Analysis
 
 class DelayAnalysis(Analysis):
     def __init__(self, scenario, location):
         Analysis.__init__(self, scenario, location, "delay")
-	    # there can be multiple traffic sinks, we store the delay values by means of { node : [] }
+        # there can be multiple traffic sinks, we store the delay values by means of { node : [] }
         self.delay = {}
 
     def evaluate(self, experiment_results, is_verbose=False):

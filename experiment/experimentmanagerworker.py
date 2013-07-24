@@ -42,9 +42,11 @@ class ExperimentManagerWorker(multiprocessing.Process):
             experiment_results = experiment.get_results()
 
             # TODO: use some kind of configuration to run more specific analysations
-            pdrAnalyser = PacketDeliveryRateAnalysis(self.scenario_name)
-            pdrAnalyser.get_packet_delivery_rate(experiment_results)
+            pdrAnalyser = PacketDeliveryRateAnalysis(self.scenario_name, self.location)
             pdrAnalyser.evaluate(experiment_results, self.verbose)
+            pdrAnalyser.get_packet_delivery_rate(experiment_results)
+
+            print pdrAnalyser.__dict__
 
             overheadAnalyser = OverheadAnalysis()
             overheadAnalyser.evaluate(experiment_results, self.verbose)
@@ -62,13 +64,10 @@ class ExperimentManagerWorker(multiprocessing.Process):
 #            pathEnergyAnalyser.evaluate(experiment_results, self.verbose)
 #            pathEnergyAnalyser.evaluate_different(experiment_results)
 
-            # TODO: change this to logging, so we only print it if required
-            nr_of_parsed_files = experiment_results.get_number_of_repetitions()
-            self.logger.info("[%d] successfully read %d experiment(s) from %d scalar file(s)." % (pid, 1, nr_of_parsed_files))
-           
-#            result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser)
-#            result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser, delayAnalyser)
-            result = (experiment, delayAnalyser)
+            #result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser, delayAnalyser)
+            result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser)
+
+            self.logger.info("[%d] successfully read %d experiment(s) from %d scalar file(s)." % (pid, 1, experiment_results.get_number_of_repetitions()))
             self.results_queue.put(result)
 
         except Exception as exception:

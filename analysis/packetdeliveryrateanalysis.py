@@ -1,53 +1,66 @@
 #!/usr/bin/env python2.7
 
 import sys
+import logging
 
-from plot.boxplot import BoxPlot
+import numpy as np
 
-class PacketDeliveryRateAnalysis:
-    def __init__(self, scenario):
+from analysis import Analysis
+
+class PacketDeliveryRateAnalysis(Analysis):
+    def __init__(self, scenario, location):
+        Analysis.__init__(self, scenario, location, "pdr")
+        self.logger = logging.getLogger('baltimore.analysis.PacketDeliveryRateAnalysis')
+        self.logger.debug('creating an instance of PacketDeliveryRateAnalysis for scenario ', scenario)
         self.all_pdr = []
         self.scenario = scenario
-
+       
 
     def evaluate(self, experiment_results, is_verbose=False):
-        print "\nRunning PDR analysis.."
+        self.logger.info("running PDR analysis..")
 
         if is_verbose:
             self.analyse_single_repetitions(experiment_results)
         self.check_no_inexplicable_loss(experiment_results)
         self.analyse_average_values(experiment_results)
 
-        for repetition in experiment_results:
-            pdr = experiment_results.get_metric('trafficReceived', repetition)/experiment_results.get_metric('trafficSent', repetition)
-            self.all_pdr.append(pdr)
+        self._compute_pdr(experiment_results)
 
         # make a pdr box plot over all repetitions
-        plot = BoxPlot()
-        plot.title = "Packet Delivery Rate per Scenario"
-        plot.ylabel = "Packet Delivery Rate"
-        plot.draw(self.all_pdr, self.scenario + "_pdr.png")
+        self.plot_boxplot("Packet Delivery Rate per Scenario", "", "Packet Delivery Rate", self.all_pdr)
+
+    def _compute_pdr(self, results):
+        for repetition in results:
+            pdr = results.get_metric('trafficReceived', repetition)/results.get_metric('trafficSent', repetition)
+            self.all_pdr.append(pdr)
 
 
     def get_packet_delivery_rate(self, results):
-        avg_traffic_sent = results.get_average("trafficSent")
-        avg_traffic_received = results.get_average("trafficReceived")
-        self.pdr = float(avg_traffic_received/avg_traffic_sent)
+        if len(self.all_pdr) == 0:
+            self._compute_pdr(results)
+
+        self.data_min = np.amin(self.all_pdr)
+        self.data_max = np.amax(self.all_pdr)
+        self.data_median = np.median(self.all_pdr)
+        self.data_std = np.std(self.all_pdr)
+        self.data_avg = np.average(self.all_pdr)
+
+        # TODO: cleanup
+        self.pdr = self.data_avg
 
     def check_no_inexplicable_loss(self, result):
-        for repetition in result:
-            inexplicable_loss  = result.get_metric('trafficSent', repetition) - result.get_metric('trafficReceived', repetition)
-            inexplicable_loss -= result.get_metric('routingLoopDetected:count', repetition)
-            inexplicable_loss -= result.get_metric('packetUnDeliverable:count', repetition)
-            inexplicable_loss -= result.get_metric('dropZeroTTLPacket:count', repetition)
-            inexplicable_loss -= result.get_metric('routeFailure:count', repetition)
-            inexplicable_loss -= result.get_metric('routeFailureNoHopAvailable:count', repetition)
-            inexplicable_loss -= result.get_metric('routeFailureNextHopIsSender:count', repetition)
-
+        for repetition in result:            
             try:
+                inexplicable_loss  = result.get_metric('trafficSent', repetition) - result.get_metric('trafficReceived', repetition)
+                inexplicable_loss -= result.get_metric('routingLoopDetected:count', repetition)
+                inexplicable_loss -= result.get_metric('packetUnDeliverable:count', repetition)
+                inexplicable_loss -= result.get_metric('dropZeroTTLPacket:count', repetition)
+                inexplicable_loss -= result.get_metric('routeFailure:count', repetition)
+                inexplicable_loss -= result.get_metric('routeFailureNoHopAvailable:count', repetition)
+                inexplicable_loss -= result.get_metric('routeFailureNextHopIsSender:count', repetition)
                 inexplicable_loss -= result.get_metric('dropPacketBecauseEnergyDepleted:count', repetition)
             except KeyError:
-                print "there is no such metric dropPacketBecauseEnergyDepleted:count"
+                self.logger.error("there is no such metric")
 
             if inexplicable_loss > 0:
                 sys.stderr.write('~' * 74 + "\n")
@@ -78,21 +91,22 @@ class PacketDeliveryRateAnalysis:
         nr_of_digits = self.get_max_nr_of_digits(nr_of_sent_packets)
 
         try:
-            average_metric = results.get_average(metric_name)
-            percent = self._get_percent_string(average_metric, nr_of_sent_packets)
-            median = self._get_percent_string(results.get_median(metric_name), nr_of_sent_packets)
-            std_deviation = self._get_percent_string(results.get_standard_deviation(metric_name), nr_of_sent_packets)
-            min = self._get_percent_string(results.get_minimum(metric_name), nr_of_sent_packets)
-            max = self._get_percent_string(results.get_maximum(metric_name), nr_of_sent_packets)
+            data_avg = results.get_average(metric_name)
+            percent = self._get_percent_string(data_avg, nr_of_sent_packets)
+            data_median = self._get_percent_string(results.get_median(metric_name), nr_of_sent_packets)
+            data_std = self._get_percent_string(results.get_standard_deviation(metric_name), nr_of_sent_packets)
+            data_min = self._get_percent_string(results.get_minimum(metric_name), nr_of_sent_packets)
+            data_max = self._get_percent_string(results.get_maximum(metric_name), nr_of_sent_packets)
 
-            print "%-34s %*d   %s   %s   %s   %s   %s" % (name, nr_of_digits, average_metric, percent, median, std_deviation, min, max)
+            print "%-34s %*d   %s   %s   %s   %s   %s" % (name, nr_of_digits, data_avg, percent, data_median, data_std, data_min, data_max)
         except KeyError:
-            print "there is no such metric ", metric_name
+            self.logger.error("there is no such metric ", metric_name)
 
-    def _print_calculated_statistics_line(self, name, value, results):
-        nr_of_sent_packets = results.get_average('trafficSent')
-        nr_of_digits = self.get_max_nr_of_digits(nr_of_sent_packets)
-        print "%-26s %*d   %s" % (name, nr_of_digits, value, percent)
+# percent argument missing
+    #def _print_calculated_statistics_line(self, name, value, results):
+    #    nr_of_sent_packets = results.get_average('trafficSent')
+    #    nr_of_digits = self.get_max_nr_of_digits(nr_of_sent_packets)
+    #    print "%-26s %*d   %s" % (name, nr_of_digits, value, percent)
 
     def _get_percent_string(self, value, nr_of_packets):
         if nr_of_packets > 0:

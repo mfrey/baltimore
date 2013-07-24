@@ -1,6 +1,8 @@
 #!/usr/bin/env python2.7
 
+
 import os.path
+import logging
 
 from plot.boxplot import BoxPlot
 from plot.lineplot import LinePlot
@@ -11,6 +13,7 @@ class Analysis:
         self.scenario = scenario
         self.location = location
         self.metric = metric
+        self.logger = logging.getLogger('baltimore.analysis.Analysis')
 
     def plot_lineplot(self, title, x_label, y_label, x_data, y_data):
         plot = LinePlot()
@@ -33,3 +36,11 @@ class Analysis:
         plot.ylabel = y_label
         plot.bar_widths = bar_widths
         plot.draw(x_data, y_data, os.path.join(self.location, self.scenario + "_" + self.metric + ".png"))
+        
+    def __getstate__(self):
+        d = dict(self.__dict__)
+        del d['logger']
+        return d        
+
+    def __setstate__(self, d):
+        self.__dict__.update(d)
