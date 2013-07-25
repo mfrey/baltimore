@@ -23,8 +23,8 @@ from parser.omnetconfigurationfileparser import OMNeTConfigurationFileParser
 class ExperimentManager:
     def __init__(self, baltimore_revision, libara_revision):
         self.experiments = {}
-        self.logger = logging.getLogger('baltimore.experiment.ExperimentManager')
-        self.logger.debug('creating an instance of ExperimentManager')
+       # self.logger = logging.getLogger('baltimore.experiment.ExperimentManager')
+       # self.logger.debug('creating an instance of ExperimentManager')
         self.baltimore_revision = baltimore_revision
         self.libara_revision = libara_revision
 
@@ -34,6 +34,7 @@ class ExperimentManager:
 
         for scenario in non_existing_scenarios:
             self.logger.error("There is no scenario", scenario, "to analyze!")
+            print "There is no scenario", scenario, "to analyze!"
 
         # return a list of the remaining scenarios
         return list(set(scenarios) - set(non_existing_scenarios))
@@ -92,7 +93,8 @@ class ExperimentManager:
                     self._print_scenario_settings(omnetpp_ini.get_scenario(result[0].scenario_name))
 
             except Empty:
-                self.logger.error("Could not retrieve result data for scenario ", job.scenario_name, " (might have failed earlier)")
+                #self.logger.error("Could not retrieve result data for scenario ", job.scenario_name, " (might have failed earlier)")
+                print "Could not retrieve result data for scenario ", job.scenario_name, " (might have failed earlier)"
 
 
         #self.generate_packet_delivery_plots(configuration['analysis_location'])
@@ -175,3 +177,11 @@ class ExperimentManager:
 
         ist = decoder.dict_to_object(obj)
         print ist
+
+#    def __getstate__(self):
+ #       d = dict(self.__dict__)
+ #       del d['logger']
+ #       return d        
+
+  #  def __setstate__(self, d):
+        self.__dict__.update(d)
