@@ -64,8 +64,7 @@ class ExperimentManagerWorker(multiprocessing.Process):
 #            pathEnergyAnalyser.evaluate(experiment_results, self.verbose)
 #            pathEnergyAnalyser.evaluate_different(experiment_results)
 
-            #result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser, delayAnalyser)
-            result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser)
+            result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser, delayAnalyser)
 
             self.logger.info("[%d] successfully read %d experiment(s) from %d scalar file(s)." % (pid, 1, experiment_results.get_number_of_repetitions()))
             self.results_queue.put(result)
