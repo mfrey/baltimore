@@ -51,6 +51,9 @@ class ExperimentManager:
         omnetpp_ini= OMNeTConfigurationFileParser(configuration['cwd'] + '/omnetpp.ini')
         self.omnetpp_ini = omnetpp_ini.get_section("General")
 
+        self.omnetpp_ini_checksum = omnetpp_ini.omnetpp_ini_hash
+        self.standard_ini_checksum = omnetpp_ini.standard_ini_hash
+
         directory = configuration['cwd']
         scenarios = configuration['scenarios']
 
