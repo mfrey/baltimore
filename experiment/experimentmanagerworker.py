@@ -54,11 +54,15 @@ class ExperimentManagerWorker(multiprocessing.Process):
             delayAnalyser = DelayAnalysis(self.scenario_name, self.location)
             delayAnalyser.evaluate(experiment_results, self.verbose)
 
-            energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name, self.location)
-            energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
-
             lastPacketAnalyser = LastPacketAnalysis(self.scenario_name, self.location)
             lastPacketAnalyser.evaluate(experiment_results, self.verbose)
+
+            max_timestamp = lastPacketAnalyser.data_max
+
+            energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name, self.location, max_timestamp)
+            energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
+
+
 
 #            pathEnergyAnalyser = PathEnergyAnalysis(self.scenario_name, self.location)
 #            pathEnergyAnalyser.evaluate(experiment_results, self.verbose)

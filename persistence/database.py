@@ -46,7 +46,6 @@ class Database:
         experiments = self.database['experiments']
         result = experiments.find({ "experiments." + scenario : { "$exists": True}, "omnetpp_ini_checksum" : omnetpp_ini_checksum, "standard_ini_checksum" : standard_ini_checksum}).count()
 #DEBUG:        print "experiments.find({ experiments." + scenario + ": { $exists : True},  omnetpp_ini_checksum : " + omnetpp_ini_checksum + ", standard_ini_checksum : " + standard_ini_checksum + "}).count()"
-        print "result is ", result
         return result != 0
       
 if __name__ == "__main__":
