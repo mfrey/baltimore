@@ -40,6 +40,12 @@ class Configuration(object):
                 self.settings['analysis_network'] = False
                 self.settings['analysis_settings'] = False
 
+            try:
+                self.settings['testbed_interface'] = parser.get('Testbed', 'interface')
+                self.settings['testbed_settings'] = True
+            except NoSectionError:
+                self.settings['testbed_settings'] = False
+
             self._build_ned_path()
             self._build_omnetpp_ini_path()
             self._build_ld_library_path()
