@@ -1,19 +1,37 @@
 #!/usr/bin/env python2.7
 
+import os
+import socket
+
 from socket import error
 from experiment import TestbedSetup
 
 class TestbedExperimentManager:
-    def __init__(self, interface):
+    def __init__(self, settings):
         self.nodes = []
         self.port = 4519
-        self.interface = interface
+        self.interface = settings['testbed_interface'] 
+
+        self.binary = settings['ara_home'] + '/testbed/des-ara.init'
+        self.ld_library_path = settings['ld_library_path']
+        self.cwd = settings['cwd']
+
+        self.environment = dict(os.environ)
+        self.environment['LD_LIBRARY_PATH'] = self.ld_library_path
 
    def setup(self):
        self._setup_interfaces()
 
+       hostname = socket.gethostname()
+
+       # TODO: fixit
+       logfile_path = self.cwd + '/' + hostname + '-Log.txt'
+
+       with open(logfile_path, 'w') as logfile:
+            call([self.binary, "start"], env=self.environment, cwd=self.cwd, stdout=logfile)
+
    def shutdown(self): 
-       raise "not yet implemented"
+       call([self.binary, "stop"], env=self.environment, cwd=self.cwd, stdout=logfile)
 
    def _setup_interfaces(self):
        setup = TestbedSetup(self.interface)
