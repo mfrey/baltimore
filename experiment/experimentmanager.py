@@ -1,7 +1,6 @@
 #!/usr/bin/env python2.7
 
 import os
-import sys
 import json
 import runner
 import logging
@@ -9,6 +8,7 @@ import itertools
 import collections
 
 from Queue import Empty
+
 from multiprocessing import Process, Queue, Pool
 
 from runner import Runner
@@ -23,15 +23,19 @@ from parser.omnetconfigurationfileparser import OMNeTConfigurationFileParser
 class ExperimentManager:
     def __init__(self, baltimore_revision, libara_revision):
         self.experiments = {}
+       # self.logger = logging.getLogger('baltimore.experiment.ExperimentManager')
+       # self.logger.debug('creating an instance of ExperimentManager')
         self.baltimore_revision = baltimore_revision
         self.libara_revision = libara_revision
 
     def check_result_files(self, directory, scenarios):
         result = self._check_result_directory_for_results(directory, scenarios)
-        # probably a better way to do it
         non_existing_scenarios = [scenario[0] for scenario in result if scenario[1] == False]
+
         for scenario in non_existing_scenarios:
+            self.logger.error("There is no scenario", scenario, "to analyze!")
             print "There is no scenario", scenario, "to analyze!"
+
         # return a list of the remaining scenarios
         return list(set(scenarios) - set(non_existing_scenarios))
 
@@ -46,6 +50,9 @@ class ExperimentManager:
         # store the general simulation settings
         omnetpp_ini= OMNeTConfigurationFileParser(configuration['cwd'] + '/omnetpp.ini')
         self.omnetpp_ini = omnetpp_ini.get_section("General")
+
+        self.omnetpp_ini_checksum = omnetpp_ini.omnetpp_ini_hash
+        self.standard_ini_checksum = omnetpp_ini.standard_ini_hash
 
         directory = configuration['cwd']
         scenarios = configuration['scenarios']
@@ -73,11 +80,12 @@ class ExperimentManager:
         # FIXME: that's a bug if no config.ini file is added
         if is_verbose:
             self._print_general_settings(omnetpp_ini.get_section('General'))
-
+        
         # storing the results in an class attribute
         for job in jobs:
             job.join()
-            # TODO: It might be better to remove the try/except and put an error code in the code (by the producer)
+
+            # TODO: It might be better to remove the try/except and put an error code in the queue (by the producer)
             # instead over an timeout
             try:
                 result = queue.get(True, 1)
@@ -88,13 +96,12 @@ class ExperimentManager:
                     self._print_scenario_settings(omnetpp_ini.get_scenario(result[0].scenario_name))
 
             except Empty:
-                print "Could not retrieve result data for scenario", job.scenario_name, "(might have failed earlier)"
+                #self.logger.error("Could not retrieve result data for scenario ", job.scenario_name, " (might have failed earlier)")
+                print "Could not retrieve result data for scenario ", job.scenario_name, " (might have failed earlier)"
 
-        self.generate_packet_delivery_plots(configuration['analysis_location'])
 
-#    def generate_delay_boxplots(self):
-        #plot = BoxPlot()
-        #plot.ylabel = "ms"
+        #self.generate_packet_delivery_plots(configuration['analysis_location'])
+
 
     def generate_packet_delivery_plots(self, location):
         scenario_list = [e for e in xrange(len(self.experiments))]
@@ -159,13 +166,12 @@ class ExperimentManager:
         return encoder.encode(self)
 
     def write_json(self, file_name):
-        data = self.crete_json()
+        data = self.create_json()
 
         with open(file_name, 'w') as json_file:
             json.dump(data, json_file)
 
     def read_json(self, file_name):
-        data = {}
         decoder = BaltimoreJSONDecoder()
         obj = []
 
@@ -174,3 +180,11 @@ class ExperimentManager:
 
         ist = decoder.dict_to_object(obj)
         print ist
+
+#    def __getstate__(self):
+ #       d = dict(self.__dict__)
+ #       del d['logger']
+ #       return d        
+
+  #  def __setstate__(self, d):
+        self.__dict__.update(d)
