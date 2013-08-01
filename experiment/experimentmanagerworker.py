@@ -62,8 +62,6 @@ class ExperimentManagerWorker(multiprocessing.Process):
             energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name, self.location, max_timestamp)
             energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
 
-
-
 #            pathEnergyAnalyser = PathEnergyAnalysis(self.scenario_name, self.location)
 #            pathEnergyAnalyser.evaluate(experiment_results, self.verbose)
 #            pathEnergyAnalyser.evaluate_different(experiment_results)

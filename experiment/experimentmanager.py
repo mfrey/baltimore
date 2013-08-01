@@ -1,6 +1,8 @@
 #!/usr/bin/env python2.7
 
 import os
+import csv
+import sys
 import json
 import runner
 import logging
@@ -12,10 +14,10 @@ from Queue import Empty
 from multiprocessing import Process, Queue, Pool
 
 from runner import Runner
-from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
 from plot.boxplot import BoxPlot
 from experiment import Experiment
 from experimentmanagerworker import ExperimentManagerWorker
+from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
 from persistence.baltimorejsonencoder import BaltimoreJSONEncoder
 from persistence.baltimorejsondecoder import BaltimoreJSONDecoder
 from parser.omnetconfigurationfileparser import OMNeTConfigurationFileParser
@@ -181,10 +183,46 @@ class ExperimentManager:
         ist = decoder.dict_to_object(obj)
         print ist
 
-#    def __getstate__(self):
- #       d = dict(self.__dict__)
- #       del d['logger']
- #       return d        
+    def __getstate__(self):
+        d = dict(self.__dict__)
+        del d['logger']
+        return d        
 
-  #  def __setstate__(self, d):
+    def __setstate__(self, d):
         self.__dict__.update(d)
+
+    def write_analysis_to_csv(self, analyses):
+        # sort the experiments
+        experiments = collections.OrderedDict(sorted(self.experiments.items()))
+        # we sort the analysis data in a dict
+        analyses = {}
+
+        # fetch the data
+        for experiment in experiments:
+            for analysis in self.experiments[experiment]:
+                analyses[analysis.metric].append([analysis.scenario, analysis.data_min, 
+                                                  analysis.data_max, analysis.data_median, 
+                                                  analysis.data_std, analysis.data_avg])
+
+        # write the data
+        for analysis, data in analyses.items():
+            file_name = self._generate_csv_file_name(analysis)
+
+            # todo: fix the value
+            if len(data[0]) > 2:
+                header = ['identifier', 'min', 'median', 'max', 'std', 'avg']
+            else:
+                header = ['identifier', 'value']
+
+            self._write_csv(file_name, header, data)
+
+    def _generate_csv_file_name(self, name):
+        # do sth. with the name 
+        return name + '.csv'
+
+    def _write_csv(self, file_name, header, data):
+        with open(file_name, "wb") as csvfile:
+            writer = csv.writer(csvfile, delimiter=',',
+                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            writer.writerow(header)
+            writer.writerow(data)
