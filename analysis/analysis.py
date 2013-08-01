@@ -10,13 +10,14 @@ from plot.lineplot import LinePlot
 from plot.barchart import BarChart
 
 class Analysis:
-    def __init__(self, scenario, location, metric, repetitions):
+    def __init__(self, scenario, location, metric, repetitions, csv):
         self.scenario = scenario
         self.location = location
         self.metric = metric
         self.logger = logging.getLogger('baltimore.analysis.Analysis')
 	self.date = datetime.datetime.now()
 	self.repetitions = repetitions
+        self.csv = csv
 
     def plot_lineplot(self, title, x_label, y_label, x_data, y_data):
         plot = LinePlot()

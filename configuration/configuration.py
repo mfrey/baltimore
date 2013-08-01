@@ -37,6 +37,7 @@ class Configuration(object):
                 self.settings['analysis_settings'] = True
             except NoSectionError:
                 self.settings['analysis_routing_table_trace'] = False
+                self.settings['analysis_csv'] = False
                 self.settings['analysis_location'] = ""
                 self.settings['analysis_network'] = False
                 self.settings['analysis_settings'] = False

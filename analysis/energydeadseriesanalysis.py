@@ -8,8 +8,8 @@ import numpy as np
 from analysis import Analysis
 
 class EnergyDeadSeriesAnalysis(Analysis):
-    def __init__(self, scenario, location, timestamp, repetitions):
-        Analysis.__init__(self, scenario, location, "energy-dead-series", repetitions)
+    def __init__(self, scenario, location, timestamp, repetitions, csv):
+        Analysis.__init__(self, scenario, location, "energy-dead-series", repetitions, csv)
 
         self.logger = logging.getLogger('baltimore.analysis.EnergyDeadSeriesAnalysis')
         self.logger.debug('creating an instance of EnergyDeadSeriesAnalysis for scenario %s', scenario)

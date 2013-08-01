@@ -8,25 +8,28 @@ import numpy as np
 from analysis import Analysis
 
 class OverheadAnalysis(Analysis):
-    def __init__(self, scenario, location, repetitions):
-        Analysis.__init__(self, scenario, location, "overhead", repetitions)
+    def __init__(self, scenario, location, repetitions, csv):
+        Analysis.__init__(self, scenario, location, "overhead", repetitions, csv)
         self.logger = logging.getLogger('baltimore.analysis.OverheadAnalysis')
         self.logger.debug('creating an instance of OverheadAnalysis for scenario %s', scenario)
+        self.overhead = []
 
     def evaluate(self, experiment_results, is_verbose=False):
         self.logger.info("running overhead analysis..")
         # TODO printout single repetition data
         self.analyse_average_values(experiment_results)
+        self._get_overhead(experiment_results)
+
+        if self.csv:
+            self.export_csv()
 
     # add support for bitwise overhead (and not only packetwise)
     def _compute_overhead(self, results):
-        self.overhead = []
-
         for repetition in results:
            data_packets = results.get_metric('nrOfDataPackets', repetition)
            control_packets = results.get_metric('nrOfControlPackets', repetition)
            all_packets = data_packets + control_packets
-           overhead.append(control_packets/all_packets)
+           self.overhead.append(control_packets/all_packets)
 
     def _get_overhead(self, results):
         if len(self.overhead) == 0:
@@ -77,3 +80,11 @@ class OverheadAnalysis(Analysis):
         max = self._get_percent_string(results.get_maximum(metric_name), total)
 
         print "%-34s %*d   %s   %s   %s   %s   %s" % (name, nr_of_digits, average_metric, percent, median, std_deviation, min, max)
+
+    def export_csv(self):
+        file_name = self.scenario + "_" + self.metric + "_aggregated.csv"
+	disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - overhead (packets) for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
+	header = ['min', 'max', 'median', 'std', 'avg']
+	data = [[self.data_min, self.data_max, self.data_median, self.data_std,  self.data_avg]]
+
+        self._write_csv_file(file_name, disclaimer, header, data)
