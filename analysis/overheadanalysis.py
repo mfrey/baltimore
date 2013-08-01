@@ -8,8 +8,8 @@ import numpy as np
 from analysis import Analysis
 
 class OverheadAnalysis(Analysis):
-    def __init__(self, scenario, location):
-        Analysis.__init__(self, scenario, location, "overhead")
+    def __init__(self, scenario, location, repetitions):
+        Analysis.__init__(self, scenario, location, "overhead", repetitions)
         self.logger = logging.getLogger('baltimore.analysis.OverheadAnalysis')
         self.logger.debug('creating an instance of OverheadAnalysis for scenario %s', scenario)
 

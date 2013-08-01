@@ -8,8 +8,8 @@ import numpy as np
 from analysis import Analysis
 
 class PacketDeliveryRateAnalysis(Analysis):
-    def __init__(self, scenario, location):
-        Analysis.__init__(self, scenario, location, "pdr")
+    def __init__(self, scenario, location, repetitions):
+        Analysis.__init__(self, scenario, location, "pdr", repetitions)
         self.logger = logging.getLogger('baltimore.analysis.PacketDeliveryRateAnalysis')
         self.logger.debug('creating an instance of PacketDeliveryRateAnalysis for scenario %s', scenario)
         self.all_pdr = []
@@ -23,7 +23,6 @@ class PacketDeliveryRateAnalysis(Analysis):
         self.check_no_inexplicable_loss(experiment_results)
         self.analyse_average_values(experiment_results)
 
-	self.repetitions = experiment_results.get_number_of_repetitions()
         self._compute_pdr(experiment_results)
 
         # make a pdr box plot over all repetitions

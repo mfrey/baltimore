@@ -42,28 +42,31 @@ class ExperimentManagerWorker(multiprocessing.Process):
             # TODO: use some kind of configuration to run more than one experiment
             experiment = Experiment(self.simulations_directory + '/results', self.scenario_name, self.visualize, self.routing_table_trace, self.location)
             experiment_results = experiment.get_results()
+	    repetitions = experiment_results.get_number_of_repetitions()
 
             # TODO: use some kind of configuration to run more specific analysations
-            pdrAnalyser = PacketDeliveryRateAnalysis(self.scenario_name, self.location)
+            pdrAnalyser = PacketDeliveryRateAnalysis(self.scenario_name, self.location, repetitions)
             pdrAnalyser.evaluate(experiment_results, self.verbose)
             pdrAnalyser.get_packet_delivery_rate(experiment_results)
 	    pdrAnalyser.export_csv()
 
-            overheadAnalyser = OverheadAnalysis(self.scenario_name, self.location)
+            overheadAnalyser = OverheadAnalysis(self.scenario_name, self.location, repetitions)
             overheadAnalyser.evaluate(experiment_results, self.verbose)
 
-            delayAnalyser = DelayAnalysis(self.scenario_name, self.location)
+            delayAnalyser = DelayAnalysis(self.scenario_name, self.location, repetitions)
             delayAnalyser.evaluate(experiment_results, self.verbose)
+	    delayAnalyser.export_csv()
 
 #            energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name, self.location)
 #            energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
 
-            lastPacketAnalyser = LastPacketAnalysis(self.scenario_name, self.location)
+            lastPacketAnalyser = LastPacketAnalysis(self.scenario_name, self.location, repetitions)
             lastPacketAnalyser.evaluate(experiment_results, self.verbose)
+	    lastPacketAnalyser.export_csv()
 
             max_timestamp = lastPacketAnalyser.data_max
 
-            energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name, self.location, max_timestamp)
+            energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name, self.location, max_timestamp, repetitions)
             energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
 
 #            pathEnergyAnalyser = PathEnergyAnalysis(self.scenario_name, self.location)

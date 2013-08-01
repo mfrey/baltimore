@@ -10,12 +10,13 @@ from plot.lineplot import LinePlot
 from plot.barchart import BarChart
 
 class Analysis:
-    def __init__(self, scenario, location, metric):
+    def __init__(self, scenario, location, metric, repetitions):
         self.scenario = scenario
         self.location = location
         self.metric = metric
         self.logger = logging.getLogger('baltimore.analysis.Analysis')
 	self.date = datetime.datetime.now()
+	self.repetitions = repetitions
 
     def plot_lineplot(self, title, x_label, y_label, x_data, y_data):
         plot = LinePlot()
@@ -62,8 +63,7 @@ class Analysis:
             return "  0.00%%"
 
     def _write_csv_file(self, file_name, disclaimer, header, data):
-
-        with open(file_name, "wb") as csvfile:
+        with open(os.path.join(self.location, file_name), "wb") as csvfile:
             writer = csv.writer(csvfile, delimiter=',',
                                 quotechar='"', quoting=csv.QUOTE_MINIMAL)
 

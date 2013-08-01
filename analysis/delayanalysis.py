@@ -6,8 +6,8 @@ import numpy as np
 from analysis import Analysis
 
 class DelayAnalysis(Analysis):
-    def __init__(self, scenario, location):
-        Analysis.__init__(self, scenario, location, "delay")
+    def __init__(self, scenario, location, repetitions):
+        Analysis.__init__(self, scenario, location, "delay", repetitions)
 
         self.logger = logging.getLogger('baltimore.analysis.DelayAnalysis')
         self.logger.debug('creating an instance of DelayAnalysis for scenario %s', scenario)
@@ -61,3 +61,16 @@ class DelayAnalysis(Analysis):
    #         self.plot_boxplot("Average Delay (Node " + str(node) + ")", "Repetition", "Delay [ms]", average_delay)
             self.metric = "average_delay_node-" + str(node)
             self.plot_boxplot("Average Delay (Node " + str(node) + ")", "Repetition", "Delay [ms]", self.data_avg[node])
+
+    def export_csv(self):
+        file_name = self.scenario + "_" + self.metric + "_aggregated.csv"
+	disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - delay for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
+	header = ['node', 'min', 'max', 'median', 'std', 'avg']
+
+        data = []
+
+        # this assumes that if self.data_min is set, that also the other metrics are set (avg, median, std, ...)
+	for node in self.data_min:
+	   data.append([self.data_min[node], self.data_max[node], self.data_median[node], self.data_std[node],  self.data_avg[node]])
+
+        self._write_csv_file(file_name, disclaimer, header, data)
