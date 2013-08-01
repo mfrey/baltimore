@@ -54,8 +54,8 @@ class ExperimentManagerWorker(multiprocessing.Process):
             delayAnalyser = DelayAnalysis(self.scenario_name, self.location)
             delayAnalyser.evaluate(experiment_results, self.verbose)
 
-            energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name, self.location)
-            energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
+#            energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name, self.location)
+#            energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
 
             lastPacketAnalyser = LastPacketAnalysis(self.scenario_name, self.location)
             lastPacketAnalyser.evaluate(experiment_results, self.verbose)
@@ -65,10 +65,13 @@ class ExperimentManagerWorker(multiprocessing.Process):
 #            pathEnergyAnalyser.evaluate_different(experiment_results)
 
             #result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser, delayAnalyser)
-            result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser)
+#            result = (experiment, pdrAnalyser, lastPacketAnalyser)
+            result = (experiment, delayAnalyser)
 
             self.logger.info("[%d] successfully read %d experiment(s) from %d scalar file(s)." % (pid, 1, experiment_results.get_number_of_repetitions()))
+	    print " 1 " 
             self.results_queue.put(result)
+	    print " 2 " 
 
         except Exception as exception:
             self.logger.error("[%d] an error occurred while evaluating experiment %s" % (pid, str(self.scenario_name) + " : " + str(exception)))

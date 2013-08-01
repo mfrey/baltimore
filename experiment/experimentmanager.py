@@ -92,7 +92,7 @@ class ExperimentManager:
                     self._print_scenario_settings(omnetpp_ini.get_scenario(result[0].scenario_name))
 
             except Empty:
-                self.logger.error("Could not retrieve result data for scenario ", job.scenario_name, " (might have failed earlier)")
+                self.logger.error("Could not retrieve result data for scenario " + job.scenario_name + " (might have failed earlier)")
 
 
         #self.generate_packet_delivery_plots(configuration['analysis_location'])

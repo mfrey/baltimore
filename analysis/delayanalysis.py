@@ -18,14 +18,17 @@ class DelayAnalysis(Analysis):
                 if node not in self.delay:
                     self.delay[node] = []
                 result = experiment_results.get_metric_per_node("delay", node, repetition)
-                self.delay[node].append(result)
+                #print { repr(v.__class__) for v in result }
+                print len(result)
+		self.delay[node].append([1.0])
+                #self.delay[node].append(result)
                       
-        for node, delay in self.delay.iteritems():
-            self.metric = "delay_node-" + str(node)
+#        for node, delay in self.delay.iteritems():
+ #           self.metric = "delay_node-" + str(node)
             # make a plot over all repetitions (per node)
-            self.plot_boxplot("Delay per Repetition (Node " + str(node) + ")", "Repetition", "Delay [ms]", delay)
+  #          self.plot_boxplot("Delay per Repetition (Node " + str(node) + ")", "Repetition", "Delay [ms]", delay)
 
-            average_delay = [np.average(repetition) for repetition in delay]
-            print "Average Delays per Repetition (Node " + str(node) + "): ", average_delay
-            self.metric = "average_delay_node-" + str(node)
-            self.plot_boxplot("Average Delay (Node " + str(node) + ")", "Repetition", "Delay [ms]", average_delay)
+   #         average_delay = [np.average(repetition) for repetition in delay]
+   #         print "Average Delays per Repetition (Node " + str(node) + "): ", average_delay
+   #         self.metric = "average_delay_node-" + str(node)
+   #         self.plot_boxplot("Average Delay (Node " + str(node) + ")", "Repetition", "Delay [ms]", average_delay)
