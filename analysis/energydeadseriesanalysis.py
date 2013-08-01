@@ -59,6 +59,10 @@ class EnergyDeadSeriesAnalysis(Analysis):
 
             self.energy_dead_series[bin_nr] = average
                 
+        if self.csv:
+            self.export_csv()
+
+
         self._create_plot()
 
     def _create_plot(self):
@@ -75,3 +79,15 @@ class EnergyDeadSeriesAnalysis(Analysis):
         ydata = np.cumsum(ydata)
         width = self.max_time_stamp_value / nr_of_bars
         self.plot_barchart("Energy Dead Series", "Time [s]", "Dead Nodes", xdata, ydata, width)
+
+    def export_csv(self):
+        file_name = self.scenario + "_" + self.metric + ".csv"
+	disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - energy dead series for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
+	header = ['bin_nr', 'bin_size_in_seconds', 'max_time_stamp_value', 'value']
+
+	for bin_nr, value in self.energy_dead_series.iteritems():
+	   data = [[bin_nr, self.bin_size_in_seconds, self.max_time_stamp_value, value]]
+
+        self._write_csv_file(file_name, disclaimer, header, data)
+
+
