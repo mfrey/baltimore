@@ -33,7 +33,7 @@ class ExperimentManager:
         non_existing_scenarios = [scenario[0] for scenario in result if scenario[1] == False]
 
         for scenario in non_existing_scenarios:
-            self.logger.error("There is no scenario", scenario, "to analyze!")
+            # self.logger.error("There is no scenario", scenario, "to analyze!")
             print "There is no scenario", scenario, "to analyze!"
 
         # return a list of the remaining scenarios
