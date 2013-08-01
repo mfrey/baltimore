@@ -47,7 +47,6 @@ class Experiment:
                 if self.enable_network_visualize:
                     self._generate_network_plots(file_path)
 
-        print
         return experiment_results
 
 

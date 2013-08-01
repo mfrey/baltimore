@@ -25,8 +25,8 @@ from parser.omnetconfigurationfileparser import OMNeTConfigurationFileParser
 class ExperimentManager:
     def __init__(self, baltimore_revision, libara_revision):
         self.experiments = {}
-       # self.logger = logging.getLogger('baltimore.experiment.ExperimentManager')
-       # self.logger.debug('creating an instance of ExperimentManager')
+        self.logger = logging.getLogger('baltimore.experiment.ExperimentManager')
+        self.logger.debug('creating an instance of ExperimentManager')
         self.baltimore_revision = baltimore_revision
         self.libara_revision = libara_revision
 
@@ -35,8 +35,7 @@ class ExperimentManager:
         non_existing_scenarios = [scenario[0] for scenario in result if scenario[1] == False]
 
         for scenario in non_existing_scenarios:
-            # self.logger.error("There is no scenario", scenario, "to analyze!")
-            print "There is no scenario", scenario, "to analyze!"
+            self.logger.error("There is no scenario " + scenario + " to analyze!")
 
         # return a list of the remaining scenarios
         return list(set(scenarios) - set(non_existing_scenarios))
@@ -101,7 +100,7 @@ class ExperimentManager:
                 #self.logger.error("Could not retrieve result data for scenario ", job.scenario_name, " (might have failed earlier)")
                 print "Could not retrieve result data for scenario ", job.scenario_name, " (might have failed earlier)"
 
-
+        self.write_analysis_to_csv()
         #self.generate_packet_delivery_plots(configuration['analysis_location'])
 
 
@@ -181,7 +180,6 @@ class ExperimentManager:
             obj.append(json.load(json_file))
 
         ist = decoder.dict_to_object(obj)
-        print ist
 
     def __getstate__(self):
         d = dict(self.__dict__)
@@ -191,7 +189,8 @@ class ExperimentManager:
     def __setstate__(self, d):
         self.__dict__.update(d)
 
-    def write_analysis_to_csv(self, analyses):
+
+    def write_analysis_to_csv(self):
         # sort the experiments
         experiments = collections.OrderedDict(sorted(self.experiments.items()))
         # we sort the analysis data in a dict
@@ -199,10 +198,12 @@ class ExperimentManager:
 
         # fetch the data
         for experiment in experiments:
-            for analysis in self.experiments[experiment]:
-                analyses[analysis.metric].append([analysis.scenario, analysis.data_min, 
-                                                  analysis.data_max, analysis.data_median, 
-                                                  analysis.data_std, analysis.data_avg])
+            for index, analysis in enumerate(self.experiments[experiment]):
+                if index > 0:
+                    if analysis.metric != "energy-dead-series":
+                        analyses[analysis.metric] = [analysis.scenario, analysis.data_min, 
+                                                      analysis.data_max, analysis.data_median, 
+                                                      analysis.data_std, analysis.data_avg]
 
         # write the data
         for analysis, data in analyses.items():

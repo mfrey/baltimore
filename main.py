@@ -65,9 +65,10 @@ def evaluate_simulation(settings, experiment_manager, verbose):
     remaining_scenarios = experiment_manager.check_result_files(settings['cwd'] + '/results', settings['scenarios'])
     settings['scenarios'] = remaining_scenarios
     experiment_manager.process(settings, verbose)
+   
 
-    if settings['db_settings']:
-        store_experiment_results(settings, experiment_manager)
+#    if settings['db_settings']:
+#        store_experiment_results(settings, experiment_manager)
 
 
 def store_experiment_results(settings, experiment_manager):
