@@ -3,8 +3,10 @@
 import re
 import os
 import csv
+import collections
 
 from plot.lineplot import LinePlot
+from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
 
 class Visualize:
     def __init__(self, settings):
@@ -50,21 +52,25 @@ class Visualize:
             result = self._read_csv(pdr_file)
             pdr[scenario] = float(result[1][4])
 
-        xdata = []
-	ydata = []
+	xdata = []
+        ydata = [[] for scenario in self.scenarios]
 
         pattern = re.compile("([a-zA-Z]+)([0-9]+)")
+        pdr = collections.OrderedDict(sorted(pdr))
 
-	# FIXME: sort the dict beforehand and handle scenarios withou numbers in its name
-        for scenario in pdr:
+	# FIXME: sort the dict beforehand and handle scenarios without numbers in its name
+        for index, scenario in enumerate(pdr):
             match = pattern.match(scenario)
             xdata.append(int(match.group(2)))
-	    ydata.append(pdr[scenario])
+	    ydata[index].append(pdr[scenario])
 
         print xdata
         print ydata
 
-        self.plot_lineplot("Packet Delivery Rate (Average)", "pause time [s]", "packet delivery rate [%]", xdata, ydata)
+        plot = PacketDeliveryRatePlot()
+	plot.xlist = xdata
+	plot.ylist = ydata
+	plot.draw(os.path.join(self.csv_location, "avg_packetdeliveryrate.png"))
 
     
     def plot_lineplot(self, title, x_label, y_label, x_data, y_data):
