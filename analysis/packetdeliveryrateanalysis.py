@@ -96,7 +96,7 @@ class PacketDeliveryRateAnalysis(Analysis):
 
             print "%-34s %*d   %s   %s   %s   %s   %s" % (name, nr_of_digits, data_avg, percent, data_median, data_std, data_min, data_max)
         except KeyError:
-            self.logger.error("there is no such metric ", metric_name)
+            self.logger.error("there is no such metric " + metric_name)
 
 # percent argument missing
     #def _print_calculated_statistics_line(self, name, value, results):

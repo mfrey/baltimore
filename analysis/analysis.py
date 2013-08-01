@@ -58,3 +58,14 @@ class Analysis:
             return "%6.2f%%" % ((value/float(nr_of_packets)) * 100.0)
         else:
             return "  0.00%%"
+
+    def _write_csv_file(self, disclaimer, header, data):
+        file_name = self.scenario + "_" + self.metric + ".csv" 
+
+        with open(file_name, "wb") as csvfile:
+            writer = csv.writer(csvfile, delimiter=',',
+                                quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+	    writer.writerow(disclaimer)
+            writer.writerow(header)
+            writer.writerow(data)
