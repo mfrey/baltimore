@@ -39,7 +39,7 @@ def main():
 
     if arguments.run == True and arguments.testbed == False:
         experiment_manager = ExperimentManager(baltimore_revision, libara_revision)
-        run_simulation(configuration, experiment_manager)
+        run_simulation(configuration.settings, experiment_manager)
         evaluate_simulation(configuration.settings, experiment_manager, arguments.verbose)
 
     elif arguments.run == False and arguments.testbed == True:
