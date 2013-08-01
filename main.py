@@ -26,9 +26,8 @@ def main():
     parser.add_argument('-d', dest='directory', type=str, default="", action='store', help='a directory which contains OMNeT++ result files')
     parser.add_argument('-s', dest='scenario', type=str, default="", action='store', help="evaluate a specific scenario")
     parser.add_argument('-v', '--verbose', dest='verbose', default=False, const=True, action='store_const', help="print out verbose information for each iteration")
-    parser.add_argument('-j', '--json-write', dest='json_write', type=str, default="", action='store', help="specify location for json export")
-    parser.add_argument('-J', '--json-read', dest='json_read', type=str, default="", action='store', help="specify location for json import")
     parser.add_argument('-r', '--run', dest='run', default=False, const=True, action='store_const', help="first run the simulations as specified via the configuration then analyse the results")
+    parser.add_argument('-t', '--testbed', dest='testbed', default=False, const=True, action='store_const', help="run a testbed experiment")
     arguments = parser.parse_args()
 
     configuration = get_configuration(arguments)
@@ -37,34 +36,46 @@ def main():
     baltimore_revision = git.get_revision(".")
     libara_revision = git.get_revision(configuration.settings['ara_home'])
 
-    experiment_manager = ExperimentManager(baltimore_revision, libara_revision)
 
-    if arguments.run == True:
-        experiment_manager.result_dir_exists(configuration.settings['cwd'])
-        # check if there are already files from past runs in the directory
-        experiment_manager.check_result_directory(configuration.settings['cwd'] + '/results', configuration.settings['scenarios'])
-        experiment_manager.run_simulations(configuration.settings)
+    if arguments.run == True and arguments.testbed == False:
+        experiment_manager = ExperimentManager(baltimore_revision, libara_revision)
+        run_simulation(configuration.settings, experiment_manager)
+        evaluate_simulation(configuration.settings, experiment_manager, arguments.verbose)
 
-    remaining_scenarios = experiment_manager.check_result_files(configuration.settings['cwd'] + '/results', configuration.settings['scenarios'])
-    configuration.settings['scenarios'] = remaining_scenarios
+    elif arguments.run == False and arguments.testbed == True:
+        run_testbed(configuration)
 
-    experiment_manager.process(configuration.settings, arguments.verbose)
+    elif arguments.run == False and arguments.testbed == False:
+        experiment_manager = ExperimentManager(baltimore_revision, libara_revision)
+        evaluate_simulation(configuration.settings, experiment_manager, arguments.verbose)
 
-    if arguments.json_write != "":
-        experiment_manager.write_json(arguments.json_write)
+    else:
+        print "at present you can't run testbed and simulation experiments at the same time"
 
-    if arguments.json_read != "":
-        experiment_manager.read_json(arguments.json_read)
 
-#    if configuration.settings['db_settings']:
-#        database = setup_database_connection(configuration.settings)
-        # database.add_experiment(experiment_manager.create_json())
- #       database.close()
 
-def setup_database_connection(settings):
+
+def run_simulation(settings, experiment_manager):
+    experiment_manager.result_dir_exists(settings['cwd'])
+    experiment_manager.check_result_directory(settings['cwd'] + '/results', settings['scenarios'])
+    experiment_manager.run_simulations(settings)
+
+
+def evaluate_simulation(settings, experiment_manager, verbose):
+    remaining_scenarios = experiment_manager.check_result_files(settings['cwd'] + '/results', settings['scenarios'])
+    settings['scenarios'] = remaining_scenarios
+    experiment_manager.process(settings, verbose)
+
+#    if settings['db_settings']:
+#        store_experiment_results(settings, experiment_manager)
+
+
+def store_experiment_results(settings, experiment_manager):
     database = Database(settings['db_user'], settings['db_password'], settings['db_db'], settings['db_host'])
     database.open()
-    return database
+    database.add_experiment(experiment_manager)
+    database.close()
+
 
 def get_configuration(arguments):
     if arguments.configuration != "":

@@ -14,7 +14,6 @@ class PacketDeliveryRateAnalysis(Analysis):
         self.logger.debug('creating an instance of PacketDeliveryRateAnalysis for scenario %s', scenario)
         self.all_pdr = []
         self.scenario = scenario
-       
 
     def evaluate(self, experiment_results, is_verbose=False):
         self.logger.info("running PDR analysis..")

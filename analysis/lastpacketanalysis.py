@@ -1,32 +1,40 @@
 #!/usr/bin/env python2.7
 
 import sys
+import logging
 import os.path
 import numpy as np
+
+from analysis import Analysis
 
 from plot.lineplot import LinePlot
 from plot.boxplot import BoxPlot
 
-class LastPacketAnalysis:
+class LastPacketAnalysis(Analysis):
     def __init__(self, scenario, location):
-        self.data = []
-        self.scenario = scenario
-        self.location = location
+        Analysis.__init__(self, scenario, location, "last_packet")
+
+        self.logger = logging.getLogger('baltimore.analysis.LastPacketAnalysis')
+        self.logger.debug('creating an instance of LastPacketAnalysis for scenario %s', scenario)
+
+        self.data_min = -1
+        self.data_max = -1
+        self.data_median = -1
+        self.data_std = -1
+        self.data_avg = -1
 
     def evaluate(self, experiment_results, is_verbose=False):
-        print "\nRunning arrival of last packet analysis.."
+        self.logger.info("running arrival of last packet analysis")
+
         raw_data = [experiment_results.get_metric("timeOfLastReceivedPacket", repetition) for repetition in experiment_results.repetitions]
-        self.data = [element for element in raw_data if element != 0]
-        self._create_boxplot()
-        
+        data = [element for element in raw_data if element != 0]
 
-    def _create_boxplot(self):
-        plot = BoxPlot()
-        plot.title = "Arrival of Last Packet"
-        plot.xlabel = ""
-        plot.ylabel = "Arrival Time [ms]"
-        plot.draw(self.data, os.path.join(self.location, self.scenario + "_last_packet.png"))
+        self.data_min = np.amin(data)
+        self.data_max = np.amax(data)
+        self.data_median = np.median(data)
+        self.data_std = np.std(data)
+        self.data_avg = np.average(data)
 
+        self.logger.info("last packet: %d, %d, %d, %d, %d [min, max, median, std, avg] for scenario %s", self.data_min, self.data_max, self.data_median, self.data_std, self.data_avg, self.scenario)
 
-
-    
+        self.plot_boxplot("Arrival of Last Packet", "", "Arrival Time [ms]", data)

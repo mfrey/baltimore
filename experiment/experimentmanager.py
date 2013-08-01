@@ -1,6 +1,8 @@
 #!/usr/bin/env python2.7
 
 import os
+import csv
+import sys
 import json
 import runner
 import logging
@@ -12,10 +14,10 @@ from Queue import Empty
 from multiprocessing import Process, Queue, Pool
 
 from runner import Runner
-from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
 from plot.boxplot import BoxPlot
 from experiment import Experiment
 from experimentmanagerworker import ExperimentManagerWorker
+from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
 from persistence.baltimorejsonencoder import BaltimoreJSONEncoder
 from persistence.baltimorejsondecoder import BaltimoreJSONDecoder
 from parser.omnetconfigurationfileparser import OMNeTConfigurationFileParser
@@ -33,7 +35,7 @@ class ExperimentManager:
         non_existing_scenarios = [scenario[0] for scenario in result if scenario[1] == False]
 
         for scenario in non_existing_scenarios:
-            self.logger.error("There is no scenario", scenario, "to analyze!")
+            self.logger.error("There is no scenario " + scenario + " to analyze!")
 
         # return a list of the remaining scenarios
         return list(set(scenarios) - set(non_existing_scenarios))
@@ -49,6 +51,9 @@ class ExperimentManager:
         # store the general simulation settings
         omnetpp_ini= OMNeTConfigurationFileParser(configuration['cwd'] + '/omnetpp.ini')
         self.omnetpp_ini = omnetpp_ini.get_section("General")
+
+        self.omnetpp_ini_checksum = omnetpp_ini.omnetpp_ini_hash
+        self.standard_ini_checksum = omnetpp_ini.standard_ini_hash
 
         directory = configuration['cwd']
         scenarios = configuration['scenarios']
@@ -94,7 +99,7 @@ class ExperimentManager:
             except Empty:
                 self.logger.error("Could not retrieve result data for scenario " + job.scenario_name + " (might have failed earlier)")
 
-
+        self.write_analysis_to_csv()
         #self.generate_packet_delivery_plots(configuration['analysis_location'])
 
 
@@ -174,4 +179,50 @@ class ExperimentManager:
             obj.append(json.load(json_file))
 
         ist = decoder.dict_to_object(obj)
-        print ist
+
+    def __getstate__(self):
+        d = dict(self.__dict__)
+        del d['logger']
+        return d        
+
+    def __setstate__(self, d):
+        self.__dict__.update(d)
+
+
+    def write_analysis_to_csv(self):
+        # sort the experiments
+        experiments = collections.OrderedDict(sorted(self.experiments.items()))
+        # we sort the analysis data in a dict
+        analyses = {}
+
+        # fetch the data
+        for experiment in experiments:
+            for index, analysis in enumerate(self.experiments[experiment]):
+                if index > 0:
+                    if analysis.metric != "energy-dead-series":
+                        analyses[analysis.metric] = [analysis.scenario, analysis.data_min, 
+                                                      analysis.data_max, analysis.data_median, 
+                                                      analysis.data_std, analysis.data_avg]
+
+        # write the data
+        for analysis, data in analyses.items():
+            file_name = self._generate_csv_file_name(analysis)
+
+            # todo: fix the value
+            if len(data[0]) > 2:
+                header = ['identifier', 'min', 'median', 'max', 'std', 'avg']
+            else:
+                header = ['identifier', 'value']
+
+            self._write_csv(file_name, header, data)
+
+    def _generate_csv_file_name(self, name):
+        # do sth. with the name 
+        return name + '.csv'
+
+    def _write_csv(self, file_name, header, data):
+        with open(file_name, "wb") as csvfile:
+            writer = csv.writer(csvfile, delimiter=',',
+                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            writer.writerow(header)
+            writer.writerow(data)

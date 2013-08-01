@@ -2,22 +2,30 @@
 
 import sys
 import math
+import logging
 import numpy as np
 
 from analysis import Analysis
 
 class EnergyDeadSeriesAnalysis(Analysis):
-    def __init__(self, scenario, location):
+    def __init__(self, scenario, location, timestamp):
         Analysis.__init__(self, scenario, location, "energy-dead-series")
+
+        self.logger = logging.getLogger('baltimore.analysis.EnergyDeadSeriesAnalysis')
+        self.logger.debug('creating an instance of EnergyDeadSeriesAnalysis for scenario %s', scenario)
         
         self.energy_dead_series = {}
+        # TODO: should this value somehow be computed?
         self.bin_size_in_seconds = 10
-        self.max_time_stamp_value = 900 # somehow calculate this / get from the results directly
-        self.nr_of_bins = self.max_time_stamp_value / self.bin_size_in_seconds
+        # the max timestamp value is passed to the analysis via the last received packet analysis
+        self.max_time_stamp_value = timestamp 
+        # TODO: check if this is a issue 
+        self.nr_of_bins = int(self.max_time_stamp_value / self.bin_size_in_seconds)
 
     def evaluate(self, experiment_results, is_verbose=False):
         repetitions = len(experiment_results.repetitions)
-        print "\nRunning energy dead series analysis.."
+
+        self.logger.info("running energy dead series analysis")
 
         # create all bins and initialize with zero
         global_bins = {}
