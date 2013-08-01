@@ -1,5 +1,6 @@
 #!/usr/bin/env python2.7
 
+import re
 import os
 import csv
 
@@ -52,10 +53,16 @@ class Visualize:
         xdata = []
 	ydata = []
 
-        # FIXME
-        for index, scenario in enumerate(pdr):
-            xdata.append(int(index))
+        pattern = re.compile("([a-zA-Z]+)([0-9]+)")
+
+	# FIXME: sort the dict beforehand and handle scenarios withou numbers in its name
+        for scenario in pdr:
+            match = pattern.match(scenario)
+            xdata.append(int(match.group(2)))
 	    ydata.append(pdr[scenario])
+
+        print xdata
+        print ydata
 
         self.plot_lineplot("Packet Delivery Rate (Average)", "pause time [s]", "packet delivery rate [%]", xdata, ydata)
 
