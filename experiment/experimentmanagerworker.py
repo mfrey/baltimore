@@ -47,6 +47,7 @@ class ExperimentManagerWorker(multiprocessing.Process):
             pdrAnalyser = PacketDeliveryRateAnalysis(self.scenario_name, self.location)
             pdrAnalyser.evaluate(experiment_results, self.verbose)
             pdrAnalyser.get_packet_delivery_rate(experiment_results)
+	    pdrAnalyser.export_csv()
 
             overheadAnalyser = OverheadAnalysis(self.scenario_name, self.location)
             overheadAnalyser.evaluate(experiment_results, self.verbose)

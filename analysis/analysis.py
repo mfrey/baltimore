@@ -1,8 +1,9 @@
 #!/usr/bin/env python2.7
 
-
+import csv
 import os.path
 import logging
+import datetime
 
 from plot.boxplot import BoxPlot
 from plot.lineplot import LinePlot
@@ -14,6 +15,7 @@ class Analysis:
         self.location = location
         self.metric = metric
         self.logger = logging.getLogger('baltimore.analysis.Analysis')
+	self.date = datetime.datetime.now()
 
     def plot_lineplot(self, title, x_label, y_label, x_data, y_data):
         plot = LinePlot()
@@ -59,13 +61,16 @@ class Analysis:
         else:
             return "  0.00%%"
 
-    def _write_csv_file(self, disclaimer, header, data):
-        file_name = self.scenario + "_" + self.metric + ".csv" 
+    def _write_csv_file(self, file_name, disclaimer, header, data):
 
         with open(file_name, "wb") as csvfile:
             writer = csv.writer(csvfile, delimiter=',',
                                 quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
-	    writer.writerow(disclaimer)
+            for line in disclaimer:
+	       writer.writerow(line)
+
             writer.writerow(header)
-            writer.writerow(data)
+
+            for line in data:
+	       writer.writerow(line)
