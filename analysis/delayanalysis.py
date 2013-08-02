@@ -67,31 +67,31 @@ class DelayAnalysis(Analysis):
             self.export_csv_raw(delay)
 
     def export_csv(self):
-        self.metric = "delay-aggregated"
+        self.metric = "delay"
         file_name = self.scenario + "_" + self.metric + "_aggregated.csv"
-	disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - delay for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
-	header = ['node', 'min', 'max', 'median', 'std', 'avg']
+        disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - delay for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
+        header = ['node', 'min', 'max', 'median', 'std', 'avg']
 
         data = []
 
         # this assumes that if self.data_min is set, that also the other metrics are set (avg, median, std, ...)
-	for node in self.data_min:
-	   data.append([self.data_min[node], self.data_max[node], self.data_median[node], self.data_std[node],  self.data_avg[node]])
+	    for node in self.data_min:
+	        data.append([self.data_min[node], self.data_max[node], self.data_median[node], self.data_std[node],  self.data_avg[node]])
 
         self._write_csv_file(file_name, disclaimer, header, data)
 
     def export_csv_raw(self, raw_data):
         self.metric = "delay"
         file_name = self.scenario + "_" + self.metric + ".csv"
-	disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - delay for scenario ' + self.scenario],['#']]
-	header = ['node', 'repetition', 'delay']
+	    disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - delay for scenario ' + self.scenario],['#']]
+	    header = ['node', 'repetition', 'delay']
 
         data = []
 
         # this assumes that if self.data_min is set, that also the other metrics are set (avg, median, std, ...)
         for node, delays  in raw_data.iteritems():
-           for repetition, values in enumerate(delays):
-              for element in values:
-	         data.append([node, repetition, element])
+            for repetition, values in enumerate(delays):
+                for element in values:
+	                data.append([node, repetition, element])
               
         self._write_csv_file(file_name, disclaimer, header, data)

@@ -25,6 +25,8 @@ class Visualize:
             for scenario in self.scenarios:
                if csv_file.startswith(scenario) and csv_file.endswith("pdr_aggregated.csv"):
                    pdr_files.append(csv_file)
+#               if csv_file.startswith(scenario) and csv_file.endswith("pdr_aggregated.csv"):
+#                   delay_files.append(csv_file)
 
         pdr_files = set(pdr_files)
         self._visualize_pdr(self.csv_location, pdr_files)
