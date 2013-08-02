@@ -76,7 +76,7 @@ class DelayAnalysis(Analysis):
 
         # this assumes that if self.data_min is set, that also the other metrics are set (avg, median, std, ...)
         for node in self.data_min:
-            data.append([self.data_min[node], self.data_max[node], self.data_median[node], self.data_std[node],  self.data_avg[node]])
+            data.append([node, self.data_min[node], self.data_max[node], self.data_median[node], self.data_std[node],  self.data_avg[node]])
 
         self._write_csv_file(file_name, disclaimer, header, data)
 

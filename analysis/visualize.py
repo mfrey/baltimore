@@ -14,6 +14,7 @@ class Visualize:
         
         csv_files = []
         pdr_files = []
+        eds_files = []
 
         self.scenarios = settings['scenarios']
 
@@ -25,31 +26,33 @@ class Visualize:
             for scenario in self.scenarios:
                if csv_file.startswith(scenario) and csv_file.endswith("pdr_aggregated.csv"):
                    pdr_files.append(csv_file)
-#               if csv_file.startswith(scenario) and csv_file.endswith("pdr_aggregated.csv"):
-#                   delay_files.append(csv_file)
+               if csv_file.startswith(scenario) and csv_file.endswith("energy-dead-series.csv"):
+                   eds_files.append(csv_file)
 
         pdr_files = set(pdr_files)
         self._visualize_pdr(self.csv_location, pdr_files)
 
-#	for csv_file in csv_files:
-#            self._read_csv(csv_location + csv_file)
+        eds_files = set(eds_files)
+        self._visualize_eds(self.csv_location, eds_files)
+
 
     def _read_csv(self, file_name):
         result = []
 
         with open(file_name, 'rb') as csvfile:
             reader = csv.reader(csvfile, delimiter=',', quotechar='"')
-	    for row in reader:
+            for row in reader:
                 result.append(row)
 
-        result = [row for row in result if len(row) > 1]
-
-        return result
+        return [row for row in result if len(row) > 1]
 
     def _sorted(self, data): 
         convert = lambda text: int(text) if text.isdigit() else text 
         alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ] 
         return sorted(data, key = alphanum_key)
+
+    def _visualize_eds(self, directory, eds_files):
+        eds = {}
 
 
     def _visualize_pdr(self, directory, pdr_files):
@@ -65,8 +68,6 @@ class Visualize:
         ydata = [[]]
 
         pattern = re.compile("([a-zA-Z]+)([0-9]+)(([a-zA-Z]+)?)")
-        
-#        pdr = collections.OrderedDict(self._sorted(pdr.keys()))
         keys = self._sorted(pdr.keys())
 
         init_algorithm = ""
@@ -106,6 +107,8 @@ class Visualize:
         # FIXME: The tick labes don't match the data points in the graph
         plot.xticklabels = pause_times
         plot.draw(os.path.join(self.csv_location, "avg_packetdeliveryrate.png"))
+
+
 
     
 #    def plot_lineplot(self, title, x_label, y_label, x_data, y_data):
