@@ -15,8 +15,8 @@ class Analysis:
         self.location = location
         self.metric = metric
         self.logger = logging.getLogger('baltimore.analysis.Analysis')
-	self.date = datetime.datetime.now()
-	self.repetitions = repetitions
+        self.date = datetime.datetime.now()
+        self.repetitions = repetitions
         self.csv = csv
 
     def plot_lineplot(self, title, x_label, y_label, x_data, y_data):

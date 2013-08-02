@@ -100,9 +100,6 @@ class Visualize:
                 pause_times.append(pause_time)
             ydata[index].append(pdr[scenario])
                 
-        print xdata
-        print ydata
-
         plot = PacketDeliveryRatePlot()
         plot.xlist = xdata
         plot.ylist = ydata

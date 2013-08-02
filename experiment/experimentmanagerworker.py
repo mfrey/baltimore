@@ -26,7 +26,8 @@ class ExperimentManagerWorker(multiprocessing.Process):
         self.routing_table_trace = configuration['analysis_routing_table_trace']
         self.logger = logging.getLogger('baltimore.experiment.ExperimentManagerWorker')
         self.logger.debug('creating an instance of ExperimentManagerWorker')
-	self.csv = configuration['analysis_csv']
+        self.csv = configuration['analysis_csv']
+        self.logger.debug('will create csv files ' + str(self.csv))
 
         if configuration['analysis_location'] == "":
             self.location = self.simulations_directory
@@ -41,7 +42,7 @@ class ExperimentManagerWorker(multiprocessing.Process):
             self.logger.info('[%d] Scanning directory "%s" for simulation result files. This may take some time depending on the number of files...' %  (pid, self.simulations_directory))
             experiment = Experiment(self.simulations_directory + '/results', self.scenario_name, self.visualize, self.routing_table_trace, self.location)
             experiment_results = experiment.get_results()
-	    repetitions = experiment_results.get_number_of_repetitions()
+            repetitions = experiment_results.get_number_of_repetitions()
 
             pdrAnalyser = PacketDeliveryRateAnalysis(self.scenario_name, self.location, repetitions, self.csv)
             pdrAnalyser.evaluate(experiment_results, self.verbose)

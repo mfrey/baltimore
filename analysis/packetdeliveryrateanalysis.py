@@ -24,7 +24,7 @@ class PacketDeliveryRateAnalysis(Analysis):
         self.analyse_average_values(experiment_results)
 
         self._compute_pdr(experiment_results)
-	self.get_packet_delivery_rate(experiment_results)
+        self.get_packet_delivery_rate(experiment_results)
 
         if self.csv:
             self.export_csv()
