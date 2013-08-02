@@ -17,8 +17,8 @@ from plot.lineplot import LinePlot
 from plot.boxplot import BoxPlot
 
 class PathEnergyAnalysis(Analysis):
-    def __init__(self, scenario, location):
-        Analysis.__init__(self, scenario, location, "path-energy")
+    def __init__(self, scenario, location, repetitions, csv):
+        Analysis.__init__(self, scenario, location, "path-energy", repetitions, csv)
         self.path_energy = {}
         self.path_energy_temp = {}
 
@@ -97,11 +97,15 @@ class PathEnergyAnalysis(Analysis):
 
 
     def evaluate_different(self, experiment_results):
+        raw_data = []
         Tmax = 6000
         for repetition in experiment_results:
             nodes = experiment_results.nodes_have_metric("routeEnergy")
             for node in nodes:
                 data = experiment_results.get_tuple_metric_per_node("routeEnergy", node, repetition)
+
+                for element in data:
+                    raw_data.append([repetition, node, float(element[0]), float(element[1])])
 
                 T = [float(pair[0]) for pair in data]
                 R = [float(pair[1]) for pair in data]
@@ -131,3 +135,14 @@ class PathEnergyAnalysis(Analysis):
                 file_name = "alternative_path-energy_node-" + str(node)
                 plt.savefig(os.path.join(self.location, self.scenario + "_" + file_name + ".png"))
                 plt.close()
+
+        if self.csv:
+            self._export_csv_raw(raw_data)
+
+
+    def _export_csv_raw(self, data):
+        file_name = self.scenario + "_" + self.metric + "raw.csv"
+        disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - path energy for scenario ' + self.scenario + ' per repetition'],['#'],['#']]
+        header = ['repetition', 'node', 'timestamp', 'energy']
+
+        self._write_csv_file(file_name, disclaimer, header, data)

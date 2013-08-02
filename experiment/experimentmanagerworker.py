@@ -61,11 +61,10 @@ class ExperimentManagerWorker(multiprocessing.Process):
             energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name, self.location, max_timestamp, repetitions, self.csv)
             energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
 
-#            pathEnergyAnalyser = PathEnergyAnalysis(self.scenario_name, self.location)
-#            pathEnergyAnalyser.evaluate(experiment_results, self.verbose)
-#            pathEnergyAnalyser.evaluate_different(experiment_results)
+            pathEnergyAnalyser = PathEnergyAnalysis(self.scenario_name, self.location, repetitions, self.csv)
+            pathEnergyAnalyser.evaluate_different(experiment_results)
 
-            result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser, delayAnalyser)
+            result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser, delayAnalyser, pathEnergyAnalyser)
 
             self.logger.info("[%d] successfully read %d experiment(s) from %d scalar file(s)." % (pid, 1, experiment_results.get_number_of_repetitions()))
             self.results_queue.put(result)
