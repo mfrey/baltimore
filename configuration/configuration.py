@@ -48,6 +48,12 @@ class Configuration(object):
             except NoSectionError:
                 self.settings['testbed_settings'] = False
 
+#            try:
+#                self.settings['visualization_group'] = parser.get('Visualization', 'group')
+#                self.settings['visualization_settings'] = True
+#            except NoSectionError:
+#                self.settings['visualization_settings'] = False
+
             self._build_ned_path()
             self._build_omnetpp_ini_path()
             self._build_ld_library_path()
