@@ -141,20 +141,20 @@ class PacketDeliveryRateAnalysis(Analysis):
 
     def export_csv(self):
         file_name = self.scenario + "_" + self.metric + "_aggregated.csv"
-	    disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - packet delivery rate for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
-	    header = ['min', 'max', 'median', 'std', 'avg']
-	    data = [[self.data_min, self.data_max, self.data_median, self.data_std,  self.data_avg]]
+        disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - packet delivery rate for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
+        header = ['min', 'max', 'median', 'std', 'avg']
+        data = [[self.data_min, self.data_max, self.data_median, self.data_std,  self.data_avg]]
 
         self._write_csv_file(file_name, disclaimer, header, data)
-	    self._export_csv_raw()
+        self._export_csv_raw()
 
     def _export_csv_raw(self):
         file_name = self.scenario + "_" + self.metric + ".csv"
-	    disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - packet delivery rate for scenario ' + self.scenario + ' per repetition'],['#'],['#']]
-	    header = ['repetition', 'value']
-	    data = []
+        disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - packet delivery rate for scenario ' + self.scenario + ' per repetition'],['#'],['#']]
+        header = ['repetition', 'value']
+        data = []
 
-	    for repetition, pdr in enumerate(self.all_pdr):
+        for repetition, pdr in enumerate(self.all_pdr):
             data.append([repetition, pdr])
 
         self._write_csv_file(file_name, disclaimer, header, data)
