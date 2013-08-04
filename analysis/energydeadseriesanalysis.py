@@ -71,32 +71,27 @@ class EnergyDeadSeriesAnalysis(Analysis):
             for bin_nr, value in bins_for_this_repetition.iteritems(): 
                 global_bins[bin_nr].append(value)
 
-        for bin_nr, value in global_bins.iteritems():
+        for bin_nr, value_list in global_bins.iteritems():
             # calculate the average number of dead notes from the corresponding bin of each repetition
-            if value:
-                average = np.average(value)
+            if value_list:
+                average = np.average(value_list)
             else:
                 average = 0
 
             self.energy_dead_series[bin_nr] = average
                 
-        if self.draw:
-            self._create_plot()
-
+        self._create_plot()
+        
     def _create_plot(self):
         xdata = []
         ydata = []
         
-        nr_of_bars = 0
         for bin_nr, value in self.energy_dead_series.iteritems():
             xdata.append(bin_nr * self.bin_size_in_seconds)
             ydata.append(value)
-            if value > 0:
-                nr_of_bars += 1
  
         ydata = np.cumsum(ydata)
-        width = self.max_time_stamp_value / nr_of_bars
-        self.plot_barchart("Energy Dead Series", "Time [s]", "Dead Nodes", xdata, ydata, width)
+        self.plot_barchart("Energy Dead Series", "Time [s]", "Dead Nodes", xdata, ydata)
 
     def export_csv(self):
         file_name = self.scenario + "_" + self.metric + ".csv"
@@ -114,3 +109,4 @@ class EnergyDeadSeriesAnalysis(Analysis):
         header = ['repetition', 'node', 'timestamp']
 
         self._write_csv_file(file_name, disclaimer, header, data)
+
