@@ -35,7 +35,10 @@ class PacketDeliveryRateAnalysis(Analysis):
 
     def _compute_pdr(self, results):
         for repetition in results:
-            pdr = results.get_metric('trafficReceived', repetition)/results.get_metric('trafficSent', repetition)
+            # don't count in the packets for which n route could be found
+            nr_of_sent_packets = results.get_metric('trafficSent', repetition) - results.get_metric('packetUnDeliverable:count', repetition)
+            pdr = results.get_metric('trafficReceived', repetition)/nr_of_sent_packets
+            pdr = round(pdr*100, 2)
             self.all_pdr.append(pdr)
 
 
@@ -43,11 +46,11 @@ class PacketDeliveryRateAnalysis(Analysis):
         if len(self.all_pdr) == 0:
             self._compute_pdr(results)
 
-        self.data_min = np.amin(self.all_pdr)
-        self.data_max = np.amax(self.all_pdr)
-        self.data_median = np.median(self.all_pdr)
-        self.data_std = np.std(self.all_pdr)
-        self.data_avg = np.average(self.all_pdr)
+        self.data_min = round(np.amin(self.all_pdr), 2)
+        self.data_max = round(np.amax(self.all_pdr), 2)
+        self.data_median = round(np.median(self.all_pdr), 2)
+        self.data_std = round(np.std(self.all_pdr), 2)
+        self.data_avg = round(np.average(self.all_pdr), 2)
 
         # TODO: cleanup
         self.pdr = self.data_avg
@@ -67,28 +70,27 @@ class PacketDeliveryRateAnalysis(Analysis):
                 self.logger.error("there is no such metric")
 
             if inexplicable_loss > 0:
-                sys.stderr.write('~' * 74 + "\n")
-                sys.stderr.write("WARNING: The loss of %d packets could not be explained (bug in simulation?)\n" % inexplicable_loss)
-                sys.stderr.write("Scenario: " + str(repetition) + "\n");
-                sys.stderr.write('~' * 74 + "\n\n")
+                sys.stderr.write("WARNING: The loss of %d packets could not be explained (Scenario %s)\n" % (inexplicable_loss, str(repetition)))
 
     def analyse_average_values(self, results):
         self.print_analysis_header(results)
+        total_nr_of_packets = results.get_average('trafficSent')
+        nr_of_undeliverables = results.get_average('packetUnDeliverable:count')
+        nr_of_sent_packets = total_nr_of_packets - nr_of_undeliverables
 
-        self._print_avg_statistics_line("Sent Packets",                      'trafficSent', results)
-        self._print_avg_statistics_line("Received Packets",                  'trafficReceived', results)
-        self._print_avg_statistics_line("Routing Loops",                     'routingLoopDetected:count', results)
-        self._print_avg_statistics_line("Route Failures (all routes broke)", 'routeFailure:count', results)
-        self._print_avg_statistics_line("Route Failures (no routes at all)", 'routeFailureNoHopAvailable:count', results)
-        self._print_avg_statistics_line("Route Failures (next hop=sender)",  'routeFailureNextHopIsSender:count', results)
-        self._print_avg_statistics_line("Failed Route Discoveries",  'packetUnDeliverable:count', results)
-        self._print_avg_statistics_line("Dropped Packets (TTL = 0)", 'dropZeroTTLPacket:count', results)
-        self._print_avg_statistics_line("Dropped Packets because 0 energy",  'dropPacketBecauseEnergyDepleted:count', results)
-        self._print_avg_statistics_line("Trapped packets after finish", 'nrOfTrappedPacketsAfterFinish', results)
-        print "Average number of route discoveries: %d\n" % results.get_average('newRouteDiscovery:count')
+        self._print_avg_statistics_line("Sent Packets",                      'trafficSent', results, nr_of_sent_packets)
+        self._print_avg_statistics_line("Received Packets",                  'trafficReceived', results, nr_of_sent_packets)
+        self._print_avg_statistics_line("Routing Loops",                     'routingLoopDetected:count', results, nr_of_sent_packets)
+        self._print_avg_statistics_line("Route Failures (all routes broke)", 'routeFailure:count', results, nr_of_sent_packets)
+        self._print_avg_statistics_line("Route Failures (no routes at all)", 'routeFailureNoHopAvailable:count', results, nr_of_sent_packets)
+        self._print_avg_statistics_line("Route Failures (next hop=sender)",  'routeFailureNextHopIsSender:count', results, nr_of_sent_packets)
+        self._print_avg_statistics_line("Dropped Packets (TTL = 0)", 'dropZeroTTLPacket:count', results, nr_of_sent_packets)
+        self._print_avg_statistics_line("Dropped Packets because 0 energy",  'dropPacketBecauseEnergyDepleted:count', results, nr_of_sent_packets)
+        self._print_avg_statistics_line("Trapped packets after finish", 'nrOfTrappedPacketsAfterFinish', results, nr_of_sent_packets)
+        print "Average number of route discoveries: %d" % results.get_average('newRouteDiscovery:count')
+        print "Average number of packets droped due to failed route discovery: %d (%s%%)\n" % (nr_of_undeliverables, self._get_percent_string(nr_of_undeliverables, total_nr_of_packets))
 
-    def _print_avg_statistics_line(self, name, metric_name, results):
-        nr_of_sent_packets = results.get_average('trafficSent')
+    def _print_avg_statistics_line(self, name, metric_name, results, nr_of_sent_packets):
         nr_of_digits = self.get_max_nr_of_digits(nr_of_sent_packets)
 
         try:
@@ -159,3 +161,4 @@ class PacketDeliveryRateAnalysis(Analysis):
             data.append([repetition, pdr])
 
         self._write_csv_file(file_name, disclaimer, header, data)
+
