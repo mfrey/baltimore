@@ -3,6 +3,7 @@
 import re
 import os
 import csv
+import logging
 
 import collections
 
@@ -11,10 +12,12 @@ from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
 class Visualize:
     def __init__(self, settings):
         self.csv_location = settings['analysis_location']
+        self.logger = logging.getLogger('baltimore.analysis.Visualize')
         
         csv_files = []
         pdr_files = []
-        eds_files = []
+        energy_dead_series_files = []
+        path_energy_files = []
 
         self.scenarios = settings['scenarios']
 
@@ -26,14 +29,21 @@ class Visualize:
             for scenario in self.scenarios:
                if csv_file.startswith(scenario) and csv_file.endswith("pdr_aggregated.csv"):
                    pdr_files.append(csv_file)
-               if csv_file.startswith(scenario) and csv_file.endswith("energy-dead-series.csv"):
-                   eds_files.append(csv_file)
+               elif csv_file.startswith(scenario) and csv_file.endswith("energy-dead-series.csv"):
+                   energy_dead_series_files.append(csv_file)
+               elif csv_file.startswith(scenario) and csv_file.endswith("path-energyraw.csv"):
+                   path_energy_files.append(csv_file)
+               else:
+                   self.logger.debug("file not supported (yet) " + csv_file)
 
         pdr_files = set(pdr_files)
         self._visualize_pdr(self.csv_location, pdr_files)
 
-        eds_files = set(eds_files)
-        self._visualize_eds(self.csv_location, eds_files)
+        energy_dead_series_files = set(energy_dead_series_files)
+        self._visualize_eds(self.csv_location, energy_dead_series_files)
+
+        path_energy_files = set(path_energy_files)
+        self._visualize_path_energy(self.csv_location, path_energy_files)
 
 
     def _read_csv(self, file_name):
@@ -109,12 +119,70 @@ class Visualize:
         plot.draw(os.path.join(self.csv_location, "avg_packetdeliveryrate.png"))
 
 
-
     
-#    def plot_lineplot(self, title, x_label, y_label, x_data, y_data):
-#        plot = LinePlot()
-#        plot.title = title
-#        plot.xlabel = x_label
-#        plot.ylabel = y_label
-#        plot.draw(x_data, y_data, os.path.join(self.csv_location, "avg_packetdeliveryrate.png"))
+
+    def _visualize_path_energy(self, directory, path_energy_files):
+        path_energy = {}
+
+        for path_energy_file in path_energy_files:
+            scenario = path_energy_file.split("_")[0]
+            path_energy_file = directory + path_energy_file
+            result = self._read_csv(path_energy_file)
+
+            # removes the header of the csv file
+            result.pop(0)
+
+            for entry in result:
+                if scenario not in path_energy:
+                    path_energy[scenario] = []
+ 
+                # the entry follows the format: repetition, node, timestamp, path energy
+                path_energy[scenario].append((int(entry[0]), int(entry[1]), float(entry[2]), float(entry[3])))
+
+
+    def _temp_visualize_path_energy(self, directory, path_energy_files):
+        # apply kernel regression
+        result = self._computer_kernel_regression(0.5, data)
+        domain = result[0]
+        estimate = result[1]
+
+        # plot the path energy
+        plt.plot(domain, estimate)
+        plt.savefig(os.path.join(self.csv_location, file_name + ".png"))
+        plt.close()
+
+
+    def _compute_kernel_regression(self, smoothing_width, data):
+        """  Finds a non-linear relation between a pair of random variables X and Y and draws it.
+
+        The method applies a Nadaraya-Watson kernel regression on the given data.
+
+        """
+        Tmax = 6000
+
+        T = [float(pair[0]) for pair in data]
+        R = [float(pair[1]) for pair in data]
+        bw = smoothing_width
+
+        trange = [0, Tmax]
+        bins = 5000
+
+        dx = (trange[1] - trange[0]) / bins
+
+        # compute sum_i K(x - x_i) y_i
+        hist_R, edges = np.histogram(T, range=trange, bins=bins, weights=R)
+        kde_R = gaussian_filter(hist_R, bw / dx)
+
+        # compute sum_i K(x - x_i)
+        hist_T, edges = np.histogram(T, range=trange, bins=bins)
+        kde_T = gaussian_filter(hist_T, bw / dx)
+
+        # compute the Nadaraya-Watson estimate
+        interpolated_R = kde_R / kde_T
+
+        # compute the x-axis
+        domain = (edges[1:] + edges[:-1]) / 2.0
+
+        return (domain, interpolated_R)
+
 
