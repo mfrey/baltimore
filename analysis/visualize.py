@@ -87,47 +87,53 @@ class Visualize:
         pause_times = []
         scenarios = []
 
+        self.logger.debug("sorted keys " + str(keys)) 
+
+        data = {}
+
+        # build up a temporary data structure holding scenario/pause times/pdrs
         for scenario in keys:
             match = pattern.match(scenario)
             algorithm = match.group(1)
-            pause_time = match.group(2)
+            pause_time = int(match.group(2))
             option = match.group(3)
 
-            # algorithm has not been set
-            if init_algorithm == "":
-                init_algorithm = algorithm
-                if init_option == "":
-                    init_option = option
-            # check if it is already a new scenario
-            elif algorithm == init_algorithm:
-                if init_option != option:
-                   index = index + 1
-                   xdata.append([])
-                   ydata.append([])
-                   init_option = option
-            else:
-                init_algorithm = algorithm
-                init_option = option
-                index = index + 1
-                xdata.append([])
-                ydata.append([])
- 
-            print "algorithm " + algorithm
-            print "option " + option
-            print "index " + str(index)
+            self.logger.debug("parsing data for algorithm %s, pause time %s and option %s", algorithm, pause_time, option)
+            key = algorithm + option 
 
-            xdata[index].append(pause_time)
-            scenarios.append(scenario)
-            if pause_time not in pause_times:
-                pause_times.append(pause_time)
-            ydata[index].append(pdr[scenario])
+            if key not in data:
+               data[key] = {}
+            
+            if pause_time not in data[key]:
+               data[key][pause_time] = 0
+
+            data[key][pause_time] = pdr[scenario]
+
+            if key not in scenarios:
+                scenarios.append(key)
+
+        keys = self._sorted(data.keys())
+        xdata = []
+        ydata = []
+
+
+        for scenario in keys:
+            pause_times = sorted(data[scenario].keys())
+            xdata.append(pause_times)
+            ydata_temp = []
+
+            for pause_time in pause_times:
+                ydata_temp.append(data[scenario][pause_time])
+
+            ydata.append(ydata_temp)
                 
         plot = PacketDeliveryRatePlot()
         plot.xlist = xdata
         plot.ylist = ydata
         # FIXME: The tick labes don't match the data points in the graph
         plot.xticklabels = pause_times
-        plot.labels = scenarios
+        # better check that
+        plot.labels = keys
         plot.draw(os.path.join(self.csv_location, "avg_packetdeliveryrate.png"))
 
 
