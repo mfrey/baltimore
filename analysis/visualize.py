@@ -5,7 +5,10 @@ import os
 import csv
 import logging
 
-import collections
+import numpy as np
+import matplotlib.pyplot as plt
+
+from scipy.ndimage import gaussian_filter
 
 from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
 
@@ -133,23 +136,36 @@ class Visualize:
             result.pop(0)
 
             for entry in result:
+                repetition = int(entry[0])
+                node = entry[1]
+                timestamp = float(entry[2])
+                energy = float(entry[3])
+
                 if scenario not in path_energy:
-                    path_energy[scenario] = []
+                    path_energy[scenario] = {}
+
+                if node not in path_energy[scenario]:
+                    path_energy[scenario][node] = []
  
-                # the entry follows the format: repetition, node, timestamp, path energy
-                path_energy[scenario].append((int(entry[0]), int(entry[1]), float(entry[2]), float(entry[3])))
+                # the entry follows the format: timestamp, path energy
+                path_energy[scenario][node].append((timestamp, energy))
 
-
-    def _temp_visualize_path_energy(self, directory, path_energy_files):
-        # apply kernel regression
-        result = self._computer_kernel_regression(0.5, data)
-        domain = result[0]
-        estimate = result[1]
-
-        # plot the path energy
-        plt.plot(domain, estimate)
-        plt.savefig(os.path.join(self.csv_location, file_name + ".png"))
-        plt.close()
+        for scenario in path_energy:
+            for node in path_energy[scenario]:
+                data = path_energy[scenario][node]
+                # apply kernel regression
+                result = self._compute_kernel_regression(0.5, data)
+                domain = result[0]
+                estimate = result[1]
+                # build up file name
+                file_name = scenario + "_node_" + str(node) + "path_energy"
+                # plot the path energy
+                plt.title("Path Energy - Node " + str(node) + " (Estimated)")
+                plt.xlabel("Time [s]")
+                plt.ylabel("Energy [J]")
+                plt.plot(domain, estimate)
+                plt.savefig(os.path.join(self.csv_location, file_name + ".png"))
+                plt.close()
 
 
     def _compute_kernel_regression(self, smoothing_width, data):
@@ -176,6 +192,9 @@ class Visualize:
         # compute sum_i K(x - x_i)
         hist_T, edges = np.histogram(T, range=trange, bins=bins)
         kde_T = gaussian_filter(hist_T, bw / dx)
+
+        self.logger.debug("kde_R is " + str(kde_R))
+        self.logger.debug("kde_T is " + str(kde_R))
 
         # compute the Nadaraya-Watson estimate
         interpolated_R = kde_R / kde_T
