@@ -150,6 +150,9 @@ class Visualize:
                 # the entry follows the format: timestamp, path energy
                 path_energy[scenario][node].append((timestamp, energy))
 
+        # we store the result for all scenarios, so we can generate a overall plot
+        data_all_scenarios = {}
+
         for scenario in path_energy:
             for node in path_energy[scenario]:
                 data = path_energy[scenario][node]
@@ -157,8 +160,17 @@ class Visualize:
                 result = self._compute_kernel_regression(0.5, data)
                 domain = result[0]
                 estimate = result[1]
+
+                if node not in data_all_scenarios:
+                    data_all_scenarios[node] = {}
+
+                if scenario not in data_all_scenarios[node]:
+                    data_all_scenarios[node][scenario] = None
+
+                data_all_scenarios[node][scenario] = result
                 # build up file name
                 file_name = scenario + "_node_" + str(node) + "path_energy"
+
                 # plot the path energy
                 plt.title("Path Energy - Node " + str(node) + " (Estimated)")
                 plt.xlabel("Time [s]")
@@ -166,6 +178,21 @@ class Visualize:
                 plt.plot(domain, estimate)
                 plt.savefig(os.path.join(self.csv_location, file_name + ".png"))
                 plt.close()
+
+        # we make a plot for each node (over all scenarios)
+        for node in data_all_scenarios:
+            plt.title("Path Energy - Node " + str(node) + " (Estimated)")
+            plt.xlabel("Time [s]")
+            plt.ylabel("Energy [J]")
+            file_name = "node_" + str(node) + "path_energy"
+
+            for scenario in data_all_scenarios[node]:
+                domain = data_all_scenarios[node][scenario][0]
+                estimate = data_all_scenarios[node][scenario][1]
+                plt.plot(domain, estimate)
+
+            plt.savefig(os.path.join(self.csv_location, file_name + ".png"))
+            plt.close()
 
 
     def _compute_kernel_regression(self, smoothing_width, data):
