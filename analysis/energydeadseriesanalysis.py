@@ -23,9 +23,26 @@ class EnergyDeadSeriesAnalysis(Analysis):
         self.nr_of_bins = int(self.max_time_stamp_value / self.bin_size_in_seconds)
 
     def evaluate(self, experiment_results, is_verbose=False):
-        repetitions = len(experiment_results.repetitions)
-
         self.logger.info("running energy dead series analysis")
+
+        data = []
+        
+        for repetition in experiment_results:
+            nodes = experiment_results.nodes_have_metric("nodeEnergyDepletionTimestamp")
+
+            for node in nodes:
+                # get the timestamp and add +1 to the corresponding bin
+                timestamp = experiment_results.repetitions[repetition].get_node_results()[node]["nodeEnergyDepletionTimestamp"]
+                data.append([repetition, node, timestamp])
+
+        if self.draw:
+            self._plot(experiment_results, is_verbose)
+
+        if self.csv:
+            self.export_csv_raw(data)
+
+    def _plot(experiment_results, is_verbose):
+        repetitions = len(experiment_results.repetitions)
 
         # create all bins and initialize with zero
         global_bins = {}
@@ -63,10 +80,6 @@ class EnergyDeadSeriesAnalysis(Analysis):
 
             self.energy_dead_series[bin_nr] = average
                 
-        if self.csv:
-            self.export_csv()
-            self.export_csv_raw(data)
-
         if self.draw:
             self._create_plot()
 
