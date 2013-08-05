@@ -87,6 +87,7 @@ class Visualize:
         init_option = ""
         index = 0
         pause_times = []
+        scenarios = []
 
         for scenario in keys:
             match = pattern.match(scenario)
@@ -110,6 +111,7 @@ class Visualize:
                 index = index + 1
 
             xdata[index].append(pause_time)
+            scenarios.append(scenario)
             if pause_time not in pause_times:
                 pause_times.append(pause_time)
             ydata[index].append(pdr[scenario])
@@ -119,6 +121,7 @@ class Visualize:
         plot.ylist = ydata
         # FIXME: The tick labes don't match the data points in the graph
         plot.xticklabels = pause_times
+        plot.labels = scenarios
         plot.draw(os.path.join(self.csv_location, "avg_packetdeliveryrate.png"))
 
 
@@ -167,7 +170,7 @@ class Visualize:
 
                 data_all_scenarios[node][scenario] = result
                 # build up file name
-                file_name = scenario + "_node_" + str(node) + "path_energy"
+                file_name = scenario + "_node-" + str(node) + "path_energy"
 
                 # plot the path energy
                 plt.title("Path Energy - Node " + str(node) + " (Estimated)")
@@ -182,7 +185,7 @@ class Visualize:
             plt.title("Path Energy - Node " + str(node) + " (Estimated)")
             plt.xlabel("Time [s]")
             plt.ylabel("Energy [J]")
-            file_name = "node_" + str(node) + "path_energy"
+            file_name = "node-2" + str(node) + "_path_energy"
 
             for scenario in data_all_scenarios[node]:
                 domain = data_all_scenarios[node][scenario][0]
