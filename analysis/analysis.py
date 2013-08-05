@@ -18,6 +18,7 @@ class Analysis:
         self.date = datetime.datetime.now()
         self.repetitions = repetitions
         self.csv = csv
+        self.draw = False
 
     def plot_lineplot(self, title, x_label, y_label, x_data, y_data):
         plot = LinePlot()

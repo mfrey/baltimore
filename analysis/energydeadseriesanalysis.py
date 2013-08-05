@@ -67,8 +67,8 @@ class EnergyDeadSeriesAnalysis(Analysis):
             self.export_csv()
             self.export_csv_raw(data)
 
-
-        self._create_plot()
+        if self.draw:
+            self._create_plot()
 
     def _create_plot(self):
         xdata = []

@@ -49,9 +49,9 @@ class DelayAnalysis(Analysis):
                                  str(self.data_std[node]), node, self.scenario)
             self.logger.info("delay [avg]: " + "%s  for node %s in scenario %s",
                                  str(self.data_avg[node]), node, self.scenario)
-                    
-        for node in delay:
-            self.metric = "delay_node-" + str(node)
+        if self.draw:            
+            for node in delay:
+                self.metric = "delay_node-" + str(node)
             # make a plot over all repetitions (per node)
   #          self.plot_boxplot("Delay per Repetition (Node " + str(node) + ")", "Repetition", "Delay [ms]", delay)
 
@@ -59,8 +59,8 @@ class DelayAnalysis(Analysis):
    #         print "Average Delays per Repetition (Node " + str(node) + "): ", average_delay
    #         self.metric = "average_delay_node-" + str(node)
    #         self.plot_boxplot("Average Delay (Node " + str(node) + ")", "Repetition", "Delay [ms]", average_delay)
-            self.metric = "average_delay_node-" + str(node)
-            self.plot_boxplot("Average Delay (Node " + str(node) + ")", "Repetition", "Delay [ms]", self.data_avg[node])
+                self.metric = "average_delay_node-" + str(node)
+                self.plot_boxplot("Average Delay (Node " + str(node) + ")", "Repetition", "Delay [ms]", self.data_avg[node])
 
         if self.csv:
             self.export_csv()

@@ -131,10 +131,11 @@ class PathEnergyAnalysis(Analysis):
                 # computer x-axis
                 domain = (edges[1:] + edges[:-1]) / 2.0
 
-                plt.plot(domain, interpolated_R)
-                file_name = "alternative_path-energy_node-" + str(node)
-                plt.savefig(os.path.join(self.location, self.scenario + "_" + file_name + ".png"))
-                plt.close()
+                if self.draw:
+                    plt.plot(domain, interpolated_R)
+                    file_name = "alternative_path-energy_node-" + str(node)
+                    plt.savefig(os.path.join(self.location, self.scenario + "_" + file_name + ".png"))
+                    plt.close()
 
         if self.csv:
             self._export_csv_raw(raw_data)

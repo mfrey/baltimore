@@ -30,7 +30,8 @@ class PacketDeliveryRateAnalysis(Analysis):
             self.export_csv()
 
         # make a pdr box plot over all repetitions
-        self.plot_boxplot("Packet Delivery Rate per Scenario", "", "Packet Delivery Rate", self.all_pdr)
+        if self.draw:
+            self.plot_boxplot("Packet Delivery Rate per Scenario", "", "Packet Delivery Rate", self.all_pdr)
 
     def _compute_pdr(self, results):
         for repetition in results:

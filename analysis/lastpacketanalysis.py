@@ -37,7 +37,8 @@ class LastPacketAnalysis(Analysis):
 
         self.logger.info("last packet: %d, %d, %d, %d, %d [min, max, median, std, avg] for scenario %s", self.data_min, self.data_max, self.data_median, self.data_std, self.data_avg, self.scenario)
 
-        self.plot_boxplot("Arrival of Last Packet", "", "Arrival Time [ms]", data)
+        if self.draw:
+            self.plot_boxplot("Arrival of Last Packet", "", "Arrival Time [ms]", data)
 
         if self.csv:
             self.export_csv()
