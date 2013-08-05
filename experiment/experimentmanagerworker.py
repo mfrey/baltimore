@@ -62,7 +62,7 @@ class ExperimentManagerWorker(multiprocessing.Process):
             energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
 
             pathEnergyAnalyser = PathEnergyAnalysis(self.scenario_name, self.location, repetitions, self.csv)
-            pathEnergyAnalyser.evaluate_different(experiment_results)
+            pathEnergyAnalyser.evaluate(experiment_results)
 
             result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser, delayAnalyser, pathEnergyAnalyser)
 
