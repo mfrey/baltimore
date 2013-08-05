@@ -36,8 +36,6 @@ class Visualize:
                    energy_dead_series_files.append(csv_file)
                elif csv_file.startswith(scenario) and csv_file.endswith("path-energyraw.csv"):
                    path_energy_files.append(csv_file)
-               else:
-                   self.logger.debug("file not supported (yet) " + csv_file)
 
         pdr_files = set(pdr_files)
         self._visualize_pdr(self.csv_location, pdr_files)
@@ -95,7 +93,7 @@ class Visualize:
             pause_time = match.group(2)
             option = match.group(3)
 
-            # algorithm has not been set set
+            # algorithm has not been set
             if init_algorithm == "":
                 init_algorithm = algorithm
                 if init_option == "":
@@ -104,11 +102,19 @@ class Visualize:
             elif algorithm == init_algorithm:
                 if init_option != option:
                    index = index + 1
+                   xdata.append([])
+                   ydata.append([])
                    init_option = option
             else:
                 init_algorithm = algorithm
                 init_option = option
                 index = index + 1
+                xdata.append([])
+                ydata.append([])
+ 
+            print "algorithm " + algorithm
+            print "option " + option
+            print "index " + str(index)
 
             xdata[index].append(pause_time)
             scenarios.append(scenario)
