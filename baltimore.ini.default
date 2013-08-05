@@ -4,24 +4,37 @@
 # them (default). If this option does exceed the actual number of cores in your
 # system the script will automatically use half of them. 
 cpu_cores = *
-
 # path to the libARA home (absolute or relative)
 ara_home = ../ara-sim
-
 # path to the OMNeT++ home (absolute or relative)
 omnetpp_home = ~/Programs/omnetpp-4.3
-
 # the path to the scenario directory relative to the libARA simulations folder
 scenario_home = static
-
 # a comma separated list of scenarios which should be executed
 scenarios = midStatic
-
 # the number of repetitions (only used with -r parameter)
 repetitions = 5
 
 
 [Analysis]
+# enables the analysis of routing table traces
 routing_table_trace = false
 # generates csv plots of the analysed experiments
 export_csv_data = false
+# specifies the location where the csv files and plots are written
+location = ~/Desktop/
+# enables the analysis of the network
+network = false
+
+
+[Database]
+# name of the database
+database = baltimore
+# hostname of the host which runs the database
+host_name = localhost
+# port the database is running on
+port = 27017
+# user for reading/writing data to the database
+user = baltimore_admin
+# password for the user who reads/writes data to the database
+password = some_password
