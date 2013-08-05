@@ -122,8 +122,6 @@ class Visualize:
         plot.draw(os.path.join(self.csv_location, "avg_packetdeliveryrate.png"))
 
 
-    
-
     def _visualize_path_energy(self, directory, path_energy_files):
         path_energy = {}
 
@@ -189,7 +187,9 @@ class Visualize:
             for scenario in data_all_scenarios[node]:
                 domain = data_all_scenarios[node][scenario][0]
                 estimate = data_all_scenarios[node][scenario][1]
-                plt.plot(domain, estimate)
+                plt.plot(domain, estimate, label=scenario)
+
+            plt.legend()
 
             plt.savefig(os.path.join(self.csv_location, file_name + ".png"))
             plt.close()
