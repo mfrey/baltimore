@@ -8,8 +8,8 @@ import numpy as np
 from analysis import Analysis
 
 class EnergyDeadSeriesAnalysis(Analysis):
-    def __init__(self, scenario, location, timestamp):
-        Analysis.__init__(self, scenario, location, "energy-dead-series")
+    def __init__(self, scenario, location, timestamp, repetitions, csv):
+        Analysis.__init__(self, scenario, location, "energy-dead-series", repetitions, csv)
 
         self.logger = logging.getLogger('baltimore.analysis.EnergyDeadSeriesAnalysis')
         self.logger.debug('creating an instance of EnergyDeadSeriesAnalysis for scenario %s', scenario)
@@ -32,16 +32,20 @@ class EnergyDeadSeriesAnalysis(Analysis):
         for i in range(0, self.nr_of_bins-1):
             # each bin is a list of dead notes per repetition 
             global_bins[i] = []
+
+        data = []
         
         for repetition in experiment_results:
             nodes = experiment_results.nodes_have_metric("nodeEnergyDepletionTimestamp")
             bins_for_this_repetition = {}
+
             for i in range(0, self.nr_of_bins-1):
                 bins_for_this_repetition[i] = 0
             
             for node in nodes:
                 # get the timestamp and add +1 to the corresponding bin
                 timestamp = experiment_results.repetitions[repetition].get_node_results()[node]["nodeEnergyDepletionTimestamp"]
+                data.append([repetition, node, timestamp])
                 # in which interval does the timestamp lie?
                 bin_nr = int(math.floor(timestamp / self.bin_size_in_seconds))
                 bins_for_this_repetition[bin_nr] += 1
@@ -59,7 +63,12 @@ class EnergyDeadSeriesAnalysis(Analysis):
 
             self.energy_dead_series[bin_nr] = average
                 
-        self._create_plot()
+        if self.csv:
+            self.export_csv()
+            self.export_csv_raw(data)
+
+        if self.draw:
+            self._create_plot()
 
     def _create_plot(self):
         xdata = []
@@ -75,3 +84,20 @@ class EnergyDeadSeriesAnalysis(Analysis):
         ydata = np.cumsum(ydata)
         width = self.max_time_stamp_value / nr_of_bars
         self.plot_barchart("Energy Dead Series", "Time [s]", "Dead Nodes", xdata, ydata, width)
+
+    def export_csv(self):
+        file_name = self.scenario + "_" + self.metric + ".csv"
+        disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - energy dead series for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
+        header = ['bin_nr', 'bin_size_in_seconds', 'max_time_stamp_value', 'value']
+
+        for bin_nr, value in self.energy_dead_series.iteritems():
+            data = [[bin_nr, self.bin_size_in_seconds, self.max_time_stamp_value, value]]
+
+        self._write_csv_file(file_name, disclaimer, header, data)
+
+    def export_csv_raw(self, data):
+        file_name = self.scenario + "_" + self.metric + "_raw.csv"
+        disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - energy dead series for scenario ' + self.scenario], ['#']]
+        header = ['repetition', 'node', 'timestamp']
+
+        self._write_csv_file(file_name, disclaimer, header, data)

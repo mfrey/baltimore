@@ -6,8 +6,8 @@ import numpy as np
 from analysis import Analysis
 
 class DelayAnalysis(Analysis):
-    def __init__(self, scenario, location):
-        Analysis.__init__(self, scenario, location, "delay")
+    def __init__(self, scenario, location, repetitions, csv):
+        Analysis.__init__(self, scenario, location, "delay", repetitions, csv)
 
         self.logger = logging.getLogger('baltimore.analysis.DelayAnalysis')
         self.logger.debug('creating an instance of DelayAnalysis for scenario %s', scenario)
@@ -49,11 +49,49 @@ class DelayAnalysis(Analysis):
                                  str(self.data_std[node]), node, self.scenario)
             self.logger.info("delay [avg]: " + "%s  for node %s in scenario %s",
                                  str(self.data_avg[node]), node, self.scenario)
-                    
-        for node, delay in delay.iteritems():
-            self.metric = "delay_node-" + str(node)
+        if self.draw:            
+            for node in delay:
+                self.metric = "delay_node-" + str(node)
             # make a plot over all repetitions (per node)
-            self.plot_boxplot("Delay per Repetition (Node " + str(node) + ")", "Repetition", "Delay [ms]", delay)
+  #          self.plot_boxplot("Delay per Repetition (Node " + str(node) + ")", "Repetition", "Delay [ms]", delay)
 
-            self.metric = "average_delay_node-" + str(node)
-            self.plot_boxplot("Average Delay (Node " + str(node) + ")", "Repetition", "Delay [ms]", self.data_avg[node])
+   #         average_delay = [np.average(repetition) for repetition in delay]
+   #         print "Average Delays per Repetition (Node " + str(node) + "): ", average_delay
+   #         self.metric = "average_delay_node-" + str(node)
+   #         self.plot_boxplot("Average Delay (Node " + str(node) + ")", "Repetition", "Delay [ms]", average_delay)
+                self.metric = "average_delay_node-" + str(node)
+                self.plot_boxplot("Average Delay (Node " + str(node) + ")", "Repetition", "Delay [ms]", self.data_avg[node])
+
+        if self.csv:
+            self.export_csv()
+            self.export_csv_raw(delay)
+
+    def export_csv(self):
+        self.metric = "delay"
+        file_name = self.scenario + "_" + self.metric + "_aggregated.csv"
+        disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - delay for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
+        header = ['node', 'min', 'max', 'median', 'std', 'avg']
+
+        data = []
+
+        # this assumes that if self.data_min is set, that also the other metrics are set (avg, median, std, ...)
+        for node in self.data_min:
+            data.append([node, self.data_min[node], self.data_max[node], self.data_median[node], self.data_std[node],  self.data_avg[node]])
+
+        self._write_csv_file(file_name, disclaimer, header, data)
+
+    def export_csv_raw(self, raw_data):
+        self.metric = "delay"
+        file_name = self.scenario + "_" + self.metric + ".csv"
+        disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - delay for scenario ' + self.scenario],['#']]
+        header = ['node', 'repetition', 'delay']
+
+        data = []
+
+        # this assumes that if self.data_min is set, that also the other metrics are set (avg, median, std, ...)
+        for node, delays  in raw_data.iteritems():
+            for repetition, values in enumerate(delays):
+                for element in values:
+	                data.append([node, repetition, element])
+              
+        self._write_csv_file(file_name, disclaimer, header, data)

@@ -1,19 +1,24 @@
 #!/usr/bin/env python2.7
 
-
+import csv
 import os.path
 import logging
+import datetime
 
 from plot.boxplot import BoxPlot
 from plot.lineplot import LinePlot
 from plot.barchart import BarChart
 
 class Analysis:
-    def __init__(self, scenario, location, metric):
+    def __init__(self, scenario, location, metric, repetitions, csv):
         self.scenario = scenario
         self.location = location
         self.metric = metric
         self.logger = logging.getLogger('baltimore.analysis.Analysis')
+        self.date = datetime.datetime.now()
+        self.repetitions = repetitions
+        self.csv = csv
+        self.draw = False
 
     def plot_lineplot(self, title, x_label, y_label, x_data, y_data):
         plot = LinePlot()
@@ -58,3 +63,16 @@ class Analysis:
             return "%6.2f%%" % ((value/float(nr_of_packets)) * 100.0)
         else:
             return "  0.00%%"
+
+    def _write_csv_file(self, file_name, disclaimer, header, data):
+        with open(os.path.join(self.location, file_name), "wb") as csvfile:
+            writer = csv.writer(csvfile, delimiter=',',
+                                quotechar='"', quoting=csv.QUOTE_MINIMAL)
+
+            for line in disclaimer:
+	       writer.writerow(line)
+
+            writer.writerow(header)
+
+            for line in data:
+	       writer.writerow(line)

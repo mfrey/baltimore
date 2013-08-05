@@ -11,6 +11,7 @@ from persistence.database import Database
 from experiment.git import Git
 from configuration.configuration import Configuration
 from experiment.experimentmanager import ExperimentManager
+from analysis.visualize import Visualize
 
 def main():
     logger = logging.getLogger('baltimore')
@@ -28,6 +29,7 @@ def main():
     parser.add_argument('-v', '--verbose', dest='verbose', default=False, const=True, action='store_const', help="print out verbose information for each iteration")
     parser.add_argument('-r', '--run', dest='run', default=False, const=True, action='store_const', help="first run the simulations as specified via the configuration then analyse the results")
     parser.add_argument('-t', '--testbed', dest='testbed', default=False, const=True, action='store_const', help="run a testbed experiment")
+    parser.add_argument('-D', '--draw', dest='draw', default=False, const=True, action='store_const', help="draw graphs")
     arguments = parser.parse_args()
 
     configuration = get_configuration(arguments)
@@ -39,7 +41,7 @@ def main():
 
     if arguments.run == True and arguments.testbed == False:
         experiment_manager = ExperimentManager(baltimore_revision, libara_revision)
-        run_simulation(configuration)
+        run_simulation(configuration.settings, experiment_manager)
         evaluate_simulation(configuration.settings, experiment_manager, arguments.verbose)
 
     elif arguments.run == False and arguments.testbed == True:
@@ -48,12 +50,11 @@ def main():
     elif arguments.run == False and arguments.testbed == False:
         experiment_manager = ExperimentManager(baltimore_revision, libara_revision)
         evaluate_simulation(configuration.settings, experiment_manager, arguments.verbose)
-
     else:
         print "at present you can't run testbed and simulation experiments at the same time"
-
-
-
+    
+    if arguments.draw == True:
+        visualize = Visualize(configuration.settings)
 
 def run_simulation(settings, experiment_manager):
     experiment_manager.result_dir_exists(settings['cwd'])
@@ -66,8 +67,8 @@ def evaluate_simulation(settings, experiment_manager, verbose):
     settings['scenarios'] = remaining_scenarios
     experiment_manager.process(settings, verbose)
 
-    if settings['db_settings']:
-        store_experiment_results(settings, experiment_manager)
+#    if settings['db_settings']:
+#        store_experiment_results(settings, experiment_manager)
 
 
 def store_experiment_results(settings, experiment_manager):

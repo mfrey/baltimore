@@ -11,8 +11,8 @@ from plot.lineplot import LinePlot
 from plot.boxplot import BoxPlot
 
 class LastPacketAnalysis(Analysis):
-    def __init__(self, scenario, location):
-        Analysis.__init__(self, scenario, location, "last_packet")
+    def __init__(self, scenario, location, repetitions, csv):
+        Analysis.__init__(self, scenario, location, "last_packet", repetitions, csv)
 
         self.logger = logging.getLogger('baltimore.analysis.LastPacketAnalysis')
         self.logger.debug('creating an instance of LastPacketAnalysis for scenario %s', scenario)
@@ -37,4 +37,16 @@ class LastPacketAnalysis(Analysis):
 
         self.logger.info("last packet: %d, %d, %d, %d, %d [min, max, median, std, avg] for scenario %s", self.data_min, self.data_max, self.data_median, self.data_std, self.data_avg, self.scenario)
 
-        self.plot_boxplot("Arrival of Last Packet", "", "Arrival Time [ms]", data)
+        if self.draw:
+            self.plot_boxplot("Arrival of Last Packet", "", "Arrival Time [ms]", data)
+
+        if self.csv:
+            self.export_csv()
+
+    def export_csv(self):
+        file_name = self.scenario + "_" + self.metric + "_aggregated.csv"
+	disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - arrival of last packet for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
+	header = ['min', 'max', 'median', 'std', 'avg']
+	data = [[self.data_min, self.data_max, self.data_median, self.data_std,  self.data_avg]]
+
+        self._write_csv_file(file_name, disclaimer, header, data)

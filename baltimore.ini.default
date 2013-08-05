@@ -1,5 +1,4 @@
 [General]
-
 # Number of cores to use when running simulations and evaluating results
 # You can define an integer <= your available number of  cores or * to use all of
 # them (default). If this option does exceed the actual number of cores in your
@@ -24,3 +23,5 @@ repetitions = 5
 
 [Analysis]
 routing_table_trace = false
+# generates csv plots of the analysed experiments
+export_csv_data = false

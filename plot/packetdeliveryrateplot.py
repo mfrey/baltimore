@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 class PacketDeliveryRatePlot:
     def __init__(self):
+        self.title = "Packet Delivery Rate (Average)"
         self.ylabel = "Delivery Rate [%]"
         self.xlabel = "Pause Time [sec]"
         self.xlist = []
@@ -19,6 +20,7 @@ class PacketDeliveryRatePlot:
             plt.plot(value, self.ylist[index], drawstyle="line", marker=self.markers[index], lw=2.5)
         plt.ylabel(self.ylabel,va="center",ha="center")
         plt.xlabel(self.xlabel)
+        plt.title(self.title)
         ax.set_xticklabels(self.xticklabels)
         plt.grid(axis="y")
         plt.savefig(filename)

@@ -8,13 +8,12 @@ import numpy as np
 from analysis import Analysis
 
 class PacketDeliveryRateAnalysis(Analysis):
-    def __init__(self, scenario, location):
-        Analysis.__init__(self, scenario, location, "pdr")
+    def __init__(self, scenario, location, repetitions, csv):
+        Analysis.__init__(self, scenario, location, "pdr", repetitions, csv)
         self.logger = logging.getLogger('baltimore.analysis.PacketDeliveryRateAnalysis')
         self.logger.debug('creating an instance of PacketDeliveryRateAnalysis for scenario %s', scenario)
         self.all_pdr = []
         self.scenario = scenario
-       
 
     def evaluate(self, experiment_results, is_verbose=False):
         self.logger.info("running PDR analysis..")
@@ -25,9 +24,14 @@ class PacketDeliveryRateAnalysis(Analysis):
         self.analyse_average_values(experiment_results)
 
         self._compute_pdr(experiment_results)
+        self.get_packet_delivery_rate(experiment_results)
+
+        if self.csv:
+            self.export_csv()
 
         # make a pdr box plot over all repetitions
-        self.plot_boxplot("Packet Delivery Rate per Scenario", "", "Packet Delivery Rate", self.all_pdr)
+        if self.draw:
+            self.plot_boxplot("Packet Delivery Rate per Scenario", "", "Packet Delivery Rate", self.all_pdr)
 
     def _compute_pdr(self, results):
         for repetition in results:
@@ -97,7 +101,7 @@ class PacketDeliveryRateAnalysis(Analysis):
 
             print "%-34s %*d   %s   %s   %s   %s   %s" % (name, nr_of_digits, data_avg, percent, data_median, data_std, data_min, data_max)
         except KeyError:
-            self.logger.error("there is no such metric ", metric_name)
+            self.logger.error("there is no such metric " + metric_name)
 
 # percent argument missing
     #def _print_calculated_statistics_line(self, name, value, results):
@@ -135,3 +139,23 @@ class PacketDeliveryRateAnalysis(Analysis):
     def get_max_nr_of_digits(self, nr_of_packets):
         return len(str(nr_of_packets))
 
+
+    def export_csv(self):
+        file_name = self.scenario + "_" + self.metric + "_aggregated.csv"
+        disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - packet delivery rate for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
+        header = ['min', 'max', 'median', 'std', 'avg']
+        data = [[self.data_min, self.data_max, self.data_median, self.data_std,  self.data_avg]]
+
+        self._write_csv_file(file_name, disclaimer, header, data)
+        self._export_csv_raw()
+
+    def _export_csv_raw(self):
+        file_name = self.scenario + "_" + self.metric + ".csv"
+        disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - packet delivery rate for scenario ' + self.scenario + ' per repetition'],['#'],['#']]
+        header = ['repetition', 'value']
+        data = []
+
+        for repetition, pdr in enumerate(self.all_pdr):
+            data.append([repetition, pdr])
+
+        self._write_csv_file(file_name, disclaimer, header, data)
