@@ -179,7 +179,7 @@ class Visualize:
                 file_name = scenario + "_node-" + str(node) + "path_energy"
 
                 # plot the path energy
-                plt.title("Path Energy - Node " + str(node) + " (Estimated)")
+                plt.title("Path Energy - Node " + str(node) + " (Estimated) for scenario " + scenario)
                 plt.xlabel("Time [s]")
                 plt.ylabel("Energy [J]")
                 plt.plot(domain, estimate)
