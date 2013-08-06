@@ -43,21 +43,15 @@ class EnergyDeadSeriesAnalysis(Analysis):
 
     def _plot(experiment_results, is_verbose):
         repetitions = len(experiment_results.repetitions)
-
-        # create all bins and initialize with zero
-        global_bins = {}
-        for i in range(0, self.nr_of_bins-1):
-            # each bin is a list of dead notes per repetition 
-            global_bins[i] = []
+        # create all bins and initialize with zero and each bin is a list of dead notes per repetition 
+        global_bins = { key : [] for key in range(0, self.nr_of_bins-1) } 
 
         data = []
         
         for repetition in experiment_results:
             nodes = experiment_results.nodes_have_metric("nodeEnergyDepletionTimestamp")
-            bins_for_this_repetition = {}
-
-            for i in range(0, self.nr_of_bins-1):
-                bins_for_this_repetition[i] = 0
+            #bins_for_this_repetition = { key : 0 for key in range(0, self.nr_of_bins-1) } 
+            bins_for_this_repetition = { key : 0 for key in range(0, self.nr_of_bins-1) } 
             
             for node in nodes:
                 # get the timestamp and add +1 to the corresponding bin

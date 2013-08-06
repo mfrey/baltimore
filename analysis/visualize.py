@@ -3,6 +3,7 @@
 import re
 import os
 import csv
+import math
 import logging
 
 import numpy as np
@@ -11,6 +12,7 @@ import matplotlib.pyplot as plt
 from scipy.ndimage import gaussian_filter
 
 from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
+from plot.barchart import BarChart
 
 class Visualize:
     def __init__(self, settings):
@@ -32,7 +34,7 @@ class Visualize:
             for scenario in self.scenarios:
                if csv_file.startswith(scenario) and csv_file.endswith("pdr_aggregated.csv"):
                    pdr_files.append(csv_file)
-               elif csv_file.startswith(scenario) and csv_file.endswith("energy-dead-series.csv"):
+               elif csv_file.startswith(scenario) and csv_file.endswith("energy-dead-series_raw.csv"):
                    energy_dead_series_files.append(csv_file)
                elif csv_file.startswith(scenario) and csv_file.endswith("path-energyraw.csv"):
                    path_energy_files.append(csv_file)
@@ -57,13 +59,106 @@ class Visualize:
 
         return [row for row in result if len(row) > 1]
 
+
     def _sorted(self, data): 
         convert = lambda text: int(text) if text.isdigit() else text 
         alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ] 
         return sorted(data, key = alphanum_key)
 
+
     def _visualize_eds(self, directory, eds_files):
-        eds = {}
+        #
+        energy_dead_series = {}
+        #
+        bin_size_in_seconds = 10
+        #  max timestamp / bin size in seconds
+        nr_of_bins = 0
+
+        max_timestamp_per_scenario = {}
+
+        for eds_file in eds_files:
+            scenario = eds_file.split("_")[0]
+            eds_file = directory + eds_file
+            result = self._read_csv(eds_file)
+
+            # remove the row containing the description 
+            result.pop(0)
+
+            max_timestamp_per_scenario[scenario] = np.amax([float(element[2]) for element in result])
+
+            for row in result:
+                repetition = row[0]
+
+                if scenario not in energy_dead_series:
+                    energy_dead_series[scenario] = {}
+
+                if repetition not in energy_dead_series[scenario]:
+                    energy_dead_series[scenario][repetition] = []
+
+                energy_dead_series[scenario][repetition].append(row)
+
+        
+        for scenario in energy_dead_series:
+            repetitions = len(energy_dead_series[scenario])
+            max_timestamp = max_timestamp_per_scenario[scenario]
+            nr_of_bins = int(max_timestamp/bin_size_in_seconds)
+            
+            self.logger.debug("number of bins: %d (for scenario %s)", nr_of_bins, scenario)
+
+            # create all bins and initialize with zero and each bin is a list of dead notes per repetition 
+            #global_bins = { key : [] for key in range(0, nr_of_bins-1) } 
+            global_bins = { key : [] for key in range(0, nr_of_bins) } 
+
+            for repetition in energy_dead_series[scenario]:
+                #bins_for_this_repetition = { key : 0 for key in range(0, nr_of_bins-1) } 
+                bins_for_this_repetition = { key : 0 for key in range(0, nr_of_bins) } 
+
+                for row in energy_dead_series[scenario][repetition]:
+                    node = row[1]
+                    timestamp = float(row[2])
+                    # get the timestamp and add +1 to the corresponding bin
+                    # in which interval does the timestamp lie?
+                    bin_nr = int(math.floor(timestamp/bin_size_in_seconds))
+                    #bins_for_this_repetition[bin_nr] += 1
+                    bins_for_this_repetition[bin_nr-1] += 1
+
+		# now save the bins to calculate the average later
+                for bin_nr, value in bins_for_this_repetition.iteritems(): 
+                    global_bins[bin_nr].append(value)
+
+            eds = {}
+
+            for bin_nr, value_list in global_bins.iteritems():
+                # calculate the average number of dead notes from the corresponding bin of each repetition
+                if value_list:
+                    average = np.average(value_list)
+                else:
+                    average = 0
+
+                eds[bin_nr] = average
+
+            self._plot_energy_dead_series(scenario, eds, bin_size_in_seconds)
+            # reset the global bin
+            global_bins = { key : [] for key in range(0, nr_of_bins-1) } 
+        
+
+    def _plot_energy_dead_series(self, scenario, energy_dead_series, bin_size_in_seconds):
+        xdata = []
+        ydata = []
+
+        for bin_nr, value in energy_dead_series.iteritems():
+            xdata.append(bin_nr * bin_size_in_seconds)
+            ydata.append(value)
+ 
+        ydata = np.cumsum(ydata)
+
+        plot = BarChart()
+        plot.title = "Energy Dead Series"
+        plot.xlabel = "Time [s]"
+        plot.ylabel = "Dead Nodes"
+        plot.bar_widths = -1
+        plot.draw(xdata, ydata, os.path.join(self.csv_location, scenario + "_energy-dead-series.png"))
+     
 
 
     def _visualize_pdr(self, directory, pdr_files):
