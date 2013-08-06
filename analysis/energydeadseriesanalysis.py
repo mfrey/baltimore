@@ -41,7 +41,7 @@ class EnergyDeadSeriesAnalysis(Analysis):
         if self.csv:
             self.export_csv_raw(data)
 
-    def _plot(experiment_results, is_verbose):
+    def _plot(self, experiment_results, is_verbose):
         repetitions = len(experiment_results.repetitions)
         # create all bins and initialize with zero and each bin is a list of dead notes per repetition 
         global_bins = { key : [] for key in range(0, self.nr_of_bins) } 
