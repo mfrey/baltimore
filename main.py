@@ -29,7 +29,7 @@ def main():
     parser.add_argument('-v', '--verbose', dest='verbose', default=False, const=True, action='store_const', help="print out verbose information for each iteration")
     parser.add_argument('-r', '--run', dest='run', default=False, const=True, action='store_const', help="first run the simulations as specified via the configuration then analyse the results")
     parser.add_argument('-t', '--testbed', dest='testbed', default=False, const=True, action='store_const', help="run a testbed experiment")
-    parser.add_argument('-p', '--plot', dest='draw', default=False, const=True, action='store_const', help="draw graphs")
+    parser.add_argument('-p', '--plot', dest='plot', default=False, const=True, action='store_const', help="draw graphs")
     parser.add_argument('-e', '--evaluate', dest='evaluate', default=False, const=True, action='store_const', help="evaluate results")
     arguments = parser.parse_args()
 
@@ -49,7 +49,7 @@ def main():
         run_testbed(configuration)
 
     elif arguments.run == False and arguments.testbed == False:
-        if argumens.evaluate == True:
+        if arguments.evaluate == True:
             experiment_manager = ExperimentManager(baltimore_revision, libara_revision)
             evaluate_simulation(configuration.settings, experiment_manager, arguments.verbose)
 
