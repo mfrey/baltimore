@@ -39,7 +39,12 @@ class Configuration(object):
     def read_database_options(self):
         self.settings['db_settings'] = True
         self.settings['db_host'] = self._get('Database', 'host_name')
-        self.settings['db_port'] = int(self._get('Database', 'port'))
+
+        port = self._get('Database', 'port')
+        if port != '':
+            self.settings['db_port'] = int(port)
+        else:
+           port = -1
         self.settings['db_db'] = self._get('Database', 'database')
         self.settings['db_user'] = self._get('Database', 'user')
         self.settings['db_password'] = self._get('Database', 'password')
