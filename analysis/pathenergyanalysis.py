@@ -53,9 +53,6 @@ class PathEnergyAnalysis(Analysis):
             for node in nodes:
                 data = experiment_results.get_tuple_metric_per_node("routeEnergy", node, repetition)
 
-                for element in data:
-                    raw_data.append([repetition, node, float(element[0]), float(element[1])])
-
                 T = [float(pair[0]) for pair in data]
                 R = [float(pair[1]) for pair in data]
                 bw = 0.5
