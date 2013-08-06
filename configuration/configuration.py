@@ -37,17 +37,18 @@ class Configuration(object):
 
 
     def read_database_options(self):
-        self.settings['db_settings'] = True
-        self.settings['db_host'] = self._get('Database', 'host_name')
+        self.settings['database_settings'] = True
+        self.settings['database_host'] = self._get('Database', 'host_name')
 
         port = self._get('Database', 'port')
         if port != '':
-            self.settings['db_port'] = int(port)
+            self.settings['database_port'] = int(port)
         else:
            port = -1
-        self.settings['db_db'] = self._get('Database', 'database')
-        self.settings['db_user'] = self._get('Database', 'user')
-        self.settings['db_password'] = self._get('Database', 'password')
+
+        self.settings['database_db'] = self._get('Database', 'database')
+        self.settings['database_user'] = self._get('Database', 'user')
+        self.settings['database_password'] = self._get('Database', 'password')
 
 
     def read_analysis_options(self):
@@ -72,7 +73,7 @@ class Configuration(object):
            result = ""
         except NoSectionError: 
            result = ""
-           self.settings[section + "_settings"] = False
+           self.settings[section.lower + "_settings"] = False
            self.logger.debug("no such section %s", section)
 
         return result
@@ -86,7 +87,7 @@ class Configuration(object):
            result = False
         except NoSectionError: 
            result = False
-           self.settings[section + "_settings"] = False
+           self.settings[section.lower + "_settings"] = False
            self.logger.debug("no such section %s", section)
 
         return result
