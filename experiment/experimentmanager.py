@@ -48,15 +48,11 @@ class ExperimentManager:
         self.pool.map(runner.run_simulation, argument)
 
     def process(self, configuration, is_verbose=False):
-        # store the general simulation settings
-        omnetpp_ini= OMNeTConfigurationFileParser(configuration['cwd'] + '/omnetpp.ini')
-        self.omnetpp_ini = omnetpp_ini.get_section("General")
-
-        self.omnetpp_ini_checksum = omnetpp_ini.omnetpp_ini_hash
-        self.standard_ini_checksum = omnetpp_ini.standard_ini_hash
-
         directory = configuration['cwd']
         scenarios = configuration['scenarios']
+
+        if os.path.exists(directory + '/omnetpp.ini'):
+            self.read_omnetini(directory + '/omnetpp.ini', is_verbose)
 
         queue = Queue()
         jobs = []
@@ -76,8 +72,6 @@ class ExperimentManager:
                 jobs.append(process)
                 process.start()
 
-        omnetpp_ini = OMNeTConfigurationFileParser(directory + '/omnetpp.ini')
-
         # FIXME: that's a bug if no config.ini file is added
         if is_verbose:
             self._print_general_settings(omnetpp_ini.get_section('General'))
@@ -92,15 +86,19 @@ class ExperimentManager:
                 result = queue.get(True, 1)
                 self.experiments[result[0].scenario_name] = result
 
-                # FIXME: that's a bug if no config.ini file is added
                 if is_verbose:
-                    self._print_scenario_settings(omnetpp_ini.get_scenario(result[0].scenario_name))
+                    self._print_scenario_settings(self.omnetpp_configuration.get_scenario(result[0].scenario_name))
 
             except Empty:
                 self.logger.error("Could not retrieve result data for scenario " + job.scenario_name + " (might have failed earlier)")
 
-        #self.generate_packet_delivery_plots(configuration['analysis_location'])
+    def read_omnetini(self, file_path, is_verbose):
+        #TODO throw error if verbose = True
+        self.omnetpp_configuration = OMNeTConfigurationFileParser(file_path)
+        self.omnetpp_ini = omnetpp_ini.get_section("General")
 
+        self.omnetpp_ini_checksum = omnetpp_ini.omnetpp_ini_hash
+        self.standard_ini_checksum = omnetpp_ini.standard_ini_hash
 
     def generate_packet_delivery_plots(self, location):
         scenario_list = [e for e in xrange(len(self.experiments))]
