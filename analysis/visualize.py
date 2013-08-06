@@ -101,16 +101,14 @@ class Visualize:
         for scenario in energy_dead_series:
             repetitions = len(energy_dead_series[scenario])
             max_timestamp = max_timestamp_per_scenario[scenario]
-            nr_of_bins = int(max_timestamp/bin_size_in_seconds)
+            nr_of_bins = int(max_timestamp/bin_size_in_seconds) + 1
             
             self.logger.debug("number of bins: %d (for scenario %s)", nr_of_bins, scenario)
 
             # create all bins and initialize with zero and each bin is a list of dead notes per repetition 
-            #global_bins = { key : [] for key in range(0, nr_of_bins-1) } 
             global_bins = { key : [] for key in range(0, nr_of_bins) } 
 
             for repetition in energy_dead_series[scenario]:
-                #bins_for_this_repetition = { key : 0 for key in range(0, nr_of_bins-1) } 
                 bins_for_this_repetition = { key : 0 for key in range(0, nr_of_bins) } 
 
                 for row in energy_dead_series[scenario][repetition]:
@@ -119,10 +117,9 @@ class Visualize:
                     # get the timestamp and add +1 to the corresponding bin
                     # in which interval does the timestamp lie?
                     bin_nr = int(math.floor(timestamp/bin_size_in_seconds))
-                    #bins_for_this_repetition[bin_nr] += 1
-                    bins_for_this_repetition[bin_nr-1] += 1
+                    bins_for_this_repetition[bin_nr] += 1
 
-		# now save the bins to calculate the average later
+                # now save the bins to calculate the average later
                 for bin_nr, value in bins_for_this_repetition.iteritems(): 
                     global_bins[bin_nr].append(value)
 
