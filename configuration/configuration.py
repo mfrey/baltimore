@@ -19,9 +19,9 @@ class Configuration(object):
                 'cpu_cores' : self._get_nr_of_cpus(self._get('General', 'cpu_cores'))
             }
 
-            self.set_database_options()
-            self.set_analysis_options()
-            self.set_testbed_options()
+            self.read_database_options()
+            self.read_analysis_options()
+            self.read_testbed_options()
 
             self._build_ned_path()
             self._build_omnetpp_ini_path()
@@ -33,7 +33,7 @@ class Configuration(object):
             self.settings = {}
 
 
-    def set_database_options(self):
+    def read_database_options(self):
         self.settings['db_settings'] = True
         self.settings['db_host'] = self._get('Database', 'host_name')
         self.settings['db_port'] = int(self._get('Database', 'port'))
@@ -42,7 +42,7 @@ class Configuration(object):
         self.settings['db_password'] = self._get('Database', 'password')
 
 
-    def set_analysis_options(self):
+    def read_analysis_options(self):
         self.settings['analysis_settings'] = True
         self.settings['analysis_routing_table_trace'] = self._get_boolean_option('Analysis', 'routing_table_trace')
         self.settings['analysis_location'] = path.expanduser(self._get('Analysis', 'location'))
@@ -51,7 +51,7 @@ class Configuration(object):
         self.settings['analysis_network'] = self._get_boolean_option('Analysis', 'network')
 
 
-    def set_testbed_options(self):
+    def read_testbed_options(self):
         self.settings['testbed_settings'] = True
         self.settings['testbed_interface'] = self._get('Testbed', 'interface')
 
@@ -101,6 +101,7 @@ class Configuration(object):
                 return int(nr_of_existing_cpu_cores / 2)
             else:
                 return wanted_cores
+
 
     def _build_ned_path(self):
         self.settings['ned_path'] =  self.settings['ara_home'] + '/inetmanet/src:' + self.settings['ara_home'] + '/inetmanet/examples:' + self.settings['ara_home'] + '/omnetpp:' + self.settings['ara_home'] + '/simulations/' + self.settings['scenario_home']
