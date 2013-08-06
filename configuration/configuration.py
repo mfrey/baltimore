@@ -73,7 +73,7 @@ class Configuration(object):
            result = ""
         except NoSectionError: 
            result = ""
-           self.settings[section.lower + "_settings"] = False
+           self.settings[section.lower() + "_settings"] = False
            self.logger.debug("no such section %s", section)
 
         return result
@@ -87,7 +87,7 @@ class Configuration(object):
            result = False
         except NoSectionError: 
            result = False
-           self.settings[section.lower + "_settings"] = False
+           self.settings[section.lower() + "_settings"] = False
            self.logger.debug("no such section %s", section)
 
         return result
