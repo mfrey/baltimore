@@ -1,5 +1,6 @@
 #!/usr/bin/env python2.7
 
+import logging
 import multiprocessing
 
 from os import path
@@ -7,6 +8,8 @@ from ConfigParser import ConfigParser, NoSectionError, NoOptionError
 
 class Configuration(object):
     def __init__(self, file_name):
+        self.logger = logging.getLogger('baltimore.configuration.Configuration')
+
         if(file_name is not None):
             self.parser = ConfigParser()
             self.parser.read(file_name)
