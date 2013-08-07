@@ -49,9 +49,16 @@ class ExperimentManagerWorker(multiprocessing.Process):
             repetitions = experiment_results.get_number_of_repetitions()
 
             if self.arguments.analyze_other_protocol:
-                analyser = OtherManetRoutingAnalysis(self.scenario_name, self.location, repetitions, self.csv)
-                analyser.evaluate(experiment_results)
-                result = (experiment, analyser)
+                otherMANETAnalyser = OtherManetRoutingAnalysis(self.scenario_name, self.location, repetitions, self.csv)
+                otherMANETAnalyser.evaluate(experiment_results)
+
+                max_timestamp = 900 #FIXME
+
+                energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name, self.location, max_timestamp, repetitions, self.csv)
+                energyDeadSeriesAnalyser.draw = self.draw
+                energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
+
+                result = (experiment, otherMANETAnalyser, energyDeadSeriesAnalyser)
             else:
                 pdrAnalyser = PacketDeliveryRateAnalysis(self.scenario_name, self.location, repetitions, self.csv)
                 pdrAnalyser.draw = self.draw
