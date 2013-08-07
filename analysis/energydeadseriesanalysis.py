@@ -90,13 +90,18 @@ class EnergyDeadSeriesAnalysis(Analysis):
 
     def export_csv(self):
         file_name = self.scenario + "_" + self.metric + ".csv"
-        disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - energy dead series for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
-        header = ['bin_nr', 'bin_size_in_seconds', 'max_time_stamp_value', 'value']
+        disclaimer = [['#'],
+                      ['# ' + str(self.date) + ' - energy dead series for scenario ' + self.scenario],
+                      ['# Aggregated over ' + str(self.repetitions) + ' repetitions'],
+                      ['# Max time stamp was: ' + str(self.max_time_stamp_value)],
+                      ['# The value are the average number of nodes that died in the time interval represented by the bin'],
+                      ['#']]
+        header = ['time', 'value']
 
         data =[]
 
         for bin_nr, value in self.energy_dead_series.iteritems():
-            data.append([bin_nr, self.bin_size_in_seconds, self.max_time_stamp_value, value])
+            data.append([bin_nr*self.bin_size_in_seconds, value])
 
         self._write_csv_file(file_name, disclaimer, header, data)
 
