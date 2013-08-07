@@ -41,6 +41,7 @@ class ExperimentManager:
         return list(set(scenarios) - set(non_existing_scenarios))
 
     def run_simulations(self, configuration):
+        self.logger.debug("scenarios " + str(configuration['scenarios']))
         self.pool = Pool(configuration['cpu_cores'])
         # build up a tuple consisting of scenarios and repetitions
         argument = itertools.product(configuration['scenarios'], range(configuration['repetitions']), [configuration])
@@ -95,10 +96,10 @@ class ExperimentManager:
     def read_omnetini(self, file_path, is_verbose):
         #TODO throw error if verbose = True
         self.omnetpp_configuration = OMNeTConfigurationFileParser(file_path)
-        self.omnetpp_ini = omnetpp_ini.get_section("General")
+        self.omnetpp_ini = self.omnetpp_configuration.get_section("General")
 
-        self.omnetpp_ini_checksum = omnetpp_ini.omnetpp_ini_hash
-        self.standard_ini_checksum = omnetpp_ini.standard_ini_hash
+        self.omnetpp_ini_checksum = self.omnetpp_configuration.omnetpp_ini_hash
+        self.standard_ini_checksum = self.omnetpp_configuration.standard_ini_hash
 
     def generate_packet_delivery_plots(self, location):
         scenario_list = [e for e in xrange(len(self.experiments))]

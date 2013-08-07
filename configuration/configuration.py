@@ -22,15 +22,15 @@ class Configuration(object):
                 'cpu_cores' : self._get_nr_of_cpus(self._get('General', 'cpu_cores'))
             }
 
-            self.read_database_options()
-            self.read_analysis_options()
-            self.read_testbed_options()
-
             self._build_ned_path()
             self._build_omnetpp_ini_path()
             self._build_ld_library_path()
             self._build_cwd()
             self._build_scenarios(self._get('General', 'scenarios'))
+
+            self.read_database_options()
+            self.read_analysis_options()
+            self.read_testbed_options()
 
         else:
             self.settings = {}
