@@ -31,6 +31,8 @@ def main():
     parser.add_argument('-t', '--testbed', dest='testbed', default=False, const=True, action='store_const', help="run a testbed experiment")
     parser.add_argument('-p', '--plot', dest='plot', default=False, const=True, action='store_const', help="draw graphs")
     parser.add_argument('-e', '--evaluate', dest='evaluate', default=False, const=True, action='store_const', help="evaluate results")
+    parser.add_argument('-o', '--analyze-other-protocol', dest='analyze_other_protocol', default=False, const=True, action='store_const', help="Run analysis for other MANET routing protocol (like results for AODV, DSR or DSDV)")
+    
     arguments = parser.parse_args()
 
     configuration = get_configuration(arguments)
@@ -39,11 +41,10 @@ def main():
     baltimore_revision = git.get_revision(".")
     libara_revision = git.get_revision(configuration.settings['ara_home'])
 
-
     if arguments.run == True and arguments.testbed == False:
         experiment_manager = ExperimentManager(baltimore_revision, libara_revision)
         run_simulation(configuration.settings, experiment_manager)
-        evaluate_simulation(configuration.settings, experiment_manager, arguments.verbose)
+        evaluate_simulation(configuration.settings, experiment_manager, arguments)
 
     elif arguments.run == False and arguments.testbed == True:
         run_testbed(configuration)
@@ -65,10 +66,10 @@ def run_simulation(settings, experiment_manager):
     experiment_manager.run_simulations(settings)
 
 
-def evaluate_simulation(settings, experiment_manager, verbose):
+def evaluate_simulation(settings, experiment_manager, arguments):
     remaining_scenarios = experiment_manager.check_result_files(settings['cwd'] + '/results', settings['scenarios'])
     settings['scenarios'] = remaining_scenarios
-    experiment_manager.process(settings, verbose)
+    experiment_manager.process(settings, arguments)
 
     if settings['database_settings']:
         store_experiment_results(settings, experiment_manager)

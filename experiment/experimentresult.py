@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.7
 
 import numpy as np
+import pprint
 
 class ExperimentResult:
     def __init__(self):
@@ -59,7 +60,8 @@ class ExperimentResult:
     def get_metric(self, metric_name, repetition):
         sum = 0
         for node_identifier, results in self.repetitions[repetition].get_node_results().iteritems():
-            sum += results[metric_name];
+            if metric_name in results:
+                sum += results[metric_name]
 
         return sum
 

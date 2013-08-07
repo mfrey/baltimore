@@ -7,6 +7,7 @@ import multiprocessing
 
 
 from experiment import Experiment
+from analysis.othermanetroutinganalysis import OtherManetRoutingAnalysis
 from analysis.packetdeliveryrateanalysis import PacketDeliveryRateAnalysis
 from analysis.overheadanalysis import OverheadAnalysis
 from analysis.delayanalysis import DelayAnalysis
@@ -16,11 +17,12 @@ from analysis.pathenergyanalysis import PathEnergyAnalysis
 
 class ExperimentManagerWorker(multiprocessing.Process):
 
-    def __init__(self, configuration, scenario_name, queue, is_verbose=False):
+    def __init__(self, configuration, scenario_name, queue, arguments):
         super(ExperimentManagerWorker,self).__init__()
         self.simulations_directory = configuration['cwd']
         self.scenario_name = scenario_name
-        self.verbose = is_verbose
+        self.verbose = arguments.verbose
+        self.arguments = arguments
         self.visualize = configuration['analysis_network']
         self.results_queue = queue
         self.routing_table_trace = configuration['analysis_routing_table_trace']
@@ -41,11 +43,17 @@ class ExperimentManagerWorker(multiprocessing.Process):
 
         try:
             self.logger.info('[%d] Scanning directory "%s" for simulation result files. This may take some time depending on the number of files...' %  (pid, self.simulations_directory))
+            
             experiment = Experiment(self.simulations_directory + '/results', self.scenario_name, self.visualize, self.routing_table_trace, self.location)
             experiment_results = experiment.get_results()
             repetitions = experiment_results.get_number_of_repetitions()
 
-            pdrAnalyser = PacketDeliveryRateAnalysis(self.scenario_name, self.location, repetitions, self.csv)
+            if self.arguments.analyze_other_protocol:
+                analyser = OtherManetRoutingAnalysis(self.scenario_name, self.location, repetitions, self.csv)
+                analyser.evaluate(experiment_results)
+                result = (experiment, analyser)
+            else:
+                pdrAnalyser = PacketDeliveryRateAnalysis(self.scenario_name, self.location, repetitions, self.csv)
             pdrAnalyser.draw = self.draw
             pdrAnalyser.evaluate(experiment_results, self.verbose)
 

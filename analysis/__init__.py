@@ -1,1 +1,1 @@
-__all__ = ['packetdeliveryrateanalysis', 'overheadanalysis', 'pathenergy', 'pathenergyanalysis', 'visualize']
+__all__ = ['packetdeliveryrateanalysis', 'overheadanalysis', 'pathenergy', 'pathenergyanalysis', 'visualize', 'othermanetroutinganalysis']
