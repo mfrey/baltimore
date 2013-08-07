@@ -52,7 +52,7 @@ def main():
     elif arguments.run == False and arguments.testbed == False:
         if arguments.evaluate == True:
             experiment_manager = ExperimentManager(baltimore_revision, libara_revision)
-            evaluate_simulation(configuration.settings, experiment_manager, arguments.verbose)
+            evaluate_simulation(configuration.settings, experiment_manager, arguments)
 
         if arguments.plot == True:
             visualize = Visualize(configuration.settings)

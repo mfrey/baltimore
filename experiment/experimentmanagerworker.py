@@ -54,32 +54,32 @@ class ExperimentManagerWorker(multiprocessing.Process):
                 result = (experiment, analyser)
             else:
                 pdrAnalyser = PacketDeliveryRateAnalysis(self.scenario_name, self.location, repetitions, self.csv)
-            pdrAnalyser.draw = self.draw
-            pdrAnalyser.evaluate(experiment_results, self.verbose)
+                pdrAnalyser.draw = self.draw
+                pdrAnalyser.evaluate(experiment_results, self.verbose)
 
-            overheadAnalyser = OverheadAnalysis(self.scenario_name, self.location, repetitions, self.csv)
-            overheadAnalyser.draw = self.draw
-            overheadAnalyser.evaluate(experiment_results, self.verbose)
+                overheadAnalyser = OverheadAnalysis(self.scenario_name, self.location, repetitions, self.csv)
+                overheadAnalyser.draw = self.draw
+                overheadAnalyser.evaluate(experiment_results, self.verbose)
 
-            delayAnalyser = DelayAnalysis(self.scenario_name, self.location, repetitions, self.csv)
-            delayAnalyser.draw = self.draw
-            delayAnalyser.evaluate(experiment_results, self.verbose)
+                delayAnalyser = DelayAnalysis(self.scenario_name, self.location, repetitions, self.csv)
+                delayAnalyser.draw = self.draw
+                delayAnalyser.evaluate(experiment_results, self.verbose)
 
-            lastPacketAnalyser = LastPacketAnalysis(self.scenario_name, self.location, repetitions, self.csv)
-            lastPacketAnalyser.draw = self.draw
-            lastPacketAnalyser.evaluate(experiment_results, self.verbose)
+                lastPacketAnalyser = LastPacketAnalysis(self.scenario_name, self.location, repetitions, self.csv)
+                lastPacketAnalyser.draw = self.draw
+                lastPacketAnalyser.evaluate(experiment_results, self.verbose)
 
-            max_timestamp = lastPacketAnalyser.data_max
+                max_timestamp = lastPacketAnalyser.data_max
 
-            energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name, self.location, max_timestamp, repetitions, self.csv)
-            energyDeadSeriesAnalyser.draw = self.draw
-            energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
+                energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name, self.location, max_timestamp, repetitions, self.csv)
+                energyDeadSeriesAnalyser.draw = self.draw
+                energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
 
-            pathEnergyAnalyser = PathEnergyAnalysis(self.scenario_name, self.location, repetitions, self.csv)
-            pathEnergyAnalyser.draw = self.draw
-            pathEnergyAnalyser.evaluate(experiment_results)
+                pathEnergyAnalyser = PathEnergyAnalysis(self.scenario_name, self.location, repetitions, self.csv)
+                pathEnergyAnalyser.draw = self.draw
+                pathEnergyAnalyser.evaluate(experiment_results)
 
-            result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser, delayAnalyser, pathEnergyAnalyser)
+                result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser, delayAnalyser, pathEnergyAnalyser)
 
             self.logger.info("[%d] successfully read %d experiment(s) from %d scalar file(s)." % (pid, 1, experiment_results.get_number_of_repetitions()))
             self.results_queue.put(result)
