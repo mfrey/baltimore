@@ -90,7 +90,7 @@ class EnergyDeadSeriesAnalysis(Analysis):
 
     def export_csv(self):
         file_name = self.scenario + "_" + self.metric + ".csv"
-        disclaimer = [['#'],['#'], ['# ' + str(selfq.date) + ' - energy dead series for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
+        disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - energy dead series for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
         header = ['bin_nr', 'bin_size_in_seconds', 'max_time_stamp_value', 'value']
 
         data =[]
