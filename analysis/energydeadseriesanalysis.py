@@ -35,13 +35,8 @@ class EnergyDeadSeriesAnalysis(Analysis):
                 timestamp = experiment_results.repetitions[repetition].get_node_results()[node]["nodeEnergyDepletionTimestamp"]
                 data.append([repetition, node, timestamp])
 
-        if self.draw:
-            self._plot(experiment_results, is_verbose)
 
-        if self.csv:
-            self.export_csv_raw(data)
 
-    def _plot(self, experiment_results, is_verbose):
         repetitions = len(experiment_results.repetitions)
         # create all bins and initialize with zero and each bin is a list of dead notes per repetition 
         global_bins = { key : [] for key in range(0, self.nr_of_bins) } 
@@ -73,7 +68,14 @@ class EnergyDeadSeriesAnalysis(Analysis):
 
             self.energy_dead_series[bin_nr] = average
                 
-        self._create_plot()
+            
+        if self.draw:
+            self._createplot()
+
+        if self.csv:
+            self.export_csv_raw(data)
+            self.export_csv()
+            
         
     def _create_plot(self):
         xdata = []
@@ -88,11 +90,13 @@ class EnergyDeadSeriesAnalysis(Analysis):
 
     def export_csv(self):
         file_name = self.scenario + "_" + self.metric + ".csv"
-        disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - energy dead series for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
+        disclaimer = [['#'],['#'], ['# ' + str(selfq.date) + ' - energy dead series for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
         header = ['bin_nr', 'bin_size_in_seconds', 'max_time_stamp_value', 'value']
 
+        data =[]
+
         for bin_nr, value in self.energy_dead_series.iteritems():
-            data = [[bin_nr, self.bin_size_in_seconds, self.max_time_stamp_value, value]]
+            data.append([bin_nr, self.bin_size_in_seconds, self.max_time_stamp_value, value])
 
         self._write_csv_file(file_name, disclaimer, header, data)
 
