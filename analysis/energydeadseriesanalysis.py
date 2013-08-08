@@ -28,7 +28,7 @@ class EnergyDeadSeriesAnalysis(Analysis):
         data = []
         
         for repetition in experiment_results:
-            nodes = experiment_results.nodes_have_metric("nodeEnergyDepletionTimestamp")
+            nodes = experiment_results.nodes_have_metric("nodeEnergyDepletionTimestamp", repetition)
 
             for node in nodes:
                 # get the timestamp and add +1 to the corresponding bin
@@ -44,7 +44,7 @@ class EnergyDeadSeriesAnalysis(Analysis):
         data = []
         
         for repetition in experiment_results:
-            nodes = experiment_results.nodes_have_metric("nodeEnergyDepletionTimestamp")
+            nodes = experiment_results.nodes_have_metric("nodeEnergyDepletionTimestamp", repetition)
             bins_for_this_repetition = { key : 0 for key in range(0, self.nr_of_bins) } 
             
             for node in nodes:

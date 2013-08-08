@@ -41,11 +41,11 @@ class ExperimentResult:
         return iter(self.repetitions)
 
     # TODO: come up with a better name
-    def nodes_have_metric(self, metric):
+    def nodes_have_metric(self, metric, repetition_nr=0):
         result = []
 
-        for node in self.repetitions[0].get_node_results():
-            if metric in self.repetitions[0].get_node_results()[node].keys():
+        for node in self.repetitions[repetition_nr].get_node_results():
+            if metric in self.repetitions[repetition_nr].get_node_results()[node].keys():
                 result.append(node)
 
         return result
