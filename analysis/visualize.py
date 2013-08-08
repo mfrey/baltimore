@@ -4,6 +4,7 @@ import re
 import os
 import csv
 import math
+import random 
 import logging
 
 import numpy as np
@@ -279,12 +280,31 @@ class Visualize:
                 plt.savefig(os.path.join(self.csv_location, file_name + ".png"))
                 plt.close()
 
+                # prepare data
+                number_of_samples = 1000
+                samples = random.sample(data, number_of_samples)
+                timestamp = [float(pair[0]) for pair in samples]
+                energy = [float(pair[1]) for pair in samples]
+
+                # plot the path energy with the original data
+                figure = plt.figure()
+                figure.subplots_adjust(bottom=0.2)
+                axis = figure.add_subplot(111)
+                plt.plot(domain, estimate)
+                plt.plot(timestamp, energy, '.')
+                #plt.scatter(timestamp, energy, alpha=0.7)
+                plt.title("Path Energy - Node " + str(node) + " (Estimated) for scenario " + scenario)
+                plt.xlabel("Time [s]")
+                plt.ylabel("Energy [J]")
+                plt.savefig(os.path.join(self.csv_location, file_name + "_raw.png"))
+                plt.close()
+
         # we make a plot for each node (over all scenarios)
         for node in data_all_scenarios:
             plt.title("Path Energy - Node " + str(node) + " (Estimated)")
             plt.xlabel("Time [s]")
             plt.ylabel("Energy [J]")
-            file_name = "node-2" + str(node) + "_path_energy"
+            file_name = "node-" + str(node) + "_path_energy"
 
             for scenario in data_all_scenarios[node]:
                 domain = data_all_scenarios[node][scenario][0]
@@ -292,7 +312,6 @@ class Visualize:
                 plt.plot(domain, estimate, label=scenario)
 
             plt.legend()
-
             plt.savefig(os.path.join(self.csv_location, file_name + ".png"))
             plt.close()
 

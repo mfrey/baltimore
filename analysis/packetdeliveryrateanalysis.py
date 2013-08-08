@@ -67,7 +67,7 @@ class PacketDeliveryRateAnalysis(Analysis):
                 inexplicable_loss -= result.get_metric('routeFailureNextHopIsSender:count', repetition)
                 inexplicable_loss -= result.get_metric('dropPacketBecauseEnergyDepleted:count', repetition)
             except KeyError:
-                self.logger.error("there is no such metric")
+                self.logger.error("there is no such metric in repetition %d", repetition)
 
             if inexplicable_loss > 0:
                 sys.stderr.write("WARNING: The loss of %d packets could not be explained (Scenario %s)\n" % (inexplicable_loss, str(repetition)))

@@ -1,5 +1,6 @@
 #!/usr/bin/env python2.7
 
+import numpy as np
 import matplotlib.pyplot as plt
 
 class PacketDeliveryRatePlot:
@@ -10,6 +11,7 @@ class PacketDeliveryRatePlot:
         self.xlist = []
         self.xticklabels = []
         self.ylist = []
+        self.yticks = [20, 30, 40, 60, 70, 80, 90, 100]
         self.labels = []
         self.markers = ['s','^','v','2','*','3','d']
 
@@ -23,11 +25,14 @@ class PacketDeliveryRatePlot:
             else:
                 plt.plot(value, self.ylist[index], drawstyle="line", marker=self.markers[index], lw=2.5)
         plt.ylabel(self.ylabel,va="center",ha="center")
+
+        plt.yticks(self.yticks)
+        plt.xticks(self.xlist[0])
         plt.xlabel(self.xlabel)
         plt.title(self.title)
         if len(self.xlist) > 1:
             plt.legend()
-        ax.set_xticklabels(self.xticklabels)
+#        ax.set_xticklabels(self.xticklabels)
         plt.grid(axis="y")
         plt.savefig(filename)
         plt.close()
