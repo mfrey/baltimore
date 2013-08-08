@@ -50,8 +50,8 @@ class ExperimentResult:
 
         return result
 
-    def get_metric_per_node(self, metric_name, node, repetition):
-        return [pair[1] for pair in self.repetitions[repetition].get_node_results()[node][metric_name]]
+    def get_metric_per_node(self, metric_name, node_nr, repetition_nr):
+        return [pair[1] for pair in self.repetitions[repetition_nr].get_node_results()[node_nr][metric_name]]
 
     # TODO: come up with a good name
     def get_tuple_metric_per_node(self, metric_name, node, repetition):

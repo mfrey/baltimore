@@ -25,7 +25,7 @@ class DelayAnalysis(Analysis):
         delay = {} 
 
         for repetition in experiment_results:
-            nodes = experiment_results.nodes_have_metric("delay")
+            nodes = experiment_results.nodes_have_metric("delay", repetition)
             for node in nodes:
                 if node not in delay:
                     delay[node] = []
@@ -39,16 +39,18 @@ class DelayAnalysis(Analysis):
             self.data_std[node] = [np.std(repetition) for repetition in data]
             self.data_avg[node] = [np.average(repetition) for repetition in data]
 
-            self.logger.info("delay [min]: " + "%s  for node %s in scenario %s",
-                                 str(self.data_min[node]), node, self.scenario)
-            self.logger.info("delay [max]: " + "%s  for node %s in scenario %s",
-                                 str(self.data_max[node]), node, self.scenario)
-            self.logger.info("delay [median]: " + "%s  for node %s in scenario %s",
-                                 str(self.data_median[node]), node, self.scenario)
-            self.logger.info("delay [std]: " + "%s  for node %s in scenario %s",
-                                 str(self.data_std[node]), node, self.scenario)
-            self.logger.info("delay [avg]: " + "%s  for node %s in scenario %s",
-                                 str(self.data_avg[node]), node, self.scenario)
+            avg_minimum = np.average(self.data_min[node])
+            avg_maximum = np.average(self.data_max[node])
+            avg_median = np.average(self.data_median[node])
+            avg_stdDev = np.average(self.data_std[node])
+            avg_average = np.average(self.data_avg[node])
+
+            self.logger.info("Printing average delay statistics for node %s", node)
+            self.logger.info("Minimum delay = %f seconds", avg_minimum)
+            self.logger.info("Maximum delay = %f seconds", avg_maximum)
+            self.logger.info("Std.Deviation = %f seconds", avg_stdDev)
+            self.logger.info("Average delay = %f seconds", avg_minimum)
+            self.logger.info("Median delay  = %f seconds", avg_median)
         if self.draw:            
             for node in delay:
                 self.metric = "delay_node-" + str(node)
