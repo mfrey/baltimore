@@ -67,9 +67,7 @@ class Visualize:
 
 
     def _visualize_eds(self, directory, eds_files):
-        #
         energy_dead_series = {}
-        #
         bin_size_in_seconds = 10
         #  max timestamp / bin size in seconds
         nr_of_bins = 0
@@ -222,9 +220,6 @@ class Visualize:
         plot = PacketDeliveryRatePlot()
         plot.xlist = xdata
         plot.ylist = ydata
-        # FIXME: The tick labes don't match the data points in the graph
-        plot.xticklabels = pause_times
-        # better check that
         plot.labels = keys
         plot.draw(os.path.join(self.csv_location, "avg_packetdeliveryrate.png"))
 
