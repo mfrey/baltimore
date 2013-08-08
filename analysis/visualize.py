@@ -324,8 +324,11 @@ class Visualize:
         """
         Tmax = 6000
 
-        T = [float(pair[0]) for pair in data]
+        # timestamps 
+        timestamps = [float(pair[0]) for pair in data]
+        # path energy values 
         R = [float(pair[1]) for pair in data]
+
         bw = smoothing_width
 
         trange = [0, Tmax]
@@ -335,17 +338,17 @@ class Visualize:
 
         # compute sum_i K(x - x_i) y_i
         hist_R, edges = np.histogram(T, range=trange, bins=bins, weights=R)
-        kde_R = gaussian_filter(hist_R, bw / dx)
+        kernel_density_R = gaussian_filter(hist_R, bw / dx)
 
         # compute sum_i K(x - x_i)
-        hist_T, edges = np.histogram(T, range=trange, bins=bins)
-        kde_T = gaussian_filter(hist_T, bw / dx)
+        hist_T, edges = np.histogram(timestamps, range=trange, bins=bins)
+        kernel_density_T = gaussian_filter(hist_T, bw / dx)
 
-        self.logger.debug("kde_R is " + str(kde_R))
-        self.logger.debug("kde_T is " + str(kde_R))
+        self.logger.debug("kde_R is " + str(kernel_density_R))
+        self.logger.debug("kde_T is " + str(kernel_density_T))
 
         # compute the Nadaraya-Watson estimate
-        interpolated_R = kde_R / kde_T
+        interpolated_R = kernel_density_R / kernel_density_T
 
         # compute the x-axis
         domain = (edges[1:] + edges[:-1]) / 2.0
