@@ -275,13 +275,13 @@ class Visualize:
                 # plot the path energy
                 plt.title("Path Energy - Node " + str(node) + " (Estimated) for scenario " + scenario)
                 plt.xlabel("Time [s]")
-                plt.ylabel("Energy [J]")
+                plt.ylabel("Energy [mWs]")
                 plt.plot(domain, estimate)
                 plt.savefig(os.path.join(self.csv_location, file_name + ".png"))
                 plt.close()
 
                 # prepare data
-                number_of_samples = 1000
+                number_of_samples = 500
                 samples = random.sample(data, number_of_samples)
                 timestamp = [float(pair[0]) for pair in samples]
                 energy = [float(pair[1]) for pair in samples]
@@ -295,7 +295,7 @@ class Visualize:
                 #plt.scatter(timestamp, energy, alpha=0.7)
                 plt.title("Path Energy - Node " + str(node) + " (Estimated) for scenario " + scenario)
                 plt.xlabel("Time [s]")
-                plt.ylabel("Energy [J]")
+                plt.ylabel("Energy [mWs]")
                 plt.savefig(os.path.join(self.csv_location, file_name + "_raw.png"))
                 plt.close()
 
@@ -303,7 +303,7 @@ class Visualize:
         for node in data_all_scenarios:
             plt.title("Path Energy - Node " + str(node) + " (Estimated)")
             plt.xlabel("Time [s]")
-            plt.ylabel("Energy [J]")
+            plt.ylabel("Energy [mWs]")
             file_name = "node-" + str(node) + "_path_energy"
 
             for scenario in data_all_scenarios[node]:
@@ -327,7 +327,7 @@ class Visualize:
         # timestamps 
         timestamps = [float(pair[0]) for pair in data]
         # path energy values 
-        R = [float(pair[1]) for pair in data]
+        path_energy = [float(pair[1]) for pair in data]
 
         bw = smoothing_width
 
@@ -337,15 +337,15 @@ class Visualize:
         dx = (trange[1] - trange[0]) / bins
 
         # compute sum_i K(x - x_i) y_i
-        hist_R, edges = np.histogram(T, range=trange, bins=bins, weights=R)
+        hist_R, edges = np.histogram(timestamps, range=trange, bins=bins, weights=path_energy)
         kernel_density_R = gaussian_filter(hist_R, bw / dx)
 
         # compute sum_i K(x - x_i)
         hist_T, edges = np.histogram(timestamps, range=trange, bins=bins)
         kernel_density_T = gaussian_filter(hist_T, bw / dx)
 
-        self.logger.debug("kde_R is " + str(kernel_density_R))
-        self.logger.debug("kde_T is " + str(kernel_density_T))
+        self.logger.debug("kernel density for path energy values is " + str(kernel_density_R))
+        self.logger.debug("kernel density for timestamps is " + str(kernel_density_T))
 
         # compute the Nadaraya-Watson estimate
         interpolated_R = kernel_density_R / kernel_density_T
@@ -356,3 +356,11 @@ class Visualize:
         return (domain, interpolated_R)
 
 
+    # TODO
+    def _compute_bandwidth(self, data):
+        """  Finds a suitable bandwidth for the kernel regression.
+
+        The method ...
+
+        """  
+        return .5
