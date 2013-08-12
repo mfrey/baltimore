@@ -42,14 +42,17 @@ class EnergyDeadSeriesAnalysis(Analysis):
         global_bins = { key : [] for key in range(0, self.nr_of_bins) } 
 
         data = []
-        
+        avg_timestamps = []
+        median_timestamps = []
         for repetition in experiment_results:
             nodes = experiment_results.nodes_have_metric("nodeEnergyDepletionTimestamp", repetition)
             bins_for_this_repetition = { key : 0 for key in range(0, self.nr_of_bins) } 
             
+            timestamps_of_repetition = []
             for node in nodes:
                 # get the timestamp and add +1 to the corresponding bin
                 timestamp = experiment_results.repetitions[repetition].get_node_results()[node]["nodeEnergyDepletionTimestamp"]
+                timestamps_of_repetition.append(timestamp)
                 data.append([repetition, node, timestamp])
                 # in which interval does the timestamp lie?
                 bin_nr = int(math.floor(timestamp / self.bin_size_in_seconds))
@@ -58,6 +61,10 @@ class EnergyDeadSeriesAnalysis(Analysis):
             # now save the bins to calculate the average later
             for bin_nr, value in bins_for_this_repetition.iteritems(): 
                 global_bins[bin_nr].append(value)
+           
+            # save the average and median for the energy depletion timestamp
+            avg_timestamps.append(np.average(timestamps_of_repetition))
+            median_timestamps.append(np.median(timestamps_of_repetition))
 
         for bin_nr, value_list in global_bins.iteritems():
             # calculate the average number of dead notes from the corresponding bin of each repetition
@@ -67,7 +74,11 @@ class EnergyDeadSeriesAnalysis(Analysis):
                 average = 0
 
             self.energy_dead_series[bin_nr] = average
-                
+
+        avg_depletion_timestamp = np.average(avg_timestamps)
+        median_depletion_timestamp = np.average(median_timestamps)
+        self.logger.info("Average depletion timestamp: %f", avg_depletion_timestamp)
+        self.logger.info("Median depletion timestamp : %f", median_depletion_timestamp)
             
         if self.draw:
             self._createplot()
