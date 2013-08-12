@@ -49,7 +49,7 @@ class DelayAnalysis(Analysis):
             self.logger.info("Minimum delay = %f seconds", avg_minimum)
             self.logger.info("Maximum delay = %f seconds", avg_maximum)
             self.logger.info("Std.Deviation = %f seconds", avg_stdDev)
-            self.logger.info("Average delay = %f seconds", avg_minimum)
+            self.logger.info("Average delay = %f seconds", avg_average)
             self.logger.info("Median delay  = %f seconds", avg_median)
         if self.draw:            
             for node in delay:
