@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.7
 
 import hashlib
+import os
 from ConfigParser import ConfigParser
 
 
@@ -10,13 +11,18 @@ class OMNeTConfigurationFileParser:
         self.omnetpp_ini_hash = hashlib.sha512(file_name).hexdigest()
         self.standard_ini_hash = "0"
         self.omnetpp_ini_file.read(file_name)
+        self.file_name = file_name
 
+        self._handle_include_if_existent()
+
+    def _handle_include_if_existent(self):
         if self._has_include('General'):
-           extra_file = self._get_include_file_name(file_name)
-           settings = self._parse_include_file(extra_file)
-           self._merge_settings(settings) 
+            include_file = self._get_include_file_name()
+            if os.path.isfile(include_file):
+                settings = self._parse_include_file(include_file)
+                self._merge_settings(settings)
 
-    def _get_include_file_name(self, file_name):
+    def _get_include_file_name(self):
         additional_config_file_name = ""
 
         for key, value in self.get_section('General'):
@@ -24,7 +30,8 @@ class OMNeTConfigurationFileParser:
                 additional_config_file_name = value
                 break
 
-        return file_name.replace('omnetpp.ini', additional_config_file_name)
+        additional_config_file_path = self.file_name.replace('omnetpp.ini', additional_config_file_name)
+        return additional_config_file_path
 
     def _parse_include_file(self, file_name):
         parser = ConfigParser()
