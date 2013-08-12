@@ -12,8 +12,9 @@ import matplotlib.pyplot as plt
 
 from scipy.ndimage import gaussian_filter
 
-from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
 from plot.barchart import BarChart
+from plot.lineplot import LinePlot
+from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
 
 class Visualize:
     def __init__(self, settings):
@@ -23,6 +24,7 @@ class Visualize:
         csv_files = []
         pdr_files = []
         energy_dead_series_files = []
+        energy_dead_series_files_raw = []
         path_energy_files = []
 
         self.scenarios = settings['scenarios']
@@ -36,12 +38,17 @@ class Visualize:
                if csv_file.startswith(scenario) and csv_file.endswith("pdr_aggregated.csv"):
                    pdr_files.append(csv_file)
                elif csv_file.startswith(scenario) and csv_file.endswith("energy-dead-series_raw.csv"):
-                   energy_dead_series_files.append(csv_file)
+                   energy_dead_series_files_raw.append(csv_file)
                elif csv_file.startswith(scenario) and csv_file.endswith("path-energyraw.csv"):
                    path_energy_files.append(csv_file)
+               elif csv_file.startswith(scenario) and csv_file.endswith("energy-dead-series.csv"):
+                   energy_dead_series_files.append(csv_file)
 
         pdr_files = set(pdr_files)
         self._visualize_pdr(self.csv_location, pdr_files)
+
+        energy_dead_series_files_raw = set(energy_dead_series_files_raw)
+        self._visualize_eds_raw(self.csv_location, energy_dead_series_files_raw)
 
         energy_dead_series_files = set(energy_dead_series_files)
         self._visualize_eds(self.csv_location, energy_dead_series_files)
@@ -68,6 +75,50 @@ class Visualize:
 
 
     def _visualize_eds(self, directory, eds_files):
+        plot = LinePlot()
+
+        for eds_file in eds_files:
+            scenario = eds_file.split("_")[0]
+            eds_file = directory + eds_file
+            result = self._read_csv(eds_file)
+
+            # remove the row containing the description 
+            result.pop(0)
+
+            xlist = []
+            ylist = []
+
+            for row in result:
+                timestamp = float(row[0])
+                average_number_of_dead_nodes = float(row[1])
+
+                if (len(ylist) - 1) < 0:
+                    previous_number_of_dead_nodes = 0
+                else:
+                    previous_number_of_dead_nodes = ylist[(len(ylist)-1)]
+
+                if average_number_of_dead_nodes != 0 or len(ylist) == 1:
+                    xlist.append(timestamp)
+                    ylist.append(average_number_of_dead_nodes + previous_number_of_dead_nodes)
+
+            # set the name of the scenario in the plot
+            plot.labels.append(scenario)
+            # set the values of the x-axis
+            plot.xlist.append(xlist)
+            # set the values of the y-axis
+            plot.ylist.append(ylist)
+            
+
+        plot.title = "Energy Dead Series (Average)"
+        plot.xlabel = "Time [s]"
+        plot.ylabel = "Average Number of Dead Nodes"
+        plot.yticks = [0, 5, 10, 20, 30, 40, 50]
+#        plot.xticks = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+        plot.draw(directory + "/energy_dead_series.png")
+
+
+
+    def _visualize_eds_raw(self, directory, eds_files):
         energy_dead_series = {}
         bin_size_in_seconds = 10
         #  max timestamp / bin size in seconds

@@ -12,18 +12,28 @@ class LinePlot:
         self.xlist = []
         self.ylist = []
         self.title = ""
+        self.legend_location = 2
+        self.labels = []
+        self.markers = ['s','^','v','2','*','3','d']
 
-    def draw(self, xdata, ydata, filename):
+    def draw(self, filename):
         figure = plt.figure()
-        plt.plot(xdata, ydata)
+        ax = figure.add_subplot(111)
+        for index, value in enumerate(self.xlist):
+            if len(self.xlist) > 1:
+                plt.plot(value, self.ylist[index], drawstyle="line", marker=self.markers[index], lw=2.5, label=self.labels[index])
+            else:
+                plt.plot(value, self.ylist[index], drawstyle="line", marker=self.markers[index], lw=2.5)
+
         plt.ylabel(self.ylabel,va="center",ha="center")
         plt.xlabel(self.xlabel)
         plt.title(self.title)
 
-        if len(self.yticks) != 0:
-           plt.yticks(self.yticks)
-        if len(self.xticks) != 0:
-           plt.xticks(self.xticks)
+        plt.yticks(self.yticks)
+        plt.xticks(self.xlist[0])
+
+        if len(self.xlist) > 1:
+            plt.legend(loc=self.legend_location)
 
         plt.grid(axis="y")
         plt.savefig(filename)
