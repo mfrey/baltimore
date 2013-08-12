@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 
 from scipy.ndimage import gaussian_filter
 
+from plot.boxplot import BoxPlot
 from plot.barchart import BarChart
 from plot.lineplot import LinePlot
 from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
@@ -148,7 +149,24 @@ class Visualize:
 
                 energy_dead_series[scenario][repetition].append(row)
 
-        
+        plot = BoxPlot()
+        plot.title = "Energy Dead Series"
+        plot.ylabel = "#(Dead Nodes)"
+        plot.xlabel = [[scenario] for scenario in self._sorted(energy_dead_series.keys())]
+        data = []
+        # generate box plot        
+        for scenario in self._sorted(energy_dead_series.keys()):
+            scenario_data = []
+            for repetition in energy_dead_series[scenario]:
+                dead_nodes = len(energy_dead_series[scenario][repetition])
+                scenario_data.append(dead_nodes)
+            data.append(scenario_data)
+
+        plot.draw(data, directory +  "/energy_dead_series_boxplot.png")
+
+                 
+
+        # generate bar chart        
         for scenario in energy_dead_series:
             repetitions = len(energy_dead_series[scenario])
             max_timestamp = max_timestamp_per_scenario[scenario]
