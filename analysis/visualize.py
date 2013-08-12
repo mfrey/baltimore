@@ -77,6 +77,8 @@ class Visualize:
     def _visualize_eds(self, directory, eds_files):
         plot = LinePlot()
 
+        eds_files = self._sorted(eds_files)
+
         for eds_file in eds_files:
             scenario = eds_file.split("_")[0]
             eds_file = directory + eds_file
@@ -113,7 +115,6 @@ class Visualize:
         plot.xlabel = "Time [s]"
         plot.ylabel = "Average Number of Dead Nodes"
         plot.yticks = [0, 5, 10, 20, 30, 40, 50]
-#        plot.xticks = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900]
         plot.draw(directory + "/energy_dead_series.png")
 
 
