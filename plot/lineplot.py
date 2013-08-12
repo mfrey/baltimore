@@ -30,7 +30,7 @@ class LinePlot:
         plt.title(self.title)
 
         plt.yticks(self.yticks)
-        plt.xticks(self.xlist[0])
+        plt.xticks(self.xlist[0], rotation=45)
 
         if len(self.xlist) > 1:
             plt.legend(loc=self.legend_location)
