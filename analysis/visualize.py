@@ -151,15 +151,16 @@ class Visualize:
 
         plot = BoxPlot()
         plot.title = "Energy Dead Series"
-        plot.ylabel = "#(Dead Nodes)"
+        plot.ylabel = "Time [s]"
         plot.xlabel = [[scenario] for scenario in self._sorted(energy_dead_series.keys())]
         data = []
         # generate box plot        
         for scenario in self._sorted(energy_dead_series.keys()):
             scenario_data = []
             for repetition in energy_dead_series[scenario]:
-                dead_nodes = len(energy_dead_series[scenario][repetition])
-                scenario_data.append(dead_nodes)
+                for entry in energy_dead_series[scenario][repetition]:
+                    timestamp = float(entry[2])
+                    scenario_data.append(timestamp)
             data.append(scenario_data)
 
         plot.draw(data, directory +  "/energy_dead_series_boxplot.png")
