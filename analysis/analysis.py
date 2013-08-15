@@ -50,7 +50,6 @@ class Analysis:
     def __setstate__(self, d):
         self.__dict__.update(d)
 
-
     def print_analysis_header(self, results):
         nr_of_repetitions = results.get_number_of_repetitions()
         print "Overall statistics (averaged over %d iterations)" % nr_of_repetitions
@@ -66,13 +65,12 @@ class Analysis:
 
     def _write_csv_file(self, file_name, disclaimer, header, data):
         with open(os.path.join(self.location, file_name), "wb") as csvfile:
-            writer = csv.writer(csvfile, delimiter=',',
-                                quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            writer = csv.writer(csvfile, delimiter=' ', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
             for line in disclaimer:
-	       writer.writerow(line)
+                writer.writerow(line)
 
             writer.writerow(header)
 
             for line in data:
-	       writer.writerow(line)
+                writer.writerow(line)

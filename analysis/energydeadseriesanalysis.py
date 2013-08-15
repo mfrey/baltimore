@@ -105,7 +105,7 @@ class EnergyDeadSeriesAnalysis(Analysis):
                       ['# ' + str(self.date) + ' - energy dead series for scenario ' + self.scenario],
                       ['# Aggregated over ' + str(self.repetitions) + ' repetitions'],
                       ['# Max time stamp was: ' + str(self.max_time_stamp_value)],
-                      ['# The value are the average number of nodes that died in the time interval represented by the bin'],
+                      ['# The values are the average number of nodes that died in the time interval represented by the bin'],
                       ['#']]
         header = ['time', 'value']
 

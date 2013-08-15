@@ -14,6 +14,7 @@ from analysis.delayanalysis import DelayAnalysis
 from analysis.energydeadseriesanalysis import EnergyDeadSeriesAnalysis
 from analysis.lastpacketanalysis import LastPacketAnalysis
 from analysis.pathenergyanalysis import PathEnergyAnalysis
+from analysis.residualenergyanalysis import ResidualEnergyAnalysis
 
 class ExperimentManagerWorker(multiprocessing.Process):
 
@@ -58,6 +59,10 @@ class ExperimentManagerWorker(multiprocessing.Process):
                 energyDeadSeriesAnalyser.draw = self.draw
                 energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
 
+                residualEnergyAnalyser = ResidualEnergyAnalysis(self.scenario_name, self.location, max_timestamp, repetitions, self.csv)
+                residualEnergyAnalyser.draw = self.draw
+                residualEnergyAnalyser.evaluate(experiment_results, self.verbose)
+
                 result = (experiment, otherMANETAnalyser, energyDeadSeriesAnalyser)
             else:
                 pdrAnalyser = PacketDeliveryRateAnalysis(self.scenario_name, self.location, repetitions, self.csv)
@@ -81,6 +86,10 @@ class ExperimentManagerWorker(multiprocessing.Process):
                 energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name, self.location, max_timestamp, repetitions, self.csv)
                 energyDeadSeriesAnalyser.draw = self.draw
                 energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
+                
+                residualEnergyAnalyser = ResidualEnergyAnalysis(self.scenario_name, self.location, max_timestamp, repetitions, self.csv)
+                residualEnergyAnalyser.draw = self.draw
+                residualEnergyAnalyser.evaluate(experiment_results, self.verbose)
 
                 pathEnergyAnalyser = PathEnergyAnalysis(self.scenario_name, self.location, repetitions, self.csv)
                 pathEnergyAnalyser.draw = self.draw

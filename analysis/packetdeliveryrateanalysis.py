@@ -37,6 +37,9 @@ class PacketDeliveryRateAnalysis(Analysis):
         for repetition in results:
             # don't count in the packets for which n route could be found
             nr_of_sent_packets = results.get_metric('trafficSent', repetition) - results.get_metric('packetUnDeliverable:count', repetition)
+            if nr_of_sent_packets == 0:
+                raise Exception("WARNING: All packets in repetition "+str(repetition)+" have been reported as undeliverable (very unlucky start scenario?)")
+            
             pdr = results.get_metric('trafficReceived', repetition)/nr_of_sent_packets
             pdr = round(pdr*100, 2)
             self.all_pdr.append(pdr)
