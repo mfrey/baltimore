@@ -65,7 +65,7 @@ class Analysis:
 
     def _write_csv_file(self, file_name, disclaimer, header, data):
         with open(os.path.join(self.location, file_name), "wb") as csvfile:
-            writer = csv.writer(csvfile, delimiter=' ', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
             for line in disclaimer:
                 writer.writerow(line)

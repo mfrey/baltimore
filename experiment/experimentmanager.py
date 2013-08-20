@@ -85,7 +85,8 @@ class ExperimentManager:
             # TODO: It might be better to remove the try/except and put an error code in the queue (by the producer)
             # instead over an timeout
             try:
-                result = queue.get(True, 1)
+                result = queue.get(True)
+                #result = queue.get(True, 1)
                 self.experiments[result[0].scenario_name] = result
 
                 if is_verbose:

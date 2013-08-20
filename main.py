@@ -7,7 +7,7 @@ import argparse
 import matplotlib
 matplotlib.use("Agg")
 
-from persistence.database import Database
+#from persistence.database import Database
 from experiment.git import Git
 from configuration.configuration import Configuration
 from experiment.experimentmanager import ExperimentManager
@@ -71,15 +71,15 @@ def evaluate_simulation(settings, experiment_manager, arguments):
     settings['scenarios'] = remaining_scenarios
     experiment_manager.process(settings, arguments)
 
-    if settings['database_settings']:
-        store_experiment_results(settings, experiment_manager)
+#    if settings['database_settings']:
+#        store_experiment_results(settings, experiment_manager)
 
 
-def store_experiment_results(settings, experiment_manager):
-    database = Database(settings['database_user'], settings['database_password'], settings['database_db'], settings['database_host'])
-    database.open()
-    database.add_experiment(experiment_manager)
-    database.close()
+#def store_experiment_results(settings, experiment_manager):
+ #   database = Database(settings['database_user'], settings['database_password'], settings['database_db'], settings['database_host'])
+#    database.open()
+#    database.add_experiment(experiment_manager)
+#    database.close()
 
 
 def get_configuration(arguments):
