@@ -377,7 +377,9 @@ class Visualize:
             plt.ylabel("Energy [mWs]")
             file_name = "node-" + str(node) + "_path_energy"
 
-            for scenario in data_all_scenarios[node]:
+            sorted_scenarios = self._sorted(data_all_scenarios[node])
+
+            for scenario in sorted_scenarios:
                 domain = data_all_scenarios[node][scenario][0]
                 estimate = data_all_scenarios[node][scenario][1]
                 plt.plot(domain, estimate, label=scenario)
