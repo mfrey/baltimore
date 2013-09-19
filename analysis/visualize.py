@@ -29,33 +29,44 @@ class Visualize:
         path_energy_files = []
 
         self.scenarios = settings['scenarios']
+        self.scenario_files = {}
 
-        for file in os.listdir(self.csv_location):
-            if file.endswith('csv'):
-	        csv_files.append(file.__str__())
+        for root, _, files in os.walk(self.csv_location):
+            for name in files:
+                if name.endswith('csv'):
+                   scenario = root.split('/')[-1]
+                   if scenario not in self.scenario_files:
+                       self.scenario_files[scenario] = []
+                   self.scenario_files[scenario].append(os.path.join(root, name))
 
-        for csv_file in csv_files:
-            for scenario in self.scenarios:
-               if csv_file.startswith(scenario) and csv_file.endswith("pdr_aggregated.csv"):
+        for scenario in self.scenario_files:
+            print scenario
+            print
+            for csv_file in self.scenario_files[scenario]:
+               if csv_file.endswith("pdr_aggregated.csv"):
+                   print csv_file
                    pdr_files.append(csv_file)
-               elif csv_file.startswith(scenario) and csv_file.endswith("energy-dead-series_raw.csv"):
+               elif csv_file.endswith("energy-dead-series_raw.csv"):
+                   print csv_file
                    energy_dead_series_files_raw.append(csv_file)
-               elif csv_file.startswith(scenario) and csv_file.endswith("path-energyraw.csv"):
+               elif csv_file.endswith("path-energyraw.csv"):
+                   print csv_file
                    path_energy_files.append(csv_file)
-               elif csv_file.startswith(scenario) and csv_file.endswith("energy-dead-series.csv"):
+               elif csv_file.endswith("energy-dead-series.csv"):
+                   print csv_file
                    energy_dead_series_files.append(csv_file)
 
-        pdr_files = set(pdr_files)
-        self._visualize_pdr(self.csv_location, pdr_files)
+#        pdr_files = set(pdr_files)
+#        self._visualize_pdr(self.csv_location, pdr_files)
 
-        energy_dead_series_files_raw = set(energy_dead_series_files_raw)
-        self._visualize_eds_raw(self.csv_location, energy_dead_series_files_raw)
+ #       energy_dead_series_files_raw = set(energy_dead_series_files_raw)
+ #       self._visualize_eds_raw(self.csv_location, energy_dead_series_files_raw)
 
-        energy_dead_series_files = set(energy_dead_series_files)
-        self._visualize_eds(self.csv_location, energy_dead_series_files)
+  #      energy_dead_series_files = set(energy_dead_series_files)
+  #      self._visualize_eds(self.csv_location, energy_dead_series_files)
 
-        path_energy_files = set(path_energy_files)
-        self._visualize_path_energy(self.csv_location, path_energy_files)
+   #     path_energy_files = set(path_energy_files)
+   #     self._visualize_path_energy(self.csv_location, path_energy_files)
 
 
     def _read_csv(self, file_name):
@@ -277,7 +288,6 @@ class Visualize:
         keys = self._sorted(data.keys())
         xdata = []
         ydata = []
-
 
         for scenario in keys:
             pause_times = sorted(data[scenario].keys())
