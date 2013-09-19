@@ -56,16 +56,20 @@ class Visualize:
             pdr[scenario] = result
             pdr_files = []
 
-        pdr_xdata = []
-        pdr_ydata = []
-        pdr_label = []
+        self._generate_overall_pdr(pdr)
+
+
+    def _generate_overall_pdr(self, pdr):
+        plot = PacketDeliveryRatePlot()
+        file_name = os.path.join(self.csv_location, "overall_avg_pdr.png") 
 
         for scenario in sorted(pdr.keys()):
-            pdr_xdata.append(pdr[scenario][0][0])
-            pdr_ydata.append(pdr[scenario][1][0])
-            pdr_label.append(pdr[scenario][2])
+            plot.xlist.append(pdr[scenario][0][0])
+            plot.ylist.append(pdr[scenario][1][0])
+            plot.labels.append(scenario)
 
-        self._generate_pdr_plot(os.path.join(self.csv_location, "overall_avg_pdr.png"), pdr_xdata, pdr_ydata, pdr_label) 
+        plot.yticks = [60, 70, 80, 90, 92, 94, 96, 100]
+        plot.draw(file_name)
 
 #        pdr_files = set(pdr_files)
 #        self._visualize_pdr(self.csv_location, pdr_files)
@@ -306,16 +310,15 @@ class Visualize:
 
             ydata.append(ydata_temp)
 
-        self._generate_pdr_plot(os.path.join(self.csv_location, experiment + "_avg_packetdeliveryrate.png"), xdata, ydata, keys)
-        return (xdata, ydata, keys)
-
+        file_name = os.path.join(self.csv_location, experiment + "_avg_packetdeliveryrate.png")
         
-    def _generate_pdr_plot(self, file_name, x_data, y_data, labels):
         plot = PacketDeliveryRatePlot()
-        plot.xlist = x_data
-        plot.ylist = y_data
-        plot.labels = labels
+        plot.xlist = xdata
+        plot.ylist = ydata
+        plot.labels = keys 
         plot.draw(file_name)
+
+        return (xdata, ydata, keys)
 
 
     def _visualize_path_energy(self, directory, path_energy_files):
