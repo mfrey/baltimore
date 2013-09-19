@@ -292,12 +292,16 @@ class Visualize:
                 ydata_temp.append(data[scenario][pause_time])
 
             ydata.append(ydata_temp)
+
+        self._generate_pdr_plot(os.path.join(self.csv_location, experiment + "_avg_packetdeliveryrate.png"), xdata, ydata, keys)
+
         
+    def _generate_pdr_plot(self, file_name, x_data, y_data, labels):
         plot = PacketDeliveryRatePlot()
-        plot.xlist = xdata
-        plot.ylist = ydata
-        plot.labels = keys
-        plot.draw(os.path.join(self.csv_location, experiment + "_avg_packetdeliveryrate.png"))
+        plot.xlist = x_data
+        plot.ylist = y_data
+        plot.labels = labels
+        plot.draw(file_name)
 
 
     def _visualize_path_energy(self, directory, path_energy_files):
