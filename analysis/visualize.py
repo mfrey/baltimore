@@ -31,6 +31,8 @@ class Visualize:
         self.scenarios = settings['scenarios']
         scenario_files = {}
 
+        pdr = {}
+
         for root, _, files in os.walk(self.csv_location):
             for name in files:
                 if name.endswith('csv'):
@@ -38,7 +40,6 @@ class Visualize:
                    if scenario not in scenario_files:
                        scenario_files[scenario] = []
                    scenario_files[scenario].append(os.path.join(root, name))
-
 
         for scenario in scenario_files:
             for csv_file in scenario_files[scenario]:
@@ -51,8 +52,20 @@ class Visualize:
                elif csv_file.endswith("energy-dead-series.csv"):
                    energy_dead_series_files.append(csv_file)
             
-            self._visualize_pdr(scenario, pdr_files)
+            result = self._visualize_pdr(scenario, pdr_files)
+            pdr[scenario] = result
             pdr_files = []
+
+        pdr_xdata = []
+        pdr_ydata = []
+        pdr_label = []
+
+        for scenario in sorted(pdr.keys()):
+            pdr_xdata.append(pdr[scenario][0][0])
+            pdr_ydata.append(pdr[scenario][1][0])
+            pdr_label.append(pdr[scenario][2])
+
+        self._generate_pdr_plot(os.path.join(self.csv_location, "overall_avg_pdr.png"), pdr_xdata, pdr_ydata, pdr_label) 
 
 #        pdr_files = set(pdr_files)
 #        self._visualize_pdr(self.csv_location, pdr_files)
@@ -294,6 +307,7 @@ class Visualize:
             ydata.append(ydata_temp)
 
         self._generate_pdr_plot(os.path.join(self.csv_location, experiment + "_avg_packetdeliveryrate.png"), xdata, ydata, keys)
+        return (xdata, ydata, keys)
 
         
     def _generate_pdr_plot(self, file_name, x_data, y_data, labels):

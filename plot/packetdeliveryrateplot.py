@@ -20,13 +20,14 @@ class PacketDeliveryRatePlot:
         for index, value in enumerate(self.xlist):
             #plt.plot(value, self.ylist[index], drawstyle="line", marker="s", color=(0./256,55./256,108./256), lw=2.5)
             if len(self.xlist) > 1:
-                plt.plot(value, self.ylist[index], drawstyle="line", marker=self.markers[index], lw=2.5, label=self.labels[index])
+                # FIXME 
+                plt.plot(value, self.ylist[index], drawstyle="line", marker=self.markers[index], lw=2.5)
             else:
                 plt.plot(value, self.ylist[index], drawstyle="line", marker=self.markers[index], lw=2.5)
         plt.ylabel(self.ylabel,va="center",ha="center")
 
         plt.yticks(self.yticks)
-        plt.xticks(self.xlist[0])
+        plt.xticks(self.xlist[-1])
         plt.xlabel(self.xlabel)
         plt.title(self.title)
         if len(self.xlist) > 1:
