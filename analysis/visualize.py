@@ -29,32 +29,30 @@ class Visualize:
         path_energy_files = []
 
         self.scenarios = settings['scenarios']
-        self.scenario_files = {}
+        scenario_files = {}
 
         for root, _, files in os.walk(self.csv_location):
             for name in files:
                 if name.endswith('csv'):
                    scenario = root.split('/')[-1]
-                   if scenario not in self.scenario_files:
-                       self.scenario_files[scenario] = []
-                   self.scenario_files[scenario].append(os.path.join(root, name))
+                   if scenario not in scenario_files:
+                       scenario_files[scenario] = []
+                   scenario_files[scenario].append(os.path.join(root, name))
 
-        for scenario in self.scenario_files:
-            print scenario
-            print
-            for csv_file in self.scenario_files[scenario]:
+
+        for scenario in scenario_files:
+            for csv_file in scenario_files[scenario]:
                if csv_file.endswith("pdr_aggregated.csv"):
-                   print csv_file
                    pdr_files.append(csv_file)
                elif csv_file.endswith("energy-dead-series_raw.csv"):
-                   print csv_file
                    energy_dead_series_files_raw.append(csv_file)
                elif csv_file.endswith("path-energyraw.csv"):
-                   print csv_file
                    path_energy_files.append(csv_file)
                elif csv_file.endswith("energy-dead-series.csv"):
-                   print csv_file
                    energy_dead_series_files.append(csv_file)
+            
+            self._visualize_pdr(scenario, pdr_files)
+            pdr_files = []
 
 #        pdr_files = set(pdr_files)
 #        self._visualize_pdr(self.csv_location, pdr_files)
@@ -239,34 +237,30 @@ class Visualize:
      
 
 
-    def _visualize_pdr(self, directory, pdr_files):
+    def _visualize_pdr(self, experiment, files):
+        """ Plots a line graph of the packet delivery rate of one scenario
+
+        """
         pdr = {}
 
-        for pdr_file in pdr_files:
-            scenario = pdr_file.split("_")[0]
-            pdr_file = directory + pdr_file
+        for pdr_file in files:
+            scenario = pdr_file.split("/")[-1].split("_")[0]
             result = self._read_csv(pdr_file)
             pdr[scenario] = float(result[1][4])
 
-        xdata = [[]]
-        ydata = [[]]
-
-        pattern = re.compile("([a-zA-Z]+)([0-9]+)(([a-zA-Z]+)?)")
         keys = self._sorted(pdr.keys())
 
-        init_algorithm = ""
-        init_option = ""
-        index = 0
         pause_times = []
         scenarios = []
 
-        self.logger.debug("sorted keys " + str(keys)) 
-
         data = {}
+
+        pattern = re.compile("([a-zA-Z]+)([0-9]+)(([a-zA-Z]+)?)")
 
         # build up a temporary data structure holding scenario/pause times/pdrs
         for scenario in keys:
             match = pattern.match(scenario)
+
             algorithm = match.group(1)
             pause_time = int(match.group(2))
             option = match.group(3)
@@ -298,12 +292,12 @@ class Visualize:
                 ydata_temp.append(data[scenario][pause_time])
 
             ydata.append(ydata_temp)
-                
+        
         plot = PacketDeliveryRatePlot()
         plot.xlist = xdata
         plot.ylist = ydata
         plot.labels = keys
-        plot.draw(os.path.join(self.csv_location, "avg_packetdeliveryrate.png"))
+        plot.draw(os.path.join(self.csv_location, experiment + "_avg_packetdeliveryrate.png"))
 
 
     def _visualize_path_energy(self, directory, path_energy_files):
