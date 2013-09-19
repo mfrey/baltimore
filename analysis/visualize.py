@@ -61,7 +61,7 @@ class Visualize:
 
     def _generate_overall_pdr(self, pdr):
         plot = PacketDeliveryRatePlot()
-        file_name = os.path.join(self.csv_location, "overall_avg_pdr.png") 
+        file_name = os.path.join(self.csv_location, "overall_avg_pdr.pdf") 
 
         for scenario in sorted(pdr.keys()):
             plot.xlist.append(pdr[scenario][0][0])

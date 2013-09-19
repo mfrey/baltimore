@@ -7,12 +7,13 @@ class PacketDeliveryRatePlot:
     def __init__(self):
         self.title = "Packet Delivery Rate (Average)"
         self.ylabel = "Delivery Rate [%]"
-        self.xlabel = "Pause Time [sec]"
+        self.xlabel = "Pause Time [s]"
         self.xlist = []
         self.ylist = []
         self.yticks = [20, 30, 40, 60, 70, 80, 90, 100]
         self.labels = []
         self.markers = ['s','^','v','2','*','3','d']
+        self.legend_location = 4
 
     def draw(self, filename):
         figure = plt.figure()
@@ -31,7 +32,7 @@ class PacketDeliveryRatePlot:
         plt.xlabel(self.xlabel)
         plt.title(self.title)
         if len(self.xlist) > 1:
-            plt.legend()
+            plt.legend(loc=self.legend_location)
         plt.grid(axis="y")
         plt.savefig(filename)
         plt.close()
