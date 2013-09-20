@@ -59,7 +59,21 @@ class Visualize:
             
             result = self._visualize_pdr(scenario, pdr_files)
             pdr[scenario] = result
+
+#	    energy_dead_series_files_raw = set(energy_dead_series_files_raw)
+	    self._visualize_eds_raw(energy_dead_series_files_raw)
+
+#	    energy_dead_series_files = set(energy_dead_series_files)
+	    self._visualize_eds(energy_dead_series_files)
+
+#	    path_energy_files = set(path_energy_files)
+	    self._visualize_path_energy(path_energy_files)
+
             pdr_files = []
+            energy_dead_series_files = []
+            energy_dead_series_files_raw = []
+            path_energy_files = []
+            overhead_files = []
 
         self._generate_overall_pdr(pdr)
         self._generate_overhead(overhead_files)
@@ -67,6 +81,7 @@ class Visualize:
 
     def _generate_overhead(self, files):
         self._visualize_overhead(files, "Packet")
+
 
     def _generate_overall_pdr(self, pdr):
         plot = PacketDeliveryRatePlot()
@@ -79,18 +94,6 @@ class Visualize:
 
         plot.yticks = [60, 70, 80, 90, 92, 94, 96, 100]
         plot.draw(file_name)
-
-#        pdr_files = set(pdr_files)
-#        self._visualize_pdr(self.csv_location, pdr_files)
-
- #       energy_dead_series_files_raw = set(energy_dead_series_files_raw)
- #       self._visualize_eds_raw(self.csv_location, energy_dead_series_files_raw)
-
-  #      energy_dead_series_files = set(energy_dead_series_files)
-  #      self._visualize_eds(self.csv_location, energy_dead_series_files)
-
-   #     path_energy_files = set(path_energy_files)
-   #     self._visualize_path_energy(self.csv_location, path_energy_files)
 
 
     def _read_csv(self, file_name):
@@ -110,14 +113,13 @@ class Visualize:
         return sorted(data, key = alphanum_key)
 
 
-    def _visualize_eds(self, directory, eds_files):
+    def _visualize_eds(self, eds_files):
         plot = LinePlot()
 
         eds_files = self._sorted(eds_files)
 
         for eds_file in eds_files:
-            scenario = eds_file.split("_")[0]
-            eds_file = directory + eds_file
+            scenario = eds_file.split("/")[-1].split("_")[0]
             result = self._read_csv(eds_file)
 
             # remove the row containing the description 
@@ -151,11 +153,11 @@ class Visualize:
         plot.xlabel = "Time [s]"
         plot.ylabel = "Average Number of Dead Nodes"
         plot.yticks = [0, 5, 10, 20, 30, 40, 50]
-        plot.draw(directory + "/energy_dead_series.png")
+        plot.draw(self.csv_location + "/energy_dead_series.pdf")
 
 
 
-    def _visualize_eds_raw(self, directory, eds_files):
+    def _visualize_eds_raw(self, eds_files):
         energy_dead_series = {}
         bin_size_in_seconds = 10
         #  max timestamp / bin size in seconds
@@ -164,8 +166,7 @@ class Visualize:
         max_timestamp_per_scenario = {}
 
         for eds_file in eds_files:
-            scenario = eds_file.split("_")[0]
-            eds_file = directory + eds_file
+            scenario = eds_file.split("/")[-1].split("_")[0]
             result = self._read_csv(eds_file)
 
             # remove the row containing the description 
@@ -198,7 +199,7 @@ class Visualize:
                     scenario_data.append(timestamp)
             data.append(scenario_data)
 
-        plot.draw(data, directory +  "/energy_dead_series_boxplot.png")
+        plot.draw(data, self.csv_location +  "/energy_dead_series_boxplot.pdf")
 
         # generate bar chart        
         for scenario in energy_dead_series:
@@ -257,11 +258,12 @@ class Visualize:
         plot.xlabel = "Time [s]"
         plot.ylabel = "Dead Nodes"
         plot.bar_widths = -1
-        plot.draw(xdata, ydata, os.path.join(self.csv_location, scenario + "_energy-dead-series.png"))
+        plot.draw(xdata, ydata, os.path.join(self.csv_location, scenario + "_energy-dead-series.pdf"))
      
 
     def _visualize_overhead(self, files, version):
         overhead = {}
+        version = version.lower()
 
         for overhead_file in files:
             scenario = overhead_file.split("/")[-1].split("_")[0]
@@ -278,7 +280,7 @@ class Visualize:
         plot.title = "Routing Overhead (" + version + ")"
         plot.xlist = result[0]
         plot.ylist = result[1]
-        plot.xlabel = "Time [s]"
+        plot.xlabel = "Pause Time [s]"
         plot.ylabel = version + " %"
         plot.labels = keys 
         plot.yticks = [0, 2, 4, 6]
@@ -302,7 +304,7 @@ class Visualize:
         keys = self._sorted(data.keys())
         result = self._get_data(data, keys) 
 
-        file_name = os.path.join(self.csv_location, experiment + "_avg_packetdeliveryrate.png")
+        file_name = os.path.join(self.csv_location, experiment + "_avg_packetdeliveryrate.pdf")
         
         plot = PacketDeliveryRatePlot()
         plot.xlist = result[0]
@@ -360,12 +362,11 @@ class Visualize:
         return data
 
 
-    def _visualize_path_energy(self, directory, path_energy_files):
+    def _visualize_path_energy(self, path_energy_files):
         path_energy = {}
 
         for path_energy_file in path_energy_files:
-            scenario = path_energy_file.split("_")[0]
-            path_energy_file = directory + path_energy_file
+            scenario = path_energy_file.split("/")[-1].split("_")[0]
             result = self._read_csv(path_energy_file)
 
             # removes the header of the csv file
@@ -412,7 +413,7 @@ class Visualize:
                 plt.xlabel("Time [s]")
                 plt.ylabel("Energy [mWs]")
                 plt.plot(domain, estimate)
-                plt.savefig(os.path.join(self.csv_location, file_name + ".png"))
+                plt.savefig(os.path.join(self.csv_location, file_name + ".pdf"))
                 plt.close()
 
                 # prepare data
@@ -431,7 +432,7 @@ class Visualize:
                 plt.title("Path Energy - Node " + str(node) + " (Estimated) for scenario " + scenario)
                 plt.xlabel("Time [s]")
                 plt.ylabel("Energy [mWs]")
-                plt.savefig(os.path.join(self.csv_location, file_name + "_raw.png"))
+                plt.savefig(os.path.join(self.csv_location, file_name + "_raw.pdf"))
                 plt.close()
 
         # we make a plot for each node (over all scenarios)
@@ -449,7 +450,7 @@ class Visualize:
                 plt.plot(domain, estimate, label=scenario)
 
             plt.legend()
-            plt.savefig(os.path.join(self.csv_location, file_name + ".png"))
+            plt.savefig(os.path.join(self.csv_location, file_name + ".pdf"))
             plt.close()
 
 
