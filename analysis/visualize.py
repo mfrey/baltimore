@@ -52,9 +52,9 @@ class Visualize:
                    path_energy_files.append(csv_file)
                elif csv_file.endswith("energy-dead-series.csv"):
                    energy_dead_series_files.append(csv_file)
-               elif csv_file.endswith("overhead_bit.csv"):
-                   overhead_files.append(csv_file)
-               elif csv_file.endswith("overhead_packet.csv"):
+#               elif csv_file.endswith("overhead_bit.csv"):
+#                   overhead_files.append(csv_file)
+               elif csv_file.endswith("overhead_packets.csv"):
                    overhead_files.append(csv_file)
             
             result = self._visualize_pdr(scenario, pdr_files)
@@ -62,7 +62,11 @@ class Visualize:
             pdr_files = []
 
         self._generate_overall_pdr(pdr)
+        self._generate_overhead(overhead_files)
 
+
+    def _generate_overhead(self, files):
+        self._visualize_overhead(files, "Packet")
 
     def _generate_overall_pdr(self, pdr):
         plot = PacketDeliveryRatePlot()
@@ -196,8 +200,6 @@ class Visualize:
 
         plot.draw(data, directory +  "/energy_dead_series_boxplot.png")
 
-                 
-
         # generate bar chart        
         for scenario in energy_dead_series:
             repetitions = len(energy_dead_series[scenario])
@@ -258,26 +260,29 @@ class Visualize:
         plot.draw(xdata, ydata, os.path.join(self.csv_location, scenario + "_energy-dead-series.png"))
      
 
-    def _visualize_overhead(self, experiment, files):
-        overhead_bit = {}
-        overhead_packet = {}
+    def _visualize_overhead(self, files, version):
+        overhead = {}
 
         for overhead_file in files:
-            scenario = pdr_file.split("/")[-1].split("_")[0]
+            scenario = overhead_file.split("/")[-1].split("_")[0]
             result = self._read_csv(overhead_file)
-            
-            if overhead_file.endswith("overhead_bits.csv"):
-                overhead_bit[scenario] = float(result[1][4])
-            else:
-                overhead_packet[scenario] = float(result[1][4])
+            overhead[scenario] = float(result[1][4])
 
+
+        keys = self._sorted(overhead.keys())
+        data = self._get_keys(keys, overhead)
+        keys = self._sorted(data.keys())
+        result = self._get_data(data, keys) 
 
         plot = LinePlot()
-        plot.title = "Routing Overhead (Packets)"
+        plot.title = "Routing Overhead (" + version + ")"
+        plot.xlist = result[0]
+        plot.ylist = result[1]
         plot.xlabel = "Time [s]"
-        plot.ylabel = "Packets %"
-#        plot.yticks = 
-        file_name = os.path.join(self.csv_location, "overhead_packets.png")
+        plot.ylabel = version + " %"
+        plot.labels = keys 
+        plot.yticks = [0, 2, 4, 6]
+        file_name = os.path.join(self.csv_location, "overhead_" + version + ".png")
         plot.draw(file_name)
 
     def _visualize_pdr(self, experiment, files):
@@ -292,15 +297,25 @@ class Visualize:
             pdr[scenario] = float(result[1][4])
 
         keys = self._sorted(pdr.keys())
-
-        pause_times = []
-        scenarios = []
-
         data = self._get_keys(keys, pdr)
-
         keys = self._sorted(data.keys())
+        result = self._get_data(data, keys) 
+
+        file_name = os.path.join(self.csv_location, experiment + "_avg_packetdeliveryrate.png")
+        
+        plot = PacketDeliveryRatePlot()
+        plot.xlist = result[0]
+        plot.ylist = result[1]
+        plot.labels = keys 
+        plot.draw(file_name)
+
+        return (result[0], result[1], keys)
+
+
+    def _get_data(self, data, keys):
         xdata = []
         ydata = []
+        pause_times = []
 
         for scenario in keys:
             pause_times = sorted(data[scenario].keys())
@@ -312,15 +327,7 @@ class Visualize:
 
             ydata.append(ydata_temp)
 
-        file_name = os.path.join(self.csv_location, experiment + "_avg_packetdeliveryrate.png")
-        
-        plot = PacketDeliveryRatePlot()
-        plot.xlist = xdata
-        plot.ylist = ydata
-        plot.labels = keys 
-        plot.draw(file_name)
-
-        return (xdata, ydata, keys)
+        return (xdata, ydata)
 
 
     def _get_keys(self, keys, results):
@@ -350,7 +357,6 @@ class Visualize:
             data[key][pause_time] = results[scenario]
 
         return data
-
 
 
     def _visualize_path_energy(self, directory, path_energy_files):
