@@ -27,6 +27,7 @@ class Visualize:
         energy_dead_series_files = []
         energy_dead_series_files_raw = []
         path_energy_files = []
+        overhead_files = []
 
         self.scenarios = settings['scenarios']
         scenario_files = {}
@@ -51,6 +52,10 @@ class Visualize:
                    path_energy_files.append(csv_file)
                elif csv_file.endswith("energy-dead-series.csv"):
                    energy_dead_series_files.append(csv_file)
+               elif csv_file.endswith("overhead_bit.csv"):
+                   overhead_files.append(csv_file)
+               elif csv_file.endswith("overhead_packet.csv"):
+                   overhead_files.append(csv_file)
             
             result = self._visualize_pdr(scenario, pdr_files)
             pdr[scenario] = result
@@ -253,6 +258,27 @@ class Visualize:
         plot.draw(xdata, ydata, os.path.join(self.csv_location, scenario + "_energy-dead-series.png"))
      
 
+    def _visualize_overhead(self, experiment, files):
+        overhead_bit = {}
+        overhead_packet = {}
+
+        for overhead_file in files:
+            scenario = pdr_file.split("/")[-1].split("_")[0]
+            result = self._read_csv(overhead_file)
+            
+            if overhead_file.endswith("overhead_bits.csv"):
+                overhead_bit[scenario] = float(result[1][4])
+            else:
+                overhead_packet[scenario] = float(result[1][4])
+
+
+        plot = LinePlot()
+        plot.title = "Routing Overhead (Packets)"
+        plot.xlabel = "Time [s]"
+        plot.ylabel = "Packets %"
+#        plot.yticks = 
+        file_name = os.path.join(self.csv_location, "overhead_packets.png")
+        plot.draw(file_name)
 
     def _visualize_pdr(self, experiment, files):
         """ Plots a line graph of the packet delivery rate of one scenario
@@ -270,31 +296,7 @@ class Visualize:
         pause_times = []
         scenarios = []
 
-        data = {}
-
-        pattern = re.compile("([a-zA-Z]+)([0-9]+)(([a-zA-Z]+)?)")
-
-        # build up a temporary data structure holding scenario/pause times/pdrs
-        for scenario in keys:
-            match = pattern.match(scenario)
-
-            algorithm = match.group(1)
-            pause_time = int(match.group(2))
-            option = match.group(3)
-
-            self.logger.debug("parsing data for algorithm %s, pause time %s and option %s", algorithm, pause_time, option)
-            key = algorithm + option 
-
-            if key not in data:
-               data[key] = {}
-            
-            if pause_time not in data[key]:
-               data[key][pause_time] = 0
-
-            data[key][pause_time] = pdr[scenario]
-
-            if key not in scenarios:
-                scenarios.append(key)
+        data = self._get_keys(keys, pdr)
 
         keys = self._sorted(data.keys())
         xdata = []
@@ -319,6 +321,36 @@ class Visualize:
         plot.draw(file_name)
 
         return (xdata, ydata, keys)
+
+
+    def _get_keys(self, keys, results):
+        """ The method returns a dictionary containing scenarios and the corresponding values.
+       
+        """
+
+        data = {}
+        pattern = re.compile("([a-zA-Z]+)([0-9]+)(([a-zA-Z]+)?)")
+
+        for scenario in keys:
+            match = pattern.match(scenario)
+
+            algorithm = match.group(1)
+            pause_time = int(match.group(2))
+            option = match.group(3)
+
+            self.logger.debug("parsing data for algorithm %s, pause time %s and option %s", algorithm, pause_time, option)
+            key = algorithm + option 
+
+            if key not in data:
+               data[key] = {}
+            
+            if pause_time not in data[key]:
+               data[key][pause_time] = 0
+
+            data[key][pause_time] = results[scenario]
+
+        return data
+
 
 
     def _visualize_path_energy(self, directory, path_energy_files):
