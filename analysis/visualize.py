@@ -61,10 +61,10 @@ class Visualize:
             pdr[scenario] = result
 
 #	    energy_dead_series_files_raw = set(energy_dead_series_files_raw)
-	    self._visualize_eds_raw(energy_dead_series_files_raw)
+	    self._visualize_eds_raw(scenario, energy_dead_series_files_raw)
 
 #	    energy_dead_series_files = set(energy_dead_series_files)
-	    self._visualize_eds(energy_dead_series_files)
+	    self._visualize_eds(scenario, energy_dead_series_files)
 
 #	    path_energy_files = set(path_energy_files)
 	    self._visualize_path_energy(path_energy_files)
@@ -73,7 +73,6 @@ class Visualize:
             energy_dead_series_files = []
             energy_dead_series_files_raw = []
             path_energy_files = []
-            overhead_files = []
 
         self._generate_overall_pdr(pdr)
         self._generate_overhead(overhead_files)
@@ -113,7 +112,7 @@ class Visualize:
         return sorted(data, key = alphanum_key)
 
 
-    def _visualize_eds(self, eds_files):
+    def _visualize_eds(self, experiment, eds_files):
         plot = LinePlot()
 
         eds_files = self._sorted(eds_files)
@@ -153,11 +152,12 @@ class Visualize:
         plot.xlabel = "Time [s]"
         plot.ylabel = "Average Number of Dead Nodes"
         plot.yticks = [0, 5, 10, 20, 30, 40, 50]
-        plot.draw(self.csv_location + "/energy_dead_series.pdf")
+
+        file_name = os.path.join(self.csv_location, experiment +  "energy_dead_series.pdf")
+        plot.draw(file_name)
 
 
-
-    def _visualize_eds_raw(self, eds_files):
+    def _visualize_eds_raw(self, experiment, eds_files):
         energy_dead_series = {}
         bin_size_in_seconds = 10
         #  max timestamp / bin size in seconds
@@ -199,7 +199,8 @@ class Visualize:
                     scenario_data.append(timestamp)
             data.append(scenario_data)
 
-        plot.draw(data, self.csv_location +  "/energy_dead_series_boxplot.pdf")
+        file_name = os.path.join(self.csv_location, experiment +  "energy_dead_series_boxplot.pdf")
+        plot.draw(data, file_name)
 
         # generate bar chart        
         for scenario in energy_dead_series:
@@ -258,7 +259,8 @@ class Visualize:
         plot.xlabel = "Time [s]"
         plot.ylabel = "Dead Nodes"
         plot.bar_widths = -1
-        plot.draw(xdata, ydata, os.path.join(self.csv_location, scenario + "_energy-dead-series.pdf"))
+        file_name = os.path.join(self.csv_location, scenario +  "_energy_dead_series.pdf")
+        plot.draw(xdata, ydata, file_name)
      
 
     def _visualize_overhead(self, files, version):
@@ -269,7 +271,6 @@ class Visualize:
             scenario = overhead_file.split("/")[-1].split("_")[0]
             result = self._read_csv(overhead_file)
             overhead[scenario] = float(result[1][4])
-
 
         keys = self._sorted(overhead.keys())
         data = self._get_keys(keys, overhead)
