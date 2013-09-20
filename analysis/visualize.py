@@ -282,7 +282,8 @@ class Visualize:
         plot.ylabel = version + " %"
         plot.labels = keys 
         plot.yticks = [0, 2, 4, 6]
-        file_name = os.path.join(self.csv_location, "overhead_" + version + ".png")
+        plot.legend_location = 4
+        file_name = os.path.join(self.csv_location, "overhead_" + version + ".pdf")
         plot.draw(file_name)
 
     def _visualize_pdr(self, experiment, files):
