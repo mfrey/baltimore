@@ -58,7 +58,7 @@ class HopCountAnalysis(Analysis):
 
         if self.csv:
             self.export_csv()
-            self.export_csv_raw(delay)
+            self.export_csv_raw(hop_count)
 
     def export_csv(self):
         self.metric = "hopCount"
