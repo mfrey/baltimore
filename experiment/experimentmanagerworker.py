@@ -5,16 +5,17 @@ import logging
 import sys, traceback
 import multiprocessing
 
-
 from experiment import Experiment
-from analysis.othermanetroutinganalysis import OtherManetRoutingAnalysis
-from analysis.packetdeliveryrateanalysis import PacketDeliveryRateAnalysis
-from analysis.overheadanalysis import OverheadAnalysis
+
 from analysis.delayanalysis import DelayAnalysis
-from analysis.energydeadseriesanalysis import EnergyDeadSeriesAnalysis
+from analysis.overheadanalysis import OverheadAnalysis
+from analysis.hopcountanalysis import HopCountAnalysis
 from analysis.lastpacketanalysis import LastPacketAnalysis
 from analysis.pathenergyanalysis import PathEnergyAnalysis
 from analysis.residualenergyanalysis import ResidualEnergyAnalysis
+from analysis.othermanetroutinganalysis import OtherManetRoutingAnalysis
+from analysis.packetdeliveryrateanalysis import PacketDeliveryRateAnalysis
+from analysis.energydeadseriesanalysis import EnergyDeadSeriesAnalysis
 
 class ExperimentManagerWorker(multiprocessing.Process):
 
@@ -76,6 +77,10 @@ class ExperimentManagerWorker(multiprocessing.Process):
                 delayAnalyser = DelayAnalysis(self.scenario_name, self.location, repetitions, self.csv)
                 delayAnalyser.draw = self.draw
                 delayAnalyser.evaluate(experiment_results, self.verbose)
+
+                hopCountAnalyser = HopCountAnalysis(self.scenario_name, self.location, repetitions, self.csv)
+                hopCountAnalyser.draw = self.draw
+                hopCountAnalyser.evaluate(experiment_results, self.verbose)
 
                 lastPacketAnalyser = LastPacketAnalysis(self.scenario_name, self.location, repetitions, self.csv)
                 lastPacketAnalyser.draw = self.draw
