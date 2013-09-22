@@ -121,6 +121,7 @@ class Visualize:
         hop_count = {}
         max_timestamp_per_scenario = {}
         hop_count_files = self._sorted(hop_count_files)
+        bin_size_in_seconds = 10
 
 	for hop_count_file in hop_count_files:
             scenario = hop_count_file.split("/")[-1].split("_")[0]
@@ -155,10 +156,60 @@ class Visualize:
                     scenario_data.append(hops)
             data.append(scenario_data)
 
-        file_name = os.path.join(self.csv_location, experiment +  "hop_count_boxplot.pdf")
+        file_name = os.path.join(self.csv_location, experiment +  "-hop_count_boxplot.pdf")
         plot.draw(data, file_name)
 
 #        figure, axis = plt.subplots(1)
+
+        for scenario in self._sorted(hop_count.keys()):
+            repetitions = len(hop_count[scenario])
+            max_timestamp = max_timestamp_per_scenario[scenario]
+            nr_of_bins = int(max_timestamp/bin_size_in_seconds) + 1
+
+            global_bins = { key : [] for key in range(0, nr_of_bins) } 
+
+            for repetition in hop_count[scenario]:
+                bins_for_this_repetition = { key : 0 for key in range(0, nr_of_bins) } 
+
+                for row in hop_count[scenario][repetition]:
+                    node = row[0]
+                    hop_count = float(row[2])
+                    # get the hop count and add +1 to the corresponding bin
+                    # in which interval does the hop count lie?
+                    bin_nr = int(math.floor(hop_count/bin_size_in_seconds))
+                    bins_for_this_repetition[bin_nr] += 1
+
+                # now save the bins to calculate the average later
+                for bin_nr, value in bins_for_this_repetition.iteritems(): 
+                    global_bins[bin_nr].append(value)
+
+            data = {}
+
+            for bin_nr, value_list in global_bins.iteritems():
+                # calculate the average number of dead notes from the corresponding bin of each repetition
+                if value_list:
+                    average = np.average(value_list)
+                else:
+                    average = 0
+
+                data[bin_nr] = average
+
+            xdata = []
+            ydata = []
+
+            for bin_nr, value in data.iteritems():
+                xdata.append(bin_nr * bin_size_in_seconds)
+                ydata.append(value)
+
+            plot = LinePlot()
+            plot.title = "Hop Count"
+            plot.xlabel = "Time [s]"
+            plot.ylabel = "Average Number of Hops"
+            file_name = os.path.join(self.csv_location, scenario +  "_hop-count_test.pdf")
+            plot.xlist = xdata
+            plot.ylist = ydata
+            plot.draw(file_name)
+ 
 
 
     def _visualize_eds(self, experiment, eds_files):

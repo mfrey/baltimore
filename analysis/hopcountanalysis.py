@@ -30,6 +30,7 @@ class HopCountAnalysis(Analysis):
                 if node not in hop_count:
                     hop_count[node] = []
                 result = experiment_results.get_metric_per_node("hopCount", node, repetition)
+                print result
                 hop_count[node].append(result)
 
         for node, data  in hop_count.iteritems():
@@ -46,11 +47,11 @@ class HopCountAnalysis(Analysis):
             avg_average = np.average(self.data_avg[node])
 
             self.logger.info("Printing average hop count statistics for node %s", node)
-            self.logger.info("Minimum hop count = %f seconds", avg_minimum)
-            self.logger.info("Maximum hop count = %f seconds", avg_maximum)
-            self.logger.info("Std.Deviation     = %f seconds", avg_stdDev)
-            self.logger.info("Average hop count = %f seconds", avg_average)
-            self.logger.info("Median hop count  = %f seconds", avg_median)
+            self.logger.info("Minimum hop count = %f nodes", avg_minimum)
+            self.logger.info("Maximum hop count = %f nodes", avg_maximum)
+            self.logger.info("Std.Deviation     = %f nodes", avg_stdDev)
+            self.logger.info("Average hop count = %f nodes", avg_average)
+            self.logger.info("Median hop count  = %f nodes", avg_median)
         if self.draw:            
             for node in hop_count:
                 self.metric = "hop_count_node-" + str(node)
