@@ -57,7 +57,7 @@ class Visualize:
 #                   overhead_files.append(csv_file)
                elif csv_file.endswith("overhead_packets.csv"):
                    overhead_files.append(csv_file)
-               elif csv_file.endswith("hop-count.csv"):
+               elif csv_file.endswith("hopCount.csv"):
                    hop_count_files.append(csv_file)
             
             result = self._visualize_pdr(scenario, pdr_files)
