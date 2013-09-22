@@ -44,6 +44,7 @@ class Visualize:
                    scenario_files[scenario].append(os.path.join(root, name))
 
         for scenario in scenario_files:
+            self.logger.debug("scanning files for scenario %s", scenario)
             for csv_file in scenario_files[scenario]:
                if csv_file.endswith("pdr_aggregated.csv"):
                    pdr_files.append(csv_file)
@@ -63,13 +64,13 @@ class Visualize:
             result = self._visualize_pdr(scenario, pdr_files)
             pdr[scenario] = result
 
-	    self._visualize_eds_raw(scenario, energy_dead_series_files_raw)
+#	    self._visualize_eds_raw(scenario, energy_dead_series_files_raw)
 
-	    self._visualize_eds(scenario, energy_dead_series_files)
+#	    self._visualize_eds(scenario, energy_dead_series_files)
 
-	    self._visualize_path_energy(path_energy_files)
+#	    self._visualize_path_energy(path_energy_files)
 
-	    self._visualize_hop_count(hop_count_files)
+	    self._visualize_hop_count(scenario, hop_count_files)
 
             pdr_files = []
             energy_dead_series_files = []
@@ -117,6 +118,7 @@ class Visualize:
 
     def _visualize_hop_count(self, experiment, hop_count_files):
         hop_count = {}
+        max_timestamp_per_scenario = {}
         hop_count_files = self._sorted(hop_count_files)
 
 	for hop_count_file in hop_count_files:
@@ -140,16 +142,16 @@ class Visualize:
 
         plot = BoxPlot()
         plot.title = "Hop Count"
-        plot.ylabel = "Number of Hop"
+        plot.ylabel = "Number of Hops"
         plot.xlabel = [[scenario] for scenario in self._sorted(hop_count.keys())]
         data = []
-        # generate box plot        
+
         for scenario in self._sorted(hop_count.keys()):
             scenario_data = []
             for repetition in hop_count[scenario]:
                 for entry in hop_count[scenario][repetition]:
-                    timestamp = float(entry[2])
-                    scenario_data.append(timestamp)
+                    hops = float(entry[2])
+                    scenario_data.append(hops)
             data.append(scenario_data)
 
         file_name = os.path.join(self.csv_location, experiment +  "hop_count_boxplot.pdf")
@@ -163,8 +165,11 @@ class Visualize:
 
         eds_files = self._sorted(eds_files)
 
+        self.logger.debug("number of energy dead series files to parse: %d", len(eds_files))
+
         for eds_file in eds_files:
             scenario = eds_file.split("/")[-1].split("_")[0]
+            self.logger.debug("parsing scenario %s and energy dead series file: %s", scenario, eds_file)
             result = self._read_csv(eds_file)
 
             # remove the row containing the description 
@@ -172,6 +177,8 @@ class Visualize:
 
             xlist = []
             ylist = []
+
+            self.logger.debug("number of lines in file %s: %d", eds_file, len(result))
 
             for row in result:
                 timestamp = float(row[0])
@@ -199,6 +206,10 @@ class Visualize:
         plot.ylabel = "Average Number of Dead Nodes"
         plot.yticks = [0, 5, 10, 20, 30, 40, 50]
 
+        print str(len(xlist)) + " " + str(len(plot.labels))
+        print plot.xlist
+        print plot.labels
+
         file_name = os.path.join(self.csv_location, experiment +  "energy_dead_series.pdf")
         plot.draw(file_name)
 
@@ -210,7 +221,7 @@ class Visualize:
         nr_of_bins = 0
 
         max_timestamp_per_scenario = {}
-
+ 
         for eds_file in eds_files:
             scenario = eds_file.split("/")[-1].split("_")[0]
             result = self._read_csv(eds_file)
