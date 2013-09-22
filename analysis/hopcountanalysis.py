@@ -23,16 +23,23 @@ class HopCountAnalysis(Analysis):
         self.logger.info("running hop count analysis")
 
         hop_count = {} 
+	raw_data = []
 
         for repetition in experiment_results:
             nodes = experiment_results.nodes_have_metric("hopCount", repetition)
             for node in nodes:
+                data = experiment_results.get_tuple_metric_per_node("hopCount", node, repetition)
+
+                for element in data:
+                    raw_data.append([repetition, node, float(element[0]), float(element[1])])
+
                 if node not in hop_count:
                     hop_count[node] = []
-                result = experiment_results.get_metric_per_node("hopCount", node, repetition)
-                print result
-                hop_count[node].append(result)
 
+                hop_count[node].append(raw_data)
+             raw_data = []
+
+        # FIXME
         for node, data  in hop_count.iteritems():
             self.data_min[node] = [np.amin(repetition) for repetition in data]
             self.data_max[node] = [np.amax(repetition) for repetition in data]
