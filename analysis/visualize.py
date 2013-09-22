@@ -28,6 +28,7 @@ class Visualize:
         energy_dead_series_files_raw = []
         path_energy_files = []
         overhead_files = []
+        hop_count_files = []
 
         self.scenarios = settings['scenarios']
         scenario_files = {}
@@ -56,23 +57,25 @@ class Visualize:
 #                   overhead_files.append(csv_file)
                elif csv_file.endswith("overhead_packets.csv"):
                    overhead_files.append(csv_file)
+               elif csv_file.endswith("hop-count.csv"):
+                   hop_count_files.append(csv_file)
             
             result = self._visualize_pdr(scenario, pdr_files)
             pdr[scenario] = result
 
-#	    energy_dead_series_files_raw = set(energy_dead_series_files_raw)
 	    self._visualize_eds_raw(scenario, energy_dead_series_files_raw)
 
-#	    energy_dead_series_files = set(energy_dead_series_files)
 	    self._visualize_eds(scenario, energy_dead_series_files)
 
-#	    path_energy_files = set(path_energy_files)
 	    self._visualize_path_energy(path_energy_files)
+
+	    self._visualize_hop_count(hop_count_files)
 
             pdr_files = []
             energy_dead_series_files = []
             energy_dead_series_files_raw = []
             path_energy_files = []
+            hop_count_files = []
 
         self._generate_overall_pdr(pdr)
         self._generate_overhead(overhead_files)
@@ -110,6 +113,49 @@ class Visualize:
         convert = lambda text: int(text) if text.isdigit() else text 
         alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ] 
         return sorted(data, key = alphanum_key)
+
+
+    def _visualize_hop_count(self, experiment, hop_count_files):
+        hop_count = {}
+        hop_count_files = self._sorted(hop_count_files)
+
+	for hop_count_file in hop_count_files:
+            scenario = hop_count_file.split("/")[-1].split("_")[0]
+            result = self._read_csv(hop_count_file)
+
+            result.pop(0)
+
+            max_timestamp_per_scenario[scenario] = np.amax([float(element[2]) for element in result])
+
+            for row in result:
+                repetition = row[1]
+
+                if scenario not in hop_count:
+                    hop_count[scenario] = {}
+
+                if repetition not in hop_count[scenario]:
+                    hop_count[scenario][repetition] = []
+
+                hop_count[scenario][repetition].append(row)
+
+        plot = BoxPlot()
+        plot.title = "Hop Count"
+        plot.ylabel = "Number of Hop"
+        plot.xlabel = [[scenario] for scenario in self._sorted(hop_count.keys())]
+        data = []
+        # generate box plot        
+        for scenario in self._sorted(hop_count.keys()):
+            scenario_data = []
+            for repetition in hop_count[scenario]:
+                for entry in hop_count[scenario][repetition]:
+                    timestamp = float(entry[2])
+                    scenario_data.append(timestamp)
+            data.append(scenario_data)
+
+        file_name = os.path.join(self.csv_location, experiment +  "hop_count_boxplot.pdf")
+        plot.draw(data, file_name)
+
+#        figure, axis = plt.subplots(1)
 
 
     def _visualize_eds(self, experiment, eds_files):
