@@ -117,6 +117,7 @@ class Visualize:
 
 
     def _visualize_hop_count(self, experiment, hop_count_files):
+        assert len(hop_count_files) > 0
         hop_count = {}
         max_timestamp_per_scenario = {}
         hop_count_files = self._sorted(hop_count_files)
