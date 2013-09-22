@@ -193,14 +193,14 @@ class Visualize:
                     xlist.append(timestamp)
                     ylist.append(average_number_of_dead_nodes + previous_number_of_dead_nodes)
 
+
             # set the name of the scenario in the plot
             plot.labels.append(scenario)
             # set the values of the x-axis
             plot.xlist.append(xlist)
             # set the values of the y-axis
             plot.ylist.append(ylist)
-            
-
+        
         plot.title = "Energy Dead Series (Average)"
         plot.xlabel = "Time [s]"
         plot.ylabel = "Average Number of Dead Nodes"
