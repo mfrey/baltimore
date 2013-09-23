@@ -35,11 +35,12 @@ class Visualize:
         scenario_files = {}
 
         pdr = {}
+        hop_count = {}
 
         for root, _, files in os.walk(self.csv_location):
             for name in files:
                 if name.endswith('csv'):
-                   scenario = root.split('/')[-1]
+                   scenario = name.split("/")[-1].split("_")[0]
                    if scenario not in scenario_files:
                        scenario_files[scenario] = []
                    scenario_files[scenario].append(os.path.join(root, name))
@@ -65,13 +66,14 @@ class Visualize:
             result = self._visualize_pdr(scenario, pdr_files)
             pdr[scenario] = result
 
+            result = self._visualize_hop_count(scenario, hop_count_files)
+            hop_count[scenario] = result[scenario]
+
 #	    self._visualize_eds_raw(scenario, energy_dead_series_files_raw)
 
 #	    self._visualize_eds(scenario, energy_dead_series_files)
 
 #	    self._visualize_path_energy(path_energy_files)
-
-	    self._visualize_hop_count(scenario, hop_count_files)
 
             pdr_files = []
             energy_dead_series_files = []
@@ -81,6 +83,7 @@ class Visualize:
 
         self._generate_overall_pdr(pdr)
         self._generate_overhead(overhead_files)
+        self._generate_overall_hop_count(hop_count)
 
 
     def _generate_overhead(self, files):
@@ -97,6 +100,18 @@ class Visualize:
             plot.labels.append(scenario)
 
         plot.yticks = [60, 70, 80, 90, 92, 94, 96, 100]
+        plot.draw(file_name)
+
+    def _generate_overall_hop_count(self, hop_count):
+        plot = LinePlot()
+        file_name = os.path.join(self.csv_location, "overall_avg_hop_count.pdf") 
+
+        for scenario in sorted(hop_count.keys()):
+            plot.xlist.append(hop_count[scenario][0])
+            plot.ylist.append(hop_count[scenario][1])
+            plot.labels.append(scenario)
+
+        plot.yticks = [0, 2, 5, 10, 15, 20]
         plot.draw(file_name)
 
 
@@ -123,6 +138,7 @@ class Visualize:
         max_timestamp_per_scenario = {}
         hop_count_files = self._sorted(hop_count_files)
         bin_size_in_seconds = 10
+        hop_count_result = {}
 
         for hop_count_file in hop_count_files:
             scenario = hop_count_file.split("/")[-1].split("_")[0]
@@ -219,6 +235,11 @@ class Visualize:
             plot.xticks = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900]
             plot.yticks = [1, 5, 10, 15, 20, 25]
             plot.draw(file_name)
+
+            hop_count_result[scenario] = (xdata, ydata)
+
+        return hop_count_result 
+
  
 
 
