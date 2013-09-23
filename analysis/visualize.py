@@ -111,6 +111,9 @@ class Visualize:
             plot.ylist.append(hop_count[scenario][1])
             plot.labels.append(scenario)
 
+        plot.title = "Average Hop Count"
+        plot.xlabel = "Time [s]"
+        plot.ylabel = "Number of Hops"
         plot.yticks = [0, 2, 5, 10, 15, 20]
         plot.draw(file_name)
 
@@ -137,7 +140,7 @@ class Visualize:
         hop_count = {}
         max_timestamp_per_scenario = {}
         hop_count_files = self._sorted(hop_count_files)
-        bin_size_in_seconds = 10
+        bin_size_in_seconds = 50
         hop_count_result = {}
 
         for hop_count_file in hop_count_files:
