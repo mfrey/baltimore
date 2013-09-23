@@ -23,42 +23,39 @@ class HopCountAnalysis(Analysis):
         self.logger.info("running hop count analysis")
 
         hop_count = {} 
-	raw_data = []
+        raw_data = []
 
         for repetition in experiment_results:
             nodes = experiment_results.nodes_have_metric("hopCount", repetition)
+
             for node in nodes:
                 data = experiment_results.get_tuple_metric_per_node("hopCount", node, repetition)
 
                 for element in data:
-                    raw_data.append([repetition, node, float(element[0]), float(element[1])])
+                    raw_data.append([repetition, node, float(element[0]), int(element[1])])
 
                 if node not in hop_count:
                     hop_count[node] = []
 
                 hop_count[node].append(raw_data)
-             raw_data = []
 
-        # FIXME
+            raw_data = []
+
         for node, data  in hop_count.iteritems():
-            self.data_min[node] = [np.amin(repetition) for repetition in data]
-            self.data_max[node] = [np.amax(repetition) for repetition in data]
-            self.data_median[node] = [np.median(repetition) for repetition in data]
-            self.data_std[node] = [np.std(repetition) for repetition in data]
-            self.data_avg[node] = [np.average(repetition) for repetition in data]
+            hop_count_data = [element[3] for repetition in data for element in repetition]
 
-            avg_minimum = np.average(self.data_min[node])
-            avg_maximum = np.average(self.data_max[node])
-            avg_median = np.average(self.data_median[node])
-            avg_stdDev = np.average(self.data_std[node])
-            avg_average = np.average(self.data_avg[node])
+            self.data_min[node] = np.amin(hop_count_data)
+            self.data_max[node] = np.amax(hop_count_data)
+            self.data_median[node] = np.median(hop_count_data)
+            self.data_std[node] = np.std(hop_count_data)
+            self.data_avg[node] = np.average(hop_count_data)
 
-            self.logger.info("Printing average hop count statistics for node %s", node)
-            self.logger.info("Minimum hop count = %f nodes", avg_minimum)
-            self.logger.info("Maximum hop count = %f nodes", avg_maximum)
-            self.logger.info("Std.Deviation     = %f nodes", avg_stdDev)
-            self.logger.info("Average hop count = %f nodes", avg_average)
-            self.logger.info("Median hop count  = %f nodes", avg_median)
+            self.logger.info("Printing hop count statistics for node %s", node)
+            self.logger.info("Minimum hop count = %f nodes", self.data_min[node])
+            self.logger.info("Maximum hop count = %f nodes", self.data_max[node])
+            self.logger.info("Std.Deviation     = %f nodes", self.data_std[node])
+            self.logger.info("Average hop count = %f nodes", self.data_avg[node])
+            self.logger.info("Median hop count  = %f nodes", self.data_median[node])
         if self.draw:            
             for node in hop_count:
                 self.metric = "hop_count_node-" + str(node)
@@ -76,7 +73,6 @@ class HopCountAnalysis(Analysis):
 
         data = []
 
-        # this assumes that if self.data_min is set, that also the other metrics are set (avg, median, std, ...)
         for node in self.data_min:
             data.append([node, self.data_min[node], self.data_max[node], self.data_median[node], self.data_std[node],  self.data_avg[node]])
 
@@ -86,14 +82,13 @@ class HopCountAnalysis(Analysis):
         self.metric = "hopCount"
         file_name = self.scenario + "_" + self.metric + ".csv"
         disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - hop count for scenario ' + self.scenario],['#']]
-        header = ['node', 'repetition', 'hop count']
+        header = ['node', 'repetition', 'timestamp', 'hop count']
 
         data = []
 
-        # this assumes that if self.data_min is set, that also the other metrics are set (avg, median, std, ...)
         for node, hop_counts in raw_data.iteritems():
-            for repetition, values in enumerate(hop_counts):
+            for values in hop_counts:
                 for element in values:
-	                data.append([node, repetition, element])
+                    data.append([node, element[0], element[2], element[3]])
               
         self._write_csv_file(file_name, disclaimer, header, data)
