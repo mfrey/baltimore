@@ -6,6 +6,7 @@ import csv
 import math
 import random 
 import logging
+import operator
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -123,7 +124,7 @@ class Visualize:
         hop_count_files = self._sorted(hop_count_files)
         bin_size_in_seconds = 10
 
-	for hop_count_file in hop_count_files:
+        for hop_count_file in hop_count_files:
             scenario = hop_count_file.split("/")[-1].split("_")[0]
             result = self._read_csv(hop_count_file)
 
@@ -142,6 +143,7 @@ class Visualize:
 
                 hop_count[scenario][repetition].append(row)
 
+ 
         plot = BoxPlot()
         plot.title = "Hop Count"
         plot.ylabel = "Number of Hops"
@@ -152,43 +154,47 @@ class Visualize:
             scenario_data = []
             for repetition in hop_count[scenario]:
                 for entry in hop_count[scenario][repetition]:
-                    hops = float(entry[2])
+                    hops = int(entry[3])
                     scenario_data.append(hops)
             data.append(scenario_data)
 
         file_name = os.path.join(self.csv_location, experiment +  "-hop_count_boxplot.pdf")
         plot.draw(data, file_name)
 
-#        figure, axis = plt.subplots(1)
-
         for scenario in self._sorted(hop_count.keys()):
             repetitions = len(hop_count[scenario])
             max_timestamp = max_timestamp_per_scenario[scenario]
             nr_of_bins = int(max_timestamp/bin_size_in_seconds) + 1
 
-            global_bins = { key : [] for key in range(0, nr_of_bins) } 
+            global_bins = {} 
 
             for repetition in hop_count[scenario]:
-                bins_for_this_repetition = { key : 0 for key in range(0, nr_of_bins) } 
+                bins_for_this_repetition = {} 
 
                 for row in hop_count[scenario][repetition]:
                     node = row[0]
-                    hop_count = float(row[2])
+                    timestamp = float(row[2])
+                    value = int(row[3])
                     # get the hop count and add +1 to the corresponding bin
                     # in which interval does the hop count lie?
-                    bin_nr = int(math.floor(hop_count/bin_size_in_seconds))
-                    bins_for_this_repetition[bin_nr] += 1
+                    bin_nr = int(math.floor(timestamp/bin_size_in_seconds))
+                    
+                    if bin_nr not in bins_for_this_repetition:
+                        bins_for_this_repetition[bin_nr] = []
+                    bins_for_this_repetition[bin_nr].append(value)
 
                 # now save the bins to calculate the average later
                 for bin_nr, value in bins_for_this_repetition.iteritems(): 
+                    if bin_nr not in global_bins:
+                        global_bins[bin_nr] = []
                     global_bins[bin_nr].append(value)
 
             data = {}
 
             for bin_nr, value_list in global_bins.iteritems():
                 # calculate the average number of dead notes from the corresponding bin of each repetition
-                if value_list:
-                    average = np.average(value_list)
+                if len(value_list) > 0:
+                    average = [np.average([np.average(repetition) for repetition in value_list])]
                 else:
                     average = 0
 
@@ -201,13 +207,17 @@ class Visualize:
                 xdata.append(bin_nr * bin_size_in_seconds)
                 ydata.append(value)
 
+            ydata = reduce(operator.add, map(lambda x: list(x), [element for element in ydata]))
+            file_name = os.path.join(self.csv_location, scenario +  "_hop-count_test.pdf")
+
             plot = LinePlot()
             plot.title = "Hop Count"
             plot.xlabel = "Time [s]"
             plot.ylabel = "Average Number of Hops"
-            file_name = os.path.join(self.csv_location, scenario +  "_hop-count_test.pdf")
-            plot.xlist = xdata
-            plot.ylist = ydata
+            plot.xlist.append(xdata)
+            plot.ylist.append(ydata)
+            plot.xticks = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+            plot.yticks = [1, 5, 10, 15, 20, 25]
             plot.draw(file_name)
  
 
