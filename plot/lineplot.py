@@ -35,8 +35,8 @@ class LinePlot:
         plt.title(self.title)
 
         plt.yticks(self.yticks)
-        #plt.xticks(self.xlist[0], rotation=45)
-        plt.xticks(self.xticks)
+        plt.xticks(self.xlist[0], rotation=45)
+        #plt.xticks(self.xticks)
 
         if len(self.xlist) > 1:
             plt.legend(loc=self.legend_location)
@@ -76,4 +76,4 @@ if __name__ == "__main__":
     plot.xlabel = "Time [s]"
     plot.ylabel = "Pheromones"
 
-    plot.draw("test.png")
+    plot.draw("test.pdf")
