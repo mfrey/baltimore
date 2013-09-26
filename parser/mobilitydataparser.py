@@ -61,6 +61,7 @@ class MobilityDataParserException(Exception):
 
 if __name__ == "__main__":
     parser = MobilityDataParser()
-    data = parser.read("/home/frey/Desktop/Projekte/code/ara-sim/simulations/ara/results/ARATEST-0-node0.mtr")
+    #data = parser.read("/home/frey/Desktop/Projekte/code/ara-sim/simulations/ara/results/ARATEST-0-node0.mtr")
+    data = parser.read("/vol/home-vol1/simulant/frey/Desktop/Projekte/code/ara-sim/simulations/ara/results/ARATEST-0-node0.mtr")
     for d in data:
         print d
