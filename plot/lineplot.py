@@ -28,20 +28,20 @@ class LinePlot:
                 plt.plot(value, self.ylist[index], drawstyle="line", marker=self.markers[index], lw=2.5)
 
         ylabel = plt.ylabel(self.ylabel,va="center",ha="center")
-        ylabel.set_position((5, 0.5))
         xlabel = plt.xlabel(self.xlabel)
-        xlabel.set_position((0.5, 0.1))
         #print xlabel.get_position()
         plt.title(self.title)
 
         plt.yticks(self.yticks)
-        plt.xticks(self.xlist[0], rotation=45)
-        #plt.xticks(self.xticks)
+        #plt.xticks(self.xlist[0], rotation=45)
+        plt.xticks(self.xticks)
 
         if len(self.xlist) > 1:
             plt.legend(loc=self.legend_location)
 
         plt.grid(axis="y")
+        xlabel.set_position((0.5, 0.1))
+        ylabel.set_position((5, 0.5))
         plt.savefig(filename)
         plt.close()
 

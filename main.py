@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.7
 
 import os
+from os import path
 import logging
 import argparse
 
@@ -41,6 +42,8 @@ def main():
     baltimore_revision = git.get_revision(".")
     libara_revision = git.get_revision(configuration.settings['ara_home'])
 
+    check_matplotlibrc_support(configuration.settings)
+
     if arguments.run == True and arguments.testbed == False:
         experiment_manager = ExperimentManager(baltimore_revision, libara_revision)
         run_simulation(configuration.settings, experiment_manager)
@@ -59,6 +62,12 @@ def main():
     else:
         print "at present you can't run testbed and simulation experiments at the same time"
     
+
+def check_matplotlibrc_support(configuration):
+    rc_file = configuration['analysis_matplotlib']
+    if rc_file != "":
+        matplotlib.rc_file(path.expanduser(rc_file))
+
 
 def run_simulation(settings, experiment_manager):
     experiment_manager.result_dir_exists(settings['cwd'])

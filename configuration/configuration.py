@@ -58,6 +58,7 @@ class Configuration(object):
         self.settings['analysis_generation'] = self._get_boolean_option('Analysis', 'generate_plots_during_runtime')
         self.settings['analysis_csv'] = self._get_boolean_option('Analysis', 'export_csv_data')
         self.settings['analysis_network'] = self._get_boolean_option('Analysis', 'network')
+        self.settings['analysis_matplotlib'] = self._get('Analysis', 'matplotlibrc')
 
 
     def read_testbed_options(self):
