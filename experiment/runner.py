@@ -28,4 +28,4 @@ class Runner(object):
 
         with open(logfile_path, 'w') as logfile:
             print "Running [" + self.scenario + "] " + str(self.repetition+1) + "/" + str(self.total_nr_of_runs) + ": Log is saved to " + logfile_path
-            call([self.binary, "-r", str(self.repetition), "-u", "Cmdenv", "-c", self.scenario, "-n", self.ned_path, self.omnetpp_ini], env=environment, cwd=self.cwd, stdout=logfile)
+            call([self.binary, "-r", str(self.repetition), "-u", "Cmdenv", "-c", self.scenario, "-n", self.ned_path, self.omnetpp_ini], env=environment, cwd=self.cwd, stdout=logfile, stderr=logfile)
