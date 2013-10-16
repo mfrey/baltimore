@@ -28,14 +28,25 @@ class Visualize:
         energy_dead_series_files = []
         energy_dead_series_files_raw = []
         path_energy_files = []
-        overhead_files = []
+        overhead_files_bits = []
+        overhead_files_packets = []
         hop_count_files = []
 
         self.scenarios = settings['scenarios']
+      
+        self.scenarios.append('ARA0')
+        self.scenarios.append('ARA30')
+        self.scenarios.append('ARA60')
+        self.scenarios.append('ARA120')
+        self.scenarios.append('ARA300')
+        self.scenarios.append('ARA600')
+        self.scenarios.append('ARA900')
+
         scenario_files = {}
 
         pdr = {}
         hop_count = {}
+        eds = {}
 
         for root, _, files in os.walk(self.csv_location):
             for name in files:
@@ -56,10 +67,10 @@ class Visualize:
                    path_energy_files.append(csv_file)
                elif csv_file.endswith("energy-dead-series.csv"):
                    energy_dead_series_files.append(csv_file)
-#               elif csv_file.endswith("overhead_bit.csv"):
-#                   overhead_files.append(csv_file)
+               elif csv_file.endswith("overhead_bits.csv"):
+                   overhead_files_bits.append(csv_file)
                elif csv_file.endswith("overhead_packets.csv"):
-                   overhead_files.append(csv_file)
+                   overhead_files_packets.append(csv_file)
                elif csv_file.endswith("hopCount.csv"):
                    hop_count_files.append(csv_file)
             
@@ -71,7 +82,8 @@ class Visualize:
 
 #	    self._visualize_eds_raw(scenario, energy_dead_series_files_raw)
 
-#	    self._visualize_eds(scenario, energy_dead_series_files)
+            result = self._visualize_eds(scenario, energy_dead_series_files)
+            eds[scenario] = result
 
 #	    self._visualize_path_energy(path_energy_files)
 
@@ -82,41 +94,93 @@ class Visualize:
             hop_count_files = []
 
         self._generate_overall_pdr(pdr)
-        self._generate_overhead(overhead_files)
+        self._generate_overhead(overhead_files_packets, "Packets")
+        self._generate_overhead(overhead_files_bits, "Bits")
         self._generate_overall_hop_count(hop_count)
 
+        ara = {}
+        eara = {}
+        eara_alt = {}
+        # FIXME
+        for scenario in eds.keys():
+            if scenario.startswith("ARA"):
+                if scenario not in ara:
+                    ara[scenario] = eds[scenario]
+            elif scenario.rfind("ALT") != -1:
+                eara_alt[scenario] = eds[scenario]
+            else:
+                if scenario not in eara:
+                    eara[scenario] = eds[scenario]
 
-    def _generate_overhead(self, files):
-        self._visualize_overhead(files, "Packet")
+        print len(ara.keys()) 
+        self._generate_overall_eds(ara, "ARA")
+        self._generate_overall_eds(eara, "EARA")
+        self._generate_overall_eds(eara, "EARA_ALT")
 
+
+    def _generate_overhead(self, files, version):
+		  self._visualize_overhead(files, version)
 
     def _generate_overall_pdr(self, pdr):
-        plot = PacketDeliveryRatePlot()
-        file_name = os.path.join(self.csv_location, "overall_avg_pdr.pdf") 
+		  plot = PacketDeliveryRatePlot()
+		  file_name = os.path.join(self.csv_location, "overall_avg_pdr.pdf") 
 
-        for scenario in sorted(pdr.keys()):
-            plot.xlist.append(pdr[scenario][0][0])
-            plot.ylist.append(pdr[scenario][1][0])
-            plot.labels.append(scenario)
+  #        for scenario in self._sorted(pdr.keys()):
+  #            plot.xlist.append(pdr[scenario][0][0])
+  #            plot.ylist.append(pdr[scenario][1][0])
+  #            plot.labels.append(scenario)
 
-        plot.yticks = [60, 70, 80, 90, 92, 94, 96, 100]
-        plot.draw(file_name)
+		  # FIXME !!!
+		  plot.xlist.append([0, 30, 60, 120, 300, 600, 900])
+		  plot.ylist.append([95.11, 94.92, 95.06, 95.12, 95.9, 96.13, 96.1])
+		  plot.labels.append("ARA")
+
+		  plot.xlist.append([0, 30, 60, 120, 300, 600, 900])
+		  plot.ylist.append([91.3, 89.89, 90.7, 90.64, 88.99, 87.85, 87.2])
+		  plot.labels.append("EARA$_{13}$")
+
+		  plot.xlist.append([0, 30, 60, 120, 300, 600, 900])
+		  plot.ylist.append([86.85, 88.02, 86.73, 87.32, 84.76, 83.47, 83.5])
+		  plot.labels.append("EARA$_{11}$")
+
+		  plot.yticks = [60, 70, 80, 90, 92, 94, 96, 100]
+		  plot.draw(file_name)
 
     def _generate_overall_hop_count(self, hop_count):
-        plot = LinePlot()
-        file_name = os.path.join(self.csv_location, "overall_avg_hop_count.pdf") 
+		  plot = LinePlot()
+		  file_name = os.path.join(self.csv_location, "overall_avg_hop_count.pdf") 
 
-        for scenario in sorted(hop_count.keys()):
-            plot.xlist.append(hop_count[scenario][0])
-            plot.ylist.append(hop_count[scenario][1])
+		  for scenario in sorted(hop_count.keys()):
+			  plot.xlist.append(hop_count[scenario][0])
+			  plot.ylist.append(hop_count[scenario][1])
+			  plot.labels.append(scenario)
+
+		  plot.title = "Average Hop Count"
+		  plot.xlabel = "Time [s]"
+		  plot.ylabel = "Number of Hops"
+		  plot.yticks = [0, 2, 5, 10, 15, 20]
+		  plot.draw(file_name)
+
+    def _generate_overall_eds(self, eds, scenario):
+        plot = LinePlot()
+        file_name = os.path.join(self.csv_location, "overall_eds_" + scenario + ".pdf") 
+
+        for scenario in self._sorted(eds.keys()):
+            plot.xlist.append(eds[scenario][0][0])
+            plot.ylist.append(eds[scenario][1][0])
             plot.labels.append(scenario)
 
-        plot.title = "Average Hop Count"
+        plot.title = "Energy Dead Series"
         plot.xlabel = "Time [s]"
-        plot.ylabel = "Number of Hops"
-        plot.yticks = [0, 2, 5, 10, 15, 20]
-        plot.draw(file_name)
+        plot.ylabel = "Nodes"
+        plot.xticks = [390, 400, 405, 410, 415, 420, 425, 430, 435, 440, 445, 450, 460, 470, 480, 490]
+        plot.yticks = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
 
+        print plot.xlist
+        print plot.ylist
+        print plot.labels
+
+        plot.draw(file_name)
 
     def _read_csv(self, file_name):
         result = []
@@ -292,12 +356,14 @@ class Visualize:
         plot.ylabel = "Average Number of Dead Nodes"
         plot.yticks = [0, 5, 10, 20, 30, 40, 50]
 
-        print str(len(xlist)) + " " + str(len(plot.labels))
-        print plot.xlist
-        print plot.labels
+        #print str(len(xlist)) + " " + str(len(plot.labels))
+        #print plot.xlist
+        #print plot.labels
 
         file_name = os.path.join(self.csv_location, experiment +  "energy_dead_series.pdf")
         plot.draw(file_name)
+
+        return (plot.xlist, plot.ylist, plot.labels)
 
 
     def _visualize_eds_raw(self, experiment, eds_files):
@@ -413,6 +479,7 @@ class Visualize:
         for overhead_file in files:
             scenario = overhead_file.split("/")[-1].split("_")[0]
             result = self._read_csv(overhead_file)
+            print result
             overhead[scenario] = float(result[1][4])
 
         keys = self._sorted(overhead.keys())
@@ -427,7 +494,11 @@ class Visualize:
         plot.xlabel = "Pause Time [s]"
         plot.ylabel = version + " %"
         plot.labels = keys 
-        plot.yticks = [0, 2, 4, 6]
+        if version == "packets":
+            plot.yticks = [0, 2, 4, 6]
+        else:
+            plot.yticks = [0, 0.04, 0.06, 0.08, 0.1]
+        plot.xticks = [0, 30, 60, 120, 300, 600, 900]
         plot.legend_location = 4
         file_name = os.path.join(self.csv_location, "overhead_" + version + ".pdf")
         plot.draw(file_name)
