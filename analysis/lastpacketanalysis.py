@@ -22,11 +22,18 @@ class LastPacketAnalysis(Analysis):
         self.data_median = -1
         self.data_std = -1
         self.data_avg = -1
+        self.raw_data = {}
 
     def evaluate(self, experiment_results, is_verbose=False):
         self.logger.info("running arrival of last packet analysis")
 
         raw_data = [experiment_results.get_metric("timeOfLastReceivedPacket", repetition) for repetition in experiment_results.repetitions]
+
+        # todo fix that
+        for repetition in experiment_results.repetitions:
+           if repetition not in self.raw_data:
+               raw_data[repetition] = experiment_results.get_metric("timeOfLastReceivedPacket", repetition)
+
         data = [element for element in raw_data if element != 0]
 
         self.data_min = np.amin(data)
@@ -42,11 +49,24 @@ class LastPacketAnalysis(Analysis):
 
         if self.csv:
             self.export_csv()
+            self.export_csv_raw()
+
 
     def export_csv(self):
         file_name = self.scenario + "_" + self.metric + "_aggregated.csv"
-	disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - arrival of last packet for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
-	header = ['min', 'max', 'median', 'std', 'avg']
-	data = [[self.data_min, self.data_max, self.data_median, self.data_std,  self.data_avg]]
+        disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - arrival of last packet for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
+        header = ['min', 'max', 'median', 'std', 'avg']
+        data = [[self.data_min, self.data_max, self.data_median, self.data_std,  self.data_avg]]
+
+        self._write_csv_file(file_name, disclaimer, header, data)
+
+    def export_csv_raw(self):
+        data = []
+        file_name = self.scenario + "_" + self.metric + ".csv"
+        disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - arrival of last packet for scenario ' + self.scenario],['#']]
+        header = ['repetition', 'time']
+
+        for repetition, timestamp in self.raw_data.iteritems():
+            data.append([repetition, timestamp])
 
         self._write_csv_file(file_name, disclaimer, header, data)
