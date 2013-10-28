@@ -35,6 +35,16 @@ class Configuration(object):
         else:
             self.settings = {}
 
+    def read_experiments(self):
+        self.settings['experiments'] = []
+        experiments = [section for section in self.parser.sections() if section.startswith("Experiment")]
+
+        for experiment in experiments:
+            repetitions = self._get(experiment, 'repetitions')
+            scenario_home = self._get(experiment, 'scenario_home')
+            scenarios = self._get(experiment, 'scenarios')
+
+            self.settings['experiments'].append([scenarios, scenario_home, repetitions])
 
     def read_database_options(self):
         self.settings['database_settings'] = True
