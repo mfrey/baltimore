@@ -55,7 +55,7 @@ class ExperimentManager:
             # run the simulations
             self.pool.map(runner.run_simulation, argument)
 
-    def process(self, configuration, experiment, scenarios, experiment, arguments):
+    def process(self, configuration, experiment, scenarios, arguments):
         is_verbose = arguments.verbose
         directory = configuration['cwd'] + '/' + experiment
 
