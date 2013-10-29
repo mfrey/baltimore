@@ -8,12 +8,6 @@ cpu_cores = *
 ara_home = ../ara-sim
 # path to the OMNeT++ home (absolute or relative)
 omnetpp_home = ~/Programs/omnetpp-4.3
-# the path to the scenario directory relative to the libARA simulations folder
-scenario_home = static
-# a comma separated list of scenarios which should be executed
-scenarios = midStatic
-# the number of repetitions (only used with -r parameter)
-repetitions = 5
 
 
 [Analysis]
@@ -38,3 +32,12 @@ port = 27017
 user = baltimore_admin
 # password for the user who reads/writes data to the database
 password = some_password
+
+# for every experiment there is a experiment section
+[Experiment example]
+# the path to the scenario directory relative to the libARA simulations folder
+scenario_home = static
+# a comma separated list of scenarios which should be executed
+scenarios = midStatic
+# the number of repetitions (only used with -r parameter)
+repetitions = 5
