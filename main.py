@@ -76,6 +76,13 @@ def run_simulation(settings, experiment_manager):
 
 
 def evaluate_simulation(settings, experiment_manager, arguments):
+    for scenario in settings['experiments']:
+         scenario_home = scenario[1]
+         remaining_scenarios = experiment_manager.check_result_files(settings['cwd'] + '/' + scenario[0] + '/results', scenario[2])
+         settings['scenarios'] = remaining_scenarios
+         experiment_manager.process(settings, arguments)
+
+
     remaining_scenarios = experiment_manager.check_result_files(settings['cwd'] + '/results', settings['scenarios'])
     settings['scenarios'] = remaining_scenarios
     experiment_manager.process(settings, arguments)

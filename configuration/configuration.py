@@ -121,13 +121,11 @@ class Configuration(object):
             else:
                 return wanted_cores
 
-    # FIXME
     def _build_ned_path(self):
-        self.settings['ned_path'] =  self.settings['ara_home'] + '/inetmanet/src:' + self.settings['ara_home'] + '/inetmanet/examples:' + self.settings['ara_home'] + '/omnetpp:' + self.settings['ara_home'] + '/simulations/' + self.settings['scenario_home']
+        self.settings['ned_path'] =  self.settings['ara_home'] + '/inetmanet/src:' + self.settings['ara_home'] + '/inetmanet/examples:' + self.settings['ara_home'] + '/omnetpp:' 
 
-    # FIXME
     def _build_omnetpp_ini_path(self):
-        self.settings['omnetpp_ini'] = self.settings['ara_home'] + '/simulations/' + self.settings['scenario_home'] + '/omnetpp.ini'
+        self.settings['omnetpp_ini'] = self.settings['ara_home'] + '/simulations/'
 
     def _build_ld_library_path(self):
         self.settings['ld_library_path'] = "$LD_LIBRARY_PATH:" + self.settings['ara_home'] + '/src:' + self.settings['ara_home'] + '/inetmanet/src:' + self.settings['omnetpp_home'] + '/lib'

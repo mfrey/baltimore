@@ -8,11 +8,12 @@ def run_simulation(args):
     return Runner(*args).run()
 
 class Runner(object):
-    def __init__(self, scenario, repetition, settings):
+    def __init__(self, scenario, repetition, settings, experiment):
+        self.experiment = experiment
         self.scenario = scenario
         self.repetition = repetition
-        self.ned_path = settings['ned_path']
-        self.omnetpp_ini = settings['omnetpp_ini']
+        self.ned_path = settings['ned_path'] + self.settings['ara_home'] + '/simulations/' + experiment 
+        self.omnetpp_ini = settings['omnetpp_ini'] + experiment + '/omnetpp.ini'
         self.binary = settings['ara_home'] + '/omnetpp/ara-sim'
         self.ld_library_path = settings['ld_library_path']
         self.cwd = settings['cwd']
@@ -24,7 +25,7 @@ class Runner(object):
     def run(self):
         environment = dict(os.environ)
         environment['LD_LIBRARY_PATH'] = self.ld_library_path
-        logfile_path = self.cwd + 'results/' + self.scenario + '-' + str(self.repetition) + '-Log.txt'
+        logfile_path = self.cwd + '/' + self.experiment + 'results/' + self.scenario + '-' + str(self.repetition) + '-Log.txt'
 
         with open(logfile_path, 'w') as logfile:
             print "Running [" + self.scenario + "] " + str(self.repetition+1) + "/" + str(self.total_nr_of_runs) + ": Log is saved to " + logfile_path

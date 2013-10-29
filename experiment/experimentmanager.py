@@ -41,12 +41,19 @@ class ExperimentManager:
         return list(set(scenarios) - set(non_existing_scenarios))
 
     def run_simulations(self, configuration):
-        self.logger.debug("scenarios " + str(configuration['scenarios']))
         self.pool = Pool(configuration['cpu_cores'])
-        # build up a tuple consisting of scenarios and repetitions
-        argument = itertools.product(configuration['scenarios'], range(configuration['repetitions']), [configuration])
-        # run the simulations
-        self.pool.map(runner.run_simulation, argument)
+        for experiment in configuration['experiments']:
+            # list of scenarios
+            scenarios = experiment[0]
+            self.logger.debug("scenarios " + str(scenarios))
+            # the name of the directory where the scenarios reside
+            scenario_home = experiment[1]
+            # the number of repetitions per scenario
+            repetitions = experiment[2]
+            # build up a tuple consisting of scenarios and repetitions
+            argument = itertools.product(scenarios, range(repetitions), [configuration], scenario_home)
+            # run the simulations
+            self.pool.map(runner.run_simulation, argument)
 
     def process(self, configuration, arguments):
         is_verbose = arguments.verbose
