@@ -26,7 +26,6 @@ def main():
     parser = argparse.ArgumentParser(description='baltimore - an evaluation script for the ara-sim framework')
     parser.add_argument('-c', dest='configuration', type=str, default="", action='store', help='a configuarion file for baltimore')
     parser.add_argument('-d', dest='directory', type=str, default="", action='store', help='a directory which contains OMNeT++ result files')
-    parser.add_argument('-s', dest='scenario', type=str, default="", action='store', help="evaluate a specific scenario")
     parser.add_argument('-v', '--verbose', dest='verbose', default=False, const=True, action='store_const', help="print out verbose information for each iteration")
     parser.add_argument('-r', '--run', dest='run', default=False, const=True, action='store_const', help="first run the simulations as specified via the configuration then analyse the results")
     parser.add_argument('-t', '--testbed', dest='testbed', default=False, const=True, action='store_const', help="run a testbed experiment")
@@ -106,10 +105,6 @@ def get_configuration(arguments):
 
     if arguments.directory != "":
         configuration.settings['cwd'] = arguments.directory
-
-    # FIXME
-    if arguments.scenario != "":
-        configuration.settings['scenarios'] = [arguments.scenario]
 
     if configuration.settings['cwd'].endswith('/') == False:
         configuration.settings['cwd'] += '/'
