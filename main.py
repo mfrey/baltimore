@@ -64,14 +64,13 @@ def main():
     
 
 def check_matplotlibrc_support(configuration):
-    rc_file = configuration['analysis_matplotlib']
-    if rc_file != "":
-        matplotlib.rc_file(path.expanduser(rc_file))
-
+    if configuration['analysis_matplotlib'] != "":
+        matplotlib.rc_file(path.expanduser(configuration['analysis_matplotlib']))
 
 def run_simulation(settings, experiment_manager):
-    experiment_manager.result_dir_exists(settings['cwd'])
-    experiment_manager.check_result_directory(settings['cwd'] + '/results', settings['scenarios'])
+    for experiment in settings['experiments']:
+        experiment_manager.result_dir_exists(settings['cwd'] + experiment[1])
+        experiment_manager.check_result_directory(settings['cwd'] + experiment[1] + '/results', experiment[0])
     experiment_manager.run_simulations(settings)
 
 
@@ -82,7 +81,6 @@ def evaluate_simulation(settings, experiment_manager, arguments):
          settings['scenarios'] = remaining_scenarios
          experiment_manager.process(settings, arguments)
 
-
     remaining_scenarios = experiment_manager.check_result_files(settings['cwd'] + '/results', settings['scenarios'])
     settings['scenarios'] = remaining_scenarios
     experiment_manager.process(settings, arguments)
@@ -90,13 +88,11 @@ def evaluate_simulation(settings, experiment_manager, arguments):
 #    if settings['database_settings']:
 #        store_experiment_results(settings, experiment_manager)
 
-
 #def store_experiment_results(settings, experiment_manager):
  #   database = Database(settings['database_user'], settings['database_password'], settings['database_db'], settings['database_host'])
 #    database.open()
 #    database.add_experiment(experiment_manager)
 #    database.close()
-
 
 def get_configuration(arguments):
     if arguments.configuration != "":
@@ -111,6 +107,7 @@ def get_configuration(arguments):
     if arguments.directory != "":
         configuration.settings['cwd'] = arguments.directory
 
+    # FIXME
     if arguments.scenario != "":
         configuration.settings['scenarios'] = [arguments.scenario]
 

@@ -25,7 +25,7 @@ class Runner(object):
     def run(self):
         environment = dict(os.environ)
         environment['LD_LIBRARY_PATH'] = self.ld_library_path
-        logfile_path = self.cwd + '/' + self.experiment + 'results/' + self.scenario + '-' + str(self.repetition) + '-Log.txt'
+        logfile_path = self.cwd + '/' + self.experiment + '/results/' + self.scenario + '-' + str(self.repetition) + '-Log.txt'
 
         with open(logfile_path, 'w') as logfile:
             print "Running [" + self.scenario + "] " + str(self.repetition+1) + "/" + str(self.total_nr_of_runs) + ": Log is saved to " + logfile_path
