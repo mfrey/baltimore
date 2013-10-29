@@ -17,7 +17,6 @@ class Configuration(object):
             self.settings = {
                 'ara_home': self._get_absolute_path(self._get('General', 'ara_home')),
                 'omnetpp_home': self._get_absolute_path(self._get('General', 'omnetpp_home')),
-                'scenario_home': self._get('General', 'scenario_home'),
                 'repetitions': int(self._get('General', 'repetitions')),
                 'cpu_cores' : self._get_nr_of_cpus(self._get('General', 'cpu_cores'))
             }
@@ -26,23 +25,23 @@ class Configuration(object):
             self._build_omnetpp_ini_path()
             self._build_ld_library_path()
             self._build_cwd()
-            self._build_scenarios(self._get('General', 'scenarios'))
 
             self.read_database_options()
+            self.read_experiment_options()
             self.read_analysis_options()
             self.read_testbed_options()
 
         else:
             self.settings = {}
 
-    def read_experiments(self):
+    def read_experiment_options(self):
         self.settings['experiments'] = []
         experiments = [section for section in self.parser.sections() if section.startswith("Experiment")]
 
         for experiment in experiments:
             repetitions = self._get(experiment, 'repetitions')
             scenario_home = self._get(experiment, 'scenario_home')
-            scenarios = self._get(experiment, 'scenarios')
+            scenarios = self._build_scenarios(self._get(experiment, 'scenarios'))
 
             self.settings['experiments'].append([scenarios, scenario_home, repetitions])
 
@@ -122,10 +121,11 @@ class Configuration(object):
             else:
                 return wanted_cores
 
-
+    # FIXME
     def _build_ned_path(self):
         self.settings['ned_path'] =  self.settings['ara_home'] + '/inetmanet/src:' + self.settings['ara_home'] + '/inetmanet/examples:' + self.settings['ara_home'] + '/omnetpp:' + self.settings['ara_home'] + '/simulations/' + self.settings['scenario_home']
 
+    # FIXME
     def _build_omnetpp_ini_path(self):
         self.settings['omnetpp_ini'] = self.settings['ara_home'] + '/simulations/' + self.settings['scenario_home'] + '/omnetpp.ini'
 
@@ -133,10 +133,10 @@ class Configuration(object):
         self.settings['ld_library_path'] = "$LD_LIBRARY_PATH:" + self.settings['ara_home'] + '/src:' + self.settings['ara_home'] + '/inetmanet/src:' + self.settings['omnetpp_home'] + '/lib'
 
     def _build_cwd(self):
-        self.settings['cwd'] = self.settings['ara_home'] + '/simulations/' + self.settings['scenario_home']
+        self.settings['cwd'] = self.settings['ara_home'] + '/simulations/' 
 
     def _build_scenarios(self, scenarios):
-        self.settings['scenarios'] = [scenario.strip() for scenario in scenarios.split(',')]
+        return [scenario.strip() for scenario in scenarios.split(',')]
 
     @staticmethod
     def createDefaultConfiguration():
@@ -144,6 +144,5 @@ class Configuration(object):
         config.settings['cwd'] = "."
         config.settings['repetitions'] = 1
         config.settings['ld_library_path'] = "$LD_LIBRARY_PATH"
-        config.settings['scenarios'] = ['']
         config.settings['cpu_cores'] = self._get_nr_of_cpus('*')
         return config
