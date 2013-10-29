@@ -19,9 +19,9 @@ from analysis.energydeadseriesanalysis import EnergyDeadSeriesAnalysis
 
 class ExperimentManagerWorker(multiprocessing.Process):
 
-    def __init__(self, configuration, scenario_name, queue, arguments):
+    def __init__(self, configuration, experiment, scenario_name, queue, arguments):
         super(ExperimentManagerWorker,self).__init__()
-        self.simulations_directory = configuration['cwd']
+        self.simulations_directory = configuration['cwd'] + experiment
         self.scenario_name = scenario_name
         self.verbose = arguments.verbose
         self.arguments = arguments

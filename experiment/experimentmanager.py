@@ -67,7 +67,7 @@ class ExperimentManager:
 
         # single scenario to handle
         if len(scenarios) == 1 and scenarios[0] != '':
-            process = ExperimentManagerWorker(configuration, scenarios[0], queue, arguments)
+            process = ExperimentManagerWorker(configuration, experiment, scenarios[0], queue, arguments)
             jobs.append(process)
             process.start()
         # multiple scenarios in a directory
@@ -76,7 +76,7 @@ class ExperimentManager:
                 scenarios = self._get_scenarios(directory + '/results')
 
             for scenario in scenarios:
-                process = ExperimentManagerWorker(configuration, scenario, queue, arguments)
+                process = ExperimentManagerWorker(configuration, experiment, scenario, queue, arguments)
                 jobs.append(process)
                 process.start()
 
