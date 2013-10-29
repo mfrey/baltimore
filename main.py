@@ -76,8 +76,8 @@ def run_simulation(settings, experiment_manager):
 def evaluate_simulation(settings, experiment_manager, arguments):
     for experiment in settings['experiments']:
          location = experiment[1]
-         scenarios = experiment_manager.check_result_files(settings['cwd'] + experiment[1] + '/results', scenario[0])
-         experiment_manager.process(settings, experiment, scenarios, arguments)
+         scenarios = experiment_manager.check_result_files(settings['cwd'] + experiment[1] + '/results', experiment[0])
+         experiment_manager.process(settings, experiment[1], scenarios, arguments)
 
 #    if settings['database_settings']:
 #        store_experiment_results(settings, experiment_manager)
