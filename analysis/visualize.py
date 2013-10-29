@@ -32,16 +32,7 @@ class Visualize:
         overhead_files_packets = []
         hop_count_files = []
 
-        self.scenarios = settings['scenarios']
-      
-        self.scenarios.append('ARA0')
-        self.scenarios.append('ARA30')
-        self.scenarios.append('ARA60')
-        self.scenarios.append('ARA120')
-        self.scenarios.append('ARA300')
-        self.scenarios.append('ARA600')
-        self.scenarios.append('ARA900')
-
+        self.scenarios = [scenario[0] for scenario in settings['experiments']]
         scenario_files = {}
 
         pdr = {}
@@ -112,7 +103,6 @@ class Visualize:
                 if scenario not in eara:
                     eara[scenario] = eds[scenario]
 
-        print len(ara.keys()) 
         self._generate_overall_eds(ara, "ARA")
         self._generate_overall_eds(eara, "EARA")
         self._generate_overall_eds(eara, "EARA_ALT")
