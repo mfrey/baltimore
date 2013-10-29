@@ -86,13 +86,12 @@ class ExperimentManagerWorker(multiprocessing.Process):
                 lastPacketAnalyser.draw = self.draw
                 lastPacketAnalyser.evaluate(experiment_results, self.verbose)
 
-                max_timestamp = lastPacketAnalyser.data_max
-
-                energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name, self.location, max_timestamp, repetitions, self.csv)
+                energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name, self.location, repetitions, self.csv)
                 energyDeadSeriesAnalyser.draw = self.draw
                 energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
                 
-                residualEnergyAnalyser = ResidualEnergyAnalysis(self.scenario_name, self.location, max_timestamp, repetitions, self.csv)
+                # fix it with the last packet analyser date
+                residualEnergyAnalyser = ResidualEnergyAnalysis(self.scenario_name, self.location, lastPacketAnalyser.data_max, repetitions, self.csv)
                 residualEnergyAnalyser.draw = self.draw
                 residualEnergyAnalyser.evaluate(experiment_results, self.verbose)
 

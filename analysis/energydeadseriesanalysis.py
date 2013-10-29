@@ -8,19 +8,15 @@ import numpy as np
 from analysis import Analysis
 
 class EnergyDeadSeriesAnalysis(Analysis):
-    def __init__(self, scenario, location, timestamp, repetitions, csv):
+    def __init__(self, scenario, location, repetitions, csv):
         Analysis.__init__(self, scenario, location, "energy-dead-series", repetitions, csv)
 
         self.logger = logging.getLogger('baltimore.analysis.EnergyDeadSeriesAnalysis')
         self.logger.debug('creating an instance of EnergyDeadSeriesAnalysis for scenario %s', scenario)
         
         self.energy_dead_series = {}
-        # TODO: should this value somehow be computed?
         self.bin_size_in_seconds = 10
-        # the max timestamp value is passed to the analysis via the last received packet analysis
-        self.max_time_stamp_value = timestamp 
-        # TODO: check if this is a issue 
-        self.nr_of_bins = int(self.max_time_stamp_value / self.bin_size_in_seconds) + 1
+
 
     def evaluate(self, experiment_results, is_verbose=False):
         self.logger.info("running energy dead series analysis")
@@ -35,7 +31,8 @@ class EnergyDeadSeriesAnalysis(Analysis):
                 timestamp = experiment_results.repetitions[repetition].get_node_results()[node]["nodeEnergyDepletionTimestamp"]
                 data.append([repetition, node, timestamp])
 
-
+        self.max_time_stamp_value = np.amax([element[2] for element in data])
+        self.nr_of_bins = int(self.max_time_stamp_value / self.bin_size_in_seconds) + 1
 
         repetitions = len(experiment_results.repetitions)
         # create all bins and initialize with zero and each bin is a list of dead notes per repetition 
