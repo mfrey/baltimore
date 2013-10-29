@@ -17,7 +17,6 @@ class Configuration(object):
             self.settings = {
                 'ara_home': self._get_absolute_path(self._get('General', 'ara_home')),
                 'omnetpp_home': self._get_absolute_path(self._get('General', 'omnetpp_home')),
-                'repetitions': int(self._get('General', 'repetitions')),
                 'cpu_cores' : self._get_nr_of_cpus(self._get('General', 'cpu_cores'))
             }
 
@@ -39,7 +38,7 @@ class Configuration(object):
         experiments = [section for section in self.parser.sections() if section.startswith("Experiment")]
 
         for experiment in experiments:
-            repetitions = self._get(experiment, 'repetitions')
+            repetitions = int(self._get(experiment, 'repetitions'))
             scenario_home = self._get(experiment, 'scenario_home')
             scenarios = self._build_scenarios(self._get(experiment, 'scenarios'))
 
@@ -140,7 +139,6 @@ class Configuration(object):
     def createDefaultConfiguration():
         config = Configuration(None);
         config.settings['cwd'] = "."
-        config.settings['repetitions'] = 1
         config.settings['ld_library_path'] = "$LD_LIBRARY_PATH"
         config.settings['cpu_cores'] = self._get_nr_of_cpus('*')
         return config
