@@ -55,10 +55,9 @@ class ExperimentManager:
             # run the simulations
             self.pool.map(runner.run_simulation, argument)
 
-    def process(self, configuration, arguments):
+    def process(self, configuration, experiment, scenarios, experiment, arguments):
         is_verbose = arguments.verbose
-        directory = configuration['cwd']
-        scenarios = configuration['scenarios']
+        directory = configuration['cwd'] + '/' + experiment
 
         if os.path.exists(directory + '/omnetpp.ini'):
             self.read_omnetini(directory + '/omnetpp.ini', is_verbose)

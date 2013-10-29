@@ -70,19 +70,14 @@ def run_simulation(settings, experiment_manager):
     for experiment in settings['experiments']:
         experiment_manager.result_dir_exists(settings['cwd'] + experiment[1])
         experiment_manager.check_result_directory(settings['cwd'] + experiment[1] + '/results', experiment[0])
+
     experiment_manager.run_simulations(settings)
 
-
 def evaluate_simulation(settings, experiment_manager, arguments):
-    for scenario in settings['experiments']:
-         scenario_home = scenario[1]
-         remaining_scenarios = experiment_manager.check_result_files(settings['cwd'] + '/' + scenario[0] + '/results', scenario[2])
-         settings['scenarios'] = remaining_scenarios
-         experiment_manager.process(settings, arguments)
-
-    remaining_scenarios = experiment_manager.check_result_files(settings['cwd'] + '/results', settings['scenarios'])
-    settings['scenarios'] = remaining_scenarios
-    experiment_manager.process(settings, arguments)
+    for experiment in settings['experiments']:
+         location = experiment[1]
+         scenarios = experiment_manager.check_result_files(settings['cwd'] + experiment[1] + '/results', scenario[0])
+         experiment_manager.process(settings, experiment, scenarios, arguments)
 
 #    if settings['database_settings']:
 #        store_experiment_results(settings, experiment_manager)
