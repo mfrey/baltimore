@@ -4,6 +4,7 @@ import re
 import os
 import csv
 import math
+import types
 import random 
 import logging
 import operator
@@ -525,15 +526,19 @@ class Visualize:
         ydata = []
         pause_times = []
 
-        for scenario in keys:
-            pause_times = sorted(data[scenario].keys())
-            xdata.append(pause_times)
-            ydata_temp = []
+        if type(keys) is types.DictType:
+            for scenario in keys:
+                 pause_times = sorted(data[scenario].keys())
+                 xdata.append(pause_times)
+                 ydata_temp = []
 
-            for pause_time in pause_times:
-                ydata_temp.append(data[scenario][pause_time])
+                 for pause_time in pause_times:
+                      ydata_temp.append(data[scenario][pause_time])
 
-            ydata.append(ydata_temp)
+                 ydata.append(ydata_temp)
+        else:
+            xdata = []
+            ydata = keys
 
         return (xdata, ydata)
 
@@ -544,25 +549,37 @@ class Visualize:
         """
 
         data = {}
-        pattern = re.compile("([a-zA-Z]+)([0-9]+)(([a-zA-Z]+)?)")
+        pattern = re.compile("([a-zA-Z]+)([0-9]+)*(([a-zA-Z]+)?)")
 
         for scenario in keys:
             match = pattern.match(scenario)
 
             algorithm = match.group(1)
-            pause_time = int(match.group(2))
-            option = match.group(3)
+
+            if match.group(2) != None:
+                pause_time = int(match.group(2))
+                option = match.group(3)
+            else:
+                pause_time = "-"
+                option = "-"
 
             self.logger.debug("parsing data for algorithm %s, pause time %s and option %s", algorithm, pause_time, option)
-            key = algorithm + option 
+
+            if option != "-":
+                key = algorithm + option 
+            else:
+                key = algorithm
 
             if key not in data:
                data[key] = {}
             
-            if pause_time not in data[key]:
-               data[key][pause_time] = 0
+            if pause_time != "-":
+                if pause_time not in data[key]:
+                    data[key][pause_time] = 0
 
-            data[key][pause_time] = results[scenario]
+                data[key][pause_time] = results[scenario]
+            else:
+                data[key] = results[scenario]
 
         return data
 
