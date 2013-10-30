@@ -18,7 +18,7 @@ from plot.boxplot import BoxPlot
 from plot.barchart import BarChart
 from plot.lineplot import LinePlot
 from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
-
+f
 class Visualize:
     def __init__(self, settings):
         self.csv_location = settings['analysis_location']
@@ -28,7 +28,7 @@ class Visualize:
         pdr_file = ""
         energy_dead_series_file = ""
         energy_dead_series_files_raw = []
-        path_energy_file = "" 
+        path_energy_files = []
         overhead_files_bits = []
         overhead_files_packets = []
         hop_count_file = ""
@@ -59,7 +59,7 @@ class Visualize:
                elif csv_file.endswith("energy-dead-series_raw.csv"):
                    energy_dead_series_files_raw.append(csv_file)
                elif csv_file.endswith("path-energyraw.csv"):
-                   path_energy_file = csv_file
+                   path_energy_files.append(csv_file)
                elif csv_file.endswith("energy-dead-series.csv"):
                    energy_dead_series_file = csv_file
                elif csv_file.endswith("overhead_bits.csv"):
@@ -79,8 +79,7 @@ class Visualize:
 
             result = self._visualize_eds(scenario, energy_dead_series_file)
             eds[scenario] = result
-
-	    self._visualize_path_energy(path_energy_file)
+   
 
             energy_dead_series_files_raw = []
 
@@ -88,6 +87,8 @@ class Visualize:
         self._generate_overhead(overhead_files_packets, "Packets")
         self._generate_overhead(overhead_files_bits, "Bits")
         self._generate_overall_hop_count(hop_count)
+
+        self._visualize_path_energy(path_energy_files)
 
         ara = {}
         eara = {}
@@ -542,26 +543,27 @@ class Visualize:
     def _visualize_path_energy(self, path_energy_file):
         path_energy = {}
 
-        scenario = path_energy_file.split("/")[-1].split("_")[0]
-        result = self._read_csv(path_energy_file)
+        for path_energy_file in path_energy_files:
+            scenario = path_energy_file.split("/")[-1].split("_")[0]
+            result = self._read_csv(path_energy_file)
 
-        # removes the header of the csv file
-        result.pop(0)
+            # removes the header of the csv file
+            result.pop(0)
 
-        for entry in result:
-            repetition = int(entry[0])
-            node = entry[1]
-            timestamp = float(entry[2])
-            energy = float(entry[3])
+            for entry in result:
+                repetition = int(entry[0])
+                node = entry[1]
+                timestamp = float(entry[2])
+                energy = float(entry[3])
 
-            if scenario not in path_energy:
-                path_energy[scenario] = {}
+                if scenario not in path_energy:
+                    path_energy[scenario] = {}
 
-            if node not in path_energy[scenario]:
-                path_energy[scenario][node] = []
+                if node not in path_energy[scenario]:
+                    path_energy[scenario][node] = []
  
-            # the entry follows the format: timestamp, path energy
-            path_energy[scenario][node].append((timestamp, energy))
+                # the entry follows the format: timestamp, path energy
+                path_energy[scenario][node].append((timestamp, energy))
 
         # we store the result for all scenarios, so we can generate a overall plot
         data_all_scenarios = {}
