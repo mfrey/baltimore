@@ -38,7 +38,6 @@ class Visualize:
 
         scenario_files = {}
 
-
         pdr = {}
         hop_count = {}
         eds = {}
@@ -113,25 +112,31 @@ class Visualize:
     def _generate_overhead(self, files, version):
         self._visualize_overhead(files, version)
 
-    def _generate_overall_pdr(self, pdr):
-        plot = PacketDeliveryRatePlot()
-        file_name = os.path.join(self.csv_location, "overall_avg_pdr.pdf") 
-
+    def _get_data_new(self, data):
         x_data = []
         y_data = []
+        labels = []
 
-        for index, scenario in enumerate(self._sorted(pdr.keys())):
+        for index, scenario in enumerate(self._sorted(data.keys())):
             pause_time = self._get_pause_time(scenario) 
 
             if pause_time == -1:
                 pause_time = index
 
             x_data.append(pause_time)
-            y_data.append(pdr[scenario])
-            plot.labels.append(scenario)
+            y_data.append(data[scenario])
+            labels.append(scenario)
 
-        plot.xlist.append(x_data)
-        plot.ylist.append(y_data)
+        return (x_data, y_data, labels)
+
+    def _generate_overall_pdr(self, pdr):
+        file_name = os.path.join(self.csv_location, "overall_avg_pdr.pdf") 
+        result = self._get_data_new(pdr)
+
+        plot = PacketDeliveryRatePlot()
+        plot.xlist.append(result[0])
+        plot.ylist.append(result[1])
+        plot.labels = result[2]
         plot.yticks = [60, 70, 80, 90, 92, 94, 96, 100]
         plot.draw(file_name)
 
@@ -297,8 +302,6 @@ class Visualize:
 
         return hop_count_result 
 
- 
-
 
     def _visualize_eds(self, experiment, eds_file):
 
@@ -462,10 +465,7 @@ class Visualize:
             print result
             overhead[scenario] = float(result[1][4])
 
-        keys = self._sorted(overhead.keys())
-        data = self._get_keys(keys, overhead)
-        keys = self._sorted(data.keys())
-        result = self._get_data(data, keys) 
+        result = self._get_data_new(overhead) 
 
         plot = LinePlot()
         plot.title = "Routing Overhead (" + version + ")"
@@ -473,7 +473,7 @@ class Visualize:
         plot.ylist = result[1]
         plot.xlabel = "Pause Time [s]"
         plot.ylabel = version + " %"
-        plot.labels = keys 
+        plot.labels = result[2]
         if version == "packets":
             plot.yticks = [0, 2, 4, 6]
         else:
