@@ -26,7 +26,7 @@ class Visualize:
         
         csv_files = []
         pdr_file = ""
-        energy_dead_series_files = []
+        energy_dead_series_file = ""
         energy_dead_series_files_raw = []
         path_energy_files = []
         overhead_files_bits = []
@@ -62,7 +62,7 @@ class Visualize:
                elif csv_file.endswith("path-energyraw.csv"):
                    path_energy_files.append(csv_file)
                elif csv_file.endswith("energy-dead-series.csv"):
-                   energy_dead_series_files.append(csv_file)
+                   energy_dead_series_file = csv_file
                elif csv_file.endswith("overhead_bits.csv"):
                    overhead_files_bits.append(csv_file)
                elif csv_file.endswith("overhead_packets.csv"):
@@ -78,13 +78,11 @@ class Visualize:
 
 #	    self._visualize_eds_raw(scenario, energy_dead_series_files_raw)
 
-            result = self._visualize_eds(scenario, energy_dead_series_files)
+            result = self._visualize_eds(scenario, energy_dead_series_file)
             eds[scenario] = result
 
 #	    self._visualize_path_energy(path_energy_files)
 
-            pdr_file = "" 
-            energy_dead_series_files = []
             energy_dead_series_files_raw = []
             path_energy_files = []
             hop_count_files = []
@@ -177,11 +175,6 @@ class Visualize:
         plot.ylabel = "Nodes"
         plot.xticks = [390, 400, 405, 410, 415, 420, 425, 430, 435, 440, 445, 450, 460, 470, 480, 490]
         plot.yticks = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
-
-        print plot.xlist
-        print plot.ylist
-        print plot.labels
-
         plot.draw(file_name)
 
     def _read_csv(self, file_name):
@@ -312,57 +305,47 @@ class Visualize:
  
 
 
-    def _visualize_eds(self, experiment, eds_files):
+    def _visualize_eds(self, experiment, eds_file):
+
+        file_name = os.path.join(self.csv_location, experiment +  "energy_dead_series.pdf")
+
+        scenario = eds_file.split("/")[-1].split("_")[0]
+        self.logger.debug("parsing scenario %s and energy dead series file: %s", scenario, eds_file)
+        result = self._read_csv(eds_file)
+
+        # remove the row containing the description 
+        result.pop(0)
+
+        xlist = []
+        ylist = []
+
+        self.logger.debug("number of lines in file %s: %d", eds_file, len(result))
+
+        for row in result:
+            timestamp = float(row[0])
+            average_number_of_dead_nodes = float(row[1])
+
+            if (len(ylist) - 1) < 0:
+                previous_number_of_dead_nodes = 0
+            else:
+                previous_number_of_dead_nodes = ylist[(len(ylist)-1)]
+
+            if average_number_of_dead_nodes != 0 or len(ylist) == 1:
+                xlist.append(timestamp)
+                ylist.append(average_number_of_dead_nodes + previous_number_of_dead_nodes)
+
         plot = LinePlot()
-
-        eds_files = self._sorted(eds_files)
-
-        self.logger.debug("number of energy dead series files to parse: %d", len(eds_files))
-
-        for eds_file in eds_files:
-            scenario = eds_file.split("/")[-1].split("_")[0]
-            self.logger.debug("parsing scenario %s and energy dead series file: %s", scenario, eds_file)
-            result = self._read_csv(eds_file)
-
-            # remove the row containing the description 
-            result.pop(0)
-
-            xlist = []
-            ylist = []
-
-            self.logger.debug("number of lines in file %s: %d", eds_file, len(result))
-
-            for row in result:
-                timestamp = float(row[0])
-                average_number_of_dead_nodes = float(row[1])
-
-                if (len(ylist) - 1) < 0:
-                    previous_number_of_dead_nodes = 0
-                else:
-                    previous_number_of_dead_nodes = ylist[(len(ylist)-1)]
-
-                if average_number_of_dead_nodes != 0 or len(ylist) == 1:
-                    xlist.append(timestamp)
-                    ylist.append(average_number_of_dead_nodes + previous_number_of_dead_nodes)
-
-
-            # set the name of the scenario in the plot
-            plot.labels.append(scenario)
-            # set the values of the x-axis
-            plot.xlist.append(xlist)
-            # set the values of the y-axis
-            plot.ylist.append(ylist)
+        # set the name of the scenario in the plot
+        plot.labels.append(scenario)
+        # set the values of the x-axis
+        plot.xlist.append(xlist)
+        # set the values of the y-axis
+        plot.ylist.append(ylist)
         
         plot.title = "Energy Dead Series (Average)"
         plot.xlabel = "Time [s]"
         plot.ylabel = "Average Number of Dead Nodes"
         plot.yticks = [0, 5, 10, 20, 30, 40, 50]
-
-        #print str(len(xlist)) + " " + str(len(plot.labels))
-        #print plot.xlist
-        #print plot.labels
-
-        file_name = os.path.join(self.csv_location, experiment +  "energy_dead_series.pdf")
         plot.draw(file_name)
 
         return (plot.xlist, plot.ylist, plot.labels)
