@@ -18,7 +18,7 @@ from plot.boxplot import BoxPlot
 from plot.barchart import BarChart
 from plot.lineplot import LinePlot
 from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
-f
+
 class Visualize:
     def __init__(self, settings):
         self.csv_location = settings['analysis_location']
@@ -540,7 +540,7 @@ class Visualize:
         return data
 
 
-    def _visualize_path_energy(self, path_energy_file):
+    def _visualize_path_energy(self, path_energy_files):
         path_energy = {}
 
         for path_energy_file in path_energy_files:
