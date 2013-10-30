@@ -25,7 +25,7 @@ class Visualize:
         self.logger = logging.getLogger('baltimore.analysis.Visualize')
         
         csv_files = []
-        pdr_files = []
+        pdr_file = ""
         energy_dead_series_files = []
         energy_dead_series_files_raw = []
         path_energy_files = []
@@ -52,7 +52,7 @@ class Visualize:
             self.logger.debug("scanning files for scenario %s", scenario)
             for csv_file in scenario_files[scenario]:
                if csv_file.endswith("pdr_aggregated.csv"):
-                   pdr_files.append(csv_file)
+                   pdr_file = csv_file
                elif csv_file.endswith("energy-dead-series_raw.csv"):
                    energy_dead_series_files_raw.append(csv_file)
                elif csv_file.endswith("path-energyraw.csv"):
@@ -66,7 +66,7 @@ class Visualize:
                elif csv_file.endswith("hopCount.csv"):
                    hop_count_files.append(csv_file)
             
-            result = self._visualize_pdr(scenario, pdr_files)
+            result = self._get_packet_delivery_rate(scenario, pdr_file)
             pdr[scenario] = result
 
             result = self._visualize_hop_count(scenario, hop_count_files)
@@ -79,7 +79,7 @@ class Visualize:
 
 #	    self._visualize_path_energy(path_energy_files)
 
-            pdr_files = []
+            pdr_file = "" 
             energy_dead_series_files = []
             energy_dead_series_files_raw = []
             path_energy_files = []
@@ -494,32 +494,10 @@ class Visualize:
         file_name = os.path.join(self.csv_location, "overhead_" + version + ".pdf")
         plot.draw(file_name)
 
-    def _visualize_pdr(self, experiment, files):
-        """ Plots a line graph of the packet delivery rate of one scenario
-
-        """
-        pdr = {}
-
-        for pdr_file in files:
-            scenario = pdr_file.split("/")[-1].split("_")[0]
-            result = self._read_csv(pdr_file)
-            pdr[scenario] = float(result[1][4])
-
-        keys = self._sorted(pdr.keys())
-        data = self._get_keys(keys, pdr)
-        keys = self._sorted(data.keys())
-        result = self._get_data(data, keys) 
-
-        file_name = os.path.join(self.csv_location, experiment + "_avg_packetdeliveryrate.pdf")
-        
-        plot = PacketDeliveryRatePlot()
-        plot.xlist = result[0]
-        plot.ylist = result[1]
-        plot.labels = keys 
-        plot.draw(file_name)
-
-        return (result[0], result[1], keys)
-
+    def _get_packet_delivery_rate(self, scenario, file_name):
+        scenario = file_name.split("/")[-1].split("_")[0]
+        result = self._read_csv(file_name)
+        return float(result[1][4])
 
     def _get_data(self, data, keys):
         xdata = []
@@ -555,31 +533,20 @@ class Visualize:
             match = pattern.match(scenario)
 
             algorithm = match.group(1)
-
-            if match.group(2) != None:
-                pause_time = int(match.group(2))
-                option = match.group(3)
-            else:
-                pause_time = "-"
-                option = "-"
+            pause_time = int(match.group(2))
+            option = match.group(3)
 
             self.logger.debug("parsing data for algorithm %s, pause time %s and option %s", algorithm, pause_time, option)
 
-            if option != "-":
-                key = algorithm + option 
-            else:
-                key = algorithm
+            key = algorithm + option 
 
             if key not in data:
                data[key] = {}
             
-            if pause_time != "-":
-                if pause_time not in data[key]:
-                    data[key][pause_time] = 0
+            if pause_time not in data[key]:
+                data[key][pause_time] = 0
 
-                data[key][pause_time] = results[scenario]
-            else:
-                data[key] = results[scenario]
+            data[key][pause_time] = results[scenario]
 
         return data
 
