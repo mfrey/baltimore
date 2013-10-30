@@ -31,7 +31,7 @@ class Visualize:
         path_energy_files = []
         overhead_files_bits = []
         overhead_files_packets = []
-        hop_count_files = []
+        hop_count_file = ""
 
         self.scenarios = [scenario[0] for scenario in settings['experiments']]
         self.scenarios = [scenario for experiment in self.scenarios for scenario in experiment]
@@ -68,12 +68,12 @@ class Visualize:
                elif csv_file.endswith("overhead_packets.csv"):
                    overhead_files_packets.append(csv_file)
                elif csv_file.endswith("hopCount.csv"):
-                   hop_count_files.append(csv_file)
+                   hop_count_file = csv_file
             
             result = self._get_packet_delivery_rate(scenario, pdr_file)
             pdr[scenario] = result
 
-            result = self._visualize_hop_count(scenario, hop_count_files)
+            result = self._visualize_hop_count(scenario, hop_count_file)
             hop_count[scenario] = result[scenario]
 
 #	    self._visualize_eds_raw(scenario, energy_dead_series_files_raw)
@@ -85,7 +85,6 @@ class Visualize:
 
             energy_dead_series_files_raw = []
             path_energy_files = []
-            hop_count_files = []
 
         self._generate_overall_pdr(pdr)
         self._generate_overhead(overhead_files_packets, "Packets")
@@ -194,33 +193,29 @@ class Visualize:
         return sorted(data, key = alphanum_key)
 
 
-    def _visualize_hop_count(self, experiment, hop_count_files):
-        assert len(hop_count_files) > 0
+    def _visualize_hop_count(self, experiment, hop_count_file):
         hop_count = {}
         max_timestamp_per_scenario = {}
-        hop_count_files = self._sorted(hop_count_files)
         bin_size_in_seconds = 50
         hop_count_result = {}
 
-        for hop_count_file in hop_count_files:
-            scenario = hop_count_file.split("/")[-1].split("_")[0]
-            result = self._read_csv(hop_count_file)
+        scenario = hop_count_file.split("/")[-1].split("_")[0]
+        result = self._read_csv(hop_count_file)
 
-            result.pop(0)
+        result.pop(0)
 
-            max_timestamp_per_scenario[scenario] = np.amax([float(element[2]) for element in result])
+        max_timestamp_per_scenario[scenario] = np.amax([float(element[2]) for element in result])
 
-            for row in result:
-                repetition = row[1]
+        for row in result:
+            repetition = row[1]
 
-                if scenario not in hop_count:
-                    hop_count[scenario] = {}
+            if scenario not in hop_count:
+                hop_count[scenario] = {}
 
-                if repetition not in hop_count[scenario]:
-                    hop_count[scenario][repetition] = []
+            if repetition not in hop_count[scenario]:
+                hop_count[scenario][repetition] = []
 
-                hop_count[scenario][repetition].append(row)
-
+            hop_count[scenario][repetition].append(row)
  
         plot = BoxPlot()
         plot.title = "Hop Count"
