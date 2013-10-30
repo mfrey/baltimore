@@ -34,7 +34,10 @@ class Visualize:
         hop_count_files = []
 
         self.scenarios = [scenario[0] for scenario in settings['experiments']]
+        self.scenarios = [scenario for experiment in self.scenarios for scenario in experiment]
+
         scenario_files = {}
+
 
         pdr = {}
         hop_count = {}
@@ -44,9 +47,10 @@ class Visualize:
             for name in files:
                 if name.endswith('csv'):
                    scenario = name.split("/")[-1].split("_")[0]
-                   if scenario not in scenario_files:
-                       scenario_files[scenario] = []
-                   scenario_files[scenario].append(os.path.join(root, name))
+                   if scenario in self.scenarios:
+                       if scenario not in scenario_files:
+                           scenario_files[scenario] = []
+                       scenario_files[scenario].append(os.path.join(root, name))
 
         for scenario in scenario_files:
             self.logger.debug("scanning files for scenario %s", scenario)
@@ -110,32 +114,39 @@ class Visualize:
 
 
     def _generate_overhead(self, files, version):
-		  self._visualize_overhead(files, version)
+        self._visualize_overhead(files, version)
 
     def _generate_overall_pdr(self, pdr):
-		  plot = PacketDeliveryRatePlot()
-		  file_name = os.path.join(self.csv_location, "overall_avg_pdr.pdf") 
+        plot = PacketDeliveryRatePlot()
+        file_name = os.path.join(self.csv_location, "overall_avg_pdr.pdf") 
 
-  #        for scenario in self._sorted(pdr.keys()):
-  #            plot.xlist.append(pdr[scenario][0][0])
-  #            plot.ylist.append(pdr[scenario][1][0])
-  #            plot.labels.append(scenario)
+        x_data = []
+        y_data = []
 
-		  # FIXME !!!
-		  plot.xlist.append([0, 30, 60, 120, 300, 600, 900])
-		  plot.ylist.append([95.11, 94.92, 95.06, 95.12, 95.9, 96.13, 96.1])
-		  plot.labels.append("ARA")
+        for index, scenario in enumerate(self._sorted(pdr.keys())):
+            pause_time = self._get_pause_time(scenario) 
 
-		  plot.xlist.append([0, 30, 60, 120, 300, 600, 900])
-		  plot.ylist.append([91.3, 89.89, 90.7, 90.64, 88.99, 87.85, 87.2])
-		  plot.labels.append("EARA$_{13}$")
+            if pause_time == -1:
+                pause_time = index
 
-		  plot.xlist.append([0, 30, 60, 120, 300, 600, 900])
-		  plot.ylist.append([86.85, 88.02, 86.73, 87.32, 84.76, 83.47, 83.5])
-		  plot.labels.append("EARA$_{11}$")
+            x_data.append(pause_time)
+            y_data.append(pdr[scenario])
+            plot.labels.append(scenario)
 
-		  plot.yticks = [60, 70, 80, 90, 92, 94, 96, 100]
-		  plot.draw(file_name)
+        plot.xlist.append(x_data)
+        plot.ylist.append(y_data)
+        plot.yticks = [60, 70, 80, 90, 92, 94, 96, 100]
+        plot.draw(file_name)
+
+    def _get_pause_time(self, scenario):
+        pattern = re.compile("([a-zA-Z]+)([0-9]+)*(([a-zA-Z]+)?)")
+        match = pattern.match(scenario)
+
+        if match.group(2) != None:
+            return int(match.group(2))
+
+        return -1
+
 
     def _generate_overall_hop_count(self, hop_count):
 		  plot = LinePlot()
