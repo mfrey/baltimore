@@ -33,16 +33,20 @@ class Experiment:
             if file_name_match(filename, self.scenario_name + '-' + '*.sca'):
                 result = self._parse_scalar_file(file_path)
                 experiment_results.add_repetition(result)
+
             elif file_name_match(filename, self.scenario_name + '-'+'*.vec'):
                 result = self._parse_vector_file(file_path)
                 experiment_results.add_repetition(result)
+
             elif file_name_match(filename, self.scenario_name + '-'+'*.rtd'):
                 if self.enable_routing_table_trace:
                     self._generate_routing_table_plots("192.168.0.2", filename) #FIXME: make the destination a parameter
                     self.print_progress()
+
             elif file_name_match(filename, self.scenario_name + '-'+'*.mtr'):
                 parser = MobilityDataParser()
                 data = parser.read(self.results_directory + "/" + filename)
+
             elif file_name_match(filename, self.scenario_name + '-' + '*.net'):
                 if self.enable_network_visualize:
                     self._generate_network_plots(file_path)
