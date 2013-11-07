@@ -43,25 +43,25 @@ class ExperimentManager:
     def run_simulations(self, configuration):
         ned_path_raw = configuration['ned_path']
         omnetpp_ini_raw = configuration['omnetpp_ini']
-        cwd_raw = configuration['cwd']
+        #cwd_raw = configuration['cwd']
 
         self.pool = Pool(configuration['cpu_cores'])
         for experiment in configuration['experiments']:
             # list of scenarios
             scenarios = experiment[0]
             self.logger.debug("scenarios " + str(scenarios))
-            # the name of the directory where the scenarios reside
+            # 
             location = experiment[1]
             # set the total number of repetitions
             configuration['repetitions'] = experiment[2]
             # set the cwd
-            configuration['cwd'] = cwd_raw + location
+            #configuration['cwd'] = cwd_raw + location
             # set the ned path
             configuration['ned_path'] = ned_path_raw + configuration['ara_home'] + '/simulations/' + location 
             # set the omnetpp.ini 
             configuration['omnetpp_ini'] = omnetpp_ini_raw + location + '/omnetpp.ini'
             # build up a tuple consisting of scenarios and repetitions
-            argument = itertools.product(scenarios, range(experiment[2]), [configuration])
+            argument = itertools.product(scenarios, range(experiment[2]), [configuration], [location])
             # run the simulations
             self.pool.map(runner.run_simulation, argument)
 

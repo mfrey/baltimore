@@ -8,14 +8,14 @@ def run_simulation(args):
     return Runner(*args).run()
 
 class Runner(object):
-    def __init__(self, scenario, repetition, settings):
+    def __init__(self, scenario, repetition, settings, location):
         self.scenario = scenario
         self.repetition = repetition
         self.ned_path = settings['ned_path']
         self.omnetpp_ini = settings['omnetpp_ini']
         self.binary = settings['ara_home'] + '/omnetpp/ara-sim'
         self.ld_library_path = settings['ld_library_path']
-        self.cwd = settings['cwd']
+        self.cwd = settings['cwd'] + location
         self.total_nr_of_runs = settings['repetitions']
 
         if os.path.exists(self.binary) == False:
