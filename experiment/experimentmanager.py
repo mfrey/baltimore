@@ -1,8 +1,6 @@
 #!/usr/bin/env python2.7
 
 import os
-import csv
-import sys
 import json
 import runner
 import logging
@@ -11,11 +9,8 @@ import collections
 
 from Queue import Empty
 
-from multiprocessing import Process, Queue, Pool
+from multiprocessing import Queue, Pool
 
-from runner import Runner
-from plot.boxplot import BoxPlot
-from experiment import Experiment
 from experimentmanagerworker import ExperimentManagerWorker
 from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
 from persistence.baltimorejsonencoder import BaltimoreJSONEncoder
@@ -36,14 +31,12 @@ class ExperimentManager:
 
         for scenario in non_existing_scenarios:
             self.logger.error("There is no scenario " + scenario + " to analyze!")
-
         # return a list of the remaining scenarios
         return list(set(scenarios) - set(non_existing_scenarios))
 
     def run_simulations(self, configuration):
         ned_path_raw = configuration['ned_path']
         omnetpp_ini_raw = configuration['omnetpp_ini']
-        #cwd_raw = configuration['cwd']
 
         self.pool = Pool(configuration['cpu_cores'])
         for experiment in configuration['experiments']:
@@ -71,6 +64,9 @@ class ExperimentManager:
 
         if os.path.exists(directory + '/omnetpp.ini'):
             self.read_omnetini(directory + '/omnetpp.ini', is_verbose)
+            
+            if is_verbose:
+                self._print_general_settings(self.omnetpp_ini.get_section('General'))
 
         queue = Queue()
         jobs = []
@@ -90,10 +86,6 @@ class ExperimentManager:
                 jobs.append(process)
                 process.start()
 
-        # FIXME: that's a bug if no config.ini file is added
-        if is_verbose:
-            self._print_general_settings(omnetpp_ini.get_section('General'))
-
         # storing the results in an class attribute
         for job in jobs:
             job.join()
@@ -112,27 +104,12 @@ class ExperimentManager:
                 self.logger.error("Could not retrieve result data for scenario " + job.scenario_name + " (might have failed earlier)")
 
     def read_omnetini(self, file_path, is_verbose):
-        #TODO throw error if verbose = True
+        # TODO throw error if verbose = True
         self.omnetpp_configuration = OMNeTConfigurationFileParser(file_path)
         self.omnetpp_ini = self.omnetpp_configuration.get_section("General")
 
         self.omnetpp_ini_checksum = self.omnetpp_configuration.omnetpp_ini_hash
         self.standard_ini_checksum = self.omnetpp_configuration.standard_ini_hash
-
-    def generate_packet_delivery_plots(self, location):
-        scenario_list = [e for e in xrange(len(self.experiments))]
-        pdr_list = []
-        experiment_list = []
-        experiments = collections.OrderedDict(sorted(self.experiments.items()))
-        #for experiment in self.experiments:
-        for experiment in experiments:
-            experiment_list.append(experiment)
-            pdr_list.append(self.experiments[experiment][1].pdr)
-        plot = PacketDeliveryRatePlot()
-        plot.xlist = [scenario_list]
-        plot.xticklabels = experiment_list
-        plot.ylist = [pdr_list]
-        plot.draw(os.path.join(location, 'test.png'))
 
     def _get_scenarios(self, directory):
         scenarios = []
