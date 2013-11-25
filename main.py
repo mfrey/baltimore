@@ -8,7 +8,7 @@ import argparse
 import matplotlib
 matplotlib.use("Agg")
 
-#from persistence.database import Database
+from persistence.database import Database
 from experiment.git import Git
 from configuration.configuration import Configuration
 from experiment.experimentmanager import ExperimentManager
@@ -57,7 +57,7 @@ def main():
             evaluate_simulation(configuration.settings, experiment_manager, arguments)
 
         if arguments.plot == True:
-            visualize = Visualize(configuration.settings)
+            Visualize(configuration.settings)
     else:
         print "at present you can't run testbed and simulation experiments at the same time"
     
@@ -65,6 +65,9 @@ def main():
 def check_matplotlibrc_support(configuration):
     if configuration['analysis_matplotlib'] != "":
         matplotlib.rc_file(path.expanduser(configuration['analysis_matplotlib']))
+
+def run_testbed(settings, experiment_manager):
+    raise "running testbed experiments is currently an unsupported operation"
 
 def run_simulation(settings, experiment_manager):
     for experiment in settings['experiments']:
@@ -75,18 +78,17 @@ def run_simulation(settings, experiment_manager):
 
 def evaluate_simulation(settings, experiment_manager, arguments):
     for experiment in settings['experiments']:
-         location = experiment[1]
-         scenarios = experiment_manager.check_result_files(settings['cwd'] + experiment[1] + '/results', experiment[0])
-         experiment_manager.process(settings, experiment[1], scenarios, arguments)
+        scenarios = experiment_manager.check_result_files(settings['cwd'] + experiment[1] + '/results', experiment[0])
+        experiment_manager.process(settings, experiment[1], scenarios, arguments)
 
-#    if settings['database_settings']:
-#        store_experiment_results(settings, experiment_manager)
+    if settings['database_settings']:
+        store_experiment_results(settings, experiment_manager)
 
-#def store_experiment_results(settings, experiment_manager):
- #   database = Database(settings['database_user'], settings['database_password'], settings['database_db'], settings['database_host'])
-#    database.open()
-#    database.add_experiment(experiment_manager)
-#    database.close()
+def store_experiment_results(settings, experiment_manager):
+    database = Database(settings['database_user'], settings['database_password'], settings['database_db'], settings['database_host'])
+    database.open()
+    database.add_experiment(experiment_manager)
+    database.close()
 
 def get_configuration(arguments):
     if arguments.configuration != "":
