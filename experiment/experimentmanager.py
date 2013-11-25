@@ -82,11 +82,9 @@ class ExperimentManager:
         for job in jobs:
             job.join()
 
-            # TODO: It might be better to remove the try/except and put an error code in the queue (by the producer)
-            # instead over an timeout
             try:
                 result = queue.get(True)
-
+                self.logger.debug("The process " + job.scenario_name + " returned with the status " + result)
             except Empty:
                 self.logger.error("Could not retrieve result data for scenario " + job.scenario_name + " (might have failed earlier)")
 
@@ -140,25 +138,6 @@ class ExperimentManager:
     def _print_tuple(self, settings):
         for setting in settings:
             print setting[0], ' = ', setting[1]
-
-    def create_json(self):
-        encoder = BaltimoreJSONEncoder()
-        return encoder.encode(self)
-
-    def write_json(self, file_name):
-        data = self.create_json()
-
-        with open(file_name, 'w') as json_file:
-            json.dump(data, json_file)
-
-    def read_json(self, file_name):
-        decoder = BaltimoreJSONDecoder()
-        obj = []
-
-        with open(file_name, 'r') as json_file:
-            obj.append(json.load(json_file))
-
-        ist = decoder.dict_to_object(obj)
 
     def __getstate__(self):
         d = dict(self.__dict__)
