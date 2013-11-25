@@ -5,21 +5,18 @@ import json
 import runner
 import logging
 import itertools
-import collections
 
 from Queue import Empty
 
 from multiprocessing import Queue, Pool
 
 from experimentmanagerworker import ExperimentManagerWorker
-from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
 from persistence.baltimorejsonencoder import BaltimoreJSONEncoder
 from persistence.baltimorejsondecoder import BaltimoreJSONDecoder
 from parser.omnetconfigurationfileparser import OMNeTConfigurationFileParser
 
 class ExperimentManager:
     def __init__(self, baltimore_revision, libara_revision):
-        self.experiments = {}
         self.logger = logging.getLogger('baltimore.experiment.ExperimentManager')
         self.logger.debug('creating an instance of ExperimentManager')
         self.baltimore_revision = baltimore_revision
@@ -40,19 +37,14 @@ class ExperimentManager:
 
         self.pool = Pool(configuration['cpu_cores'])
         for experiment in configuration['experiments']:
-            # list of scenarios
             scenarios = experiment[0]
             self.logger.debug("scenarios " + str(scenarios))
-            # 
+            
             location = experiment[1]
-            # set the total number of repetitions
             configuration['repetitions'] = experiment[2]
-            # set the cwd
-            #configuration['cwd'] = cwd_raw + location
-            # set the ned path
             configuration['ned_path'] = ned_path_raw + configuration['ara_home'] + '/simulations/' + location 
-            # set the omnetpp.ini 
             configuration['omnetpp_ini'] = omnetpp_ini_raw + location + '/omnetpp.ini'
+            
             # build up a tuple consisting of scenarios and repetitions
             argument = itertools.product(scenarios, range(experiment[2]), [configuration], [location])
             # run the simulations
@@ -63,7 +55,7 @@ class ExperimentManager:
         directory = configuration['cwd'] + '/' + experiment
 
         if os.path.exists(directory + '/omnetpp.ini'):
-            self.read_omnetini(directory + '/omnetpp.ini', is_verbose)
+            self.read_omnetppini(directory + '/omnetpp.ini', is_verbose)
             
             if is_verbose:
                 self._print_general_settings(self.omnetpp_ini.get_section('General'))
@@ -94,16 +86,11 @@ class ExperimentManager:
             # instead over an timeout
             try:
                 result = queue.get(True)
-                #result = queue.get(True, 1)
-                self.experiments[result[0].scenario_name] = result
-
-                if is_verbose:
-                    self._print_scenario_settings(self.omnetpp_configuration.get_scenario(result[0].scenario_name))
 
             except Empty:
                 self.logger.error("Could not retrieve result data for scenario " + job.scenario_name + " (might have failed earlier)")
 
-    def read_omnetini(self, file_path, is_verbose):
+    def read_omnetppini(self, file_path, is_verbose):
         # TODO throw error if verbose = True
         self.omnetpp_configuration = OMNeTConfigurationFileParser(file_path)
         self.omnetpp_ini = self.omnetpp_configuration.get_section("General")
