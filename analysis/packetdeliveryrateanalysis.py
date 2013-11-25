@@ -29,7 +29,6 @@ class PacketDeliveryRateAnalysis(Analysis):
         if self.csv:
             self.export_csv()
 
-        # make a pdr box plot over all repetitions
         if self.draw:
             self.plot_boxplot("Packet Delivery Rate per Scenario", "", "Packet Delivery Rate", self.all_pdr)
 
@@ -90,8 +89,10 @@ class PacketDeliveryRateAnalysis(Analysis):
         self._print_avg_statistics_line("Dropped Packets (TTL = 0)", 'dropZeroTTLPacket:count', results, nr_of_sent_packets)
         self._print_avg_statistics_line("Dropped Packets because 0 energy",  'dropPacketBecauseEnergyDepleted:count', results, nr_of_sent_packets)
         self._print_avg_statistics_line("Trapped packets after finish", 'nrOfTrappedPacketsAfterFinish', results, nr_of_sent_packets)
+
         print("Average number of route discoveries: %d" % results.get_average('newRouteDiscovery:count'))
         print("Average number of packets droped due to failed route discovery: %d (%s%%)\n" % (nr_of_undeliverables, self._get_percent_string(nr_of_undeliverables, total_nr_of_packets)))
+        
 
     def _print_avg_statistics_line(self, name, metric_name, results, nr_of_sent_packets):
         nr_of_digits = self.get_max_nr_of_digits(nr_of_sent_packets)
@@ -107,12 +108,6 @@ class PacketDeliveryRateAnalysis(Analysis):
             print("%-34s %*d   %s   %s   %s   %s   %s" % (name, nr_of_digits, data_avg, percent, data_median, data_std, data_min, data_max))
         except KeyError:
             self.logger.error("there is no such metric " + metric_name)
-
-# percent argument missing
-    #def _print_calculated_statistics_line(self, name, value, results):
-    #    nr_of_sent_packets = results.get_average('trafficSent')
-    #    nr_of_digits = self.get_max_nr_of_digits(nr_of_sent_packets)
-    #    print "%-26s %*d   %s" % (name, nr_of_digits, value, percent)
 
     def analyse_single_repetitions(self, results):
         for repetition in results:

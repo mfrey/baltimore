@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+
 from subprocess import call
 
 class TestbedSetup:
@@ -11,7 +12,7 @@ class TestbedSetup:
         return {'wlan0': 14, 'wlan1': 36, 'wlan2': 40 }.get(interface_name, 14)
 
     def cell_id(self, interface_name):
-        return {'wlan0': '16:EB:FF:18:C8:6F', 'wlan1': '46:44:4B:28:57:41', 'wlan2': '8A:BF:D2:99:8B:45' }.get(iface, 'aa:aa:aa:aa:aa:aa')
+        return {'wlan0': '16:EB:FF:18:C8:6F', 'wlan1': '46:44:4B:28:57:41', 'wlan2': '8A:BF:D2:99:8B:45' }.get(interface_name, 'aa:aa:aa:aa:aa:aa')
 
     def set_up_interface(self):
         chan = self.channel(self.interface_name)
@@ -26,7 +27,7 @@ class TestbedSetup:
         call("iwconfig " + self.interface_name + " ap " + essid, shell=True)
         call("iwconfig " + self.interface_name + " txpower auto", shell=True)
         call("iwconfig " + self.interface_name + " rate 6M", shell=True)
-        call("ifconfig " + self.interface_name + " $(calc_ip " + interface_name[-1] + ") netmask 255.255.0.0", shell=True)
+        call("ifconfig " + self.interface_name + " $(calc_ip " + self.interface_name[-1] + ") netmask 255.255.0.0", shell=True)
 
 def main():
     parser = argparse.ArgumentParser(description='testbedsetup - a setup script for the DES testbed')
