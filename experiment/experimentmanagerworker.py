@@ -18,7 +18,6 @@ from analysis.packetdeliveryrateanalysis import PacketDeliveryRateAnalysis
 from analysis.energydeadseriesanalysis import EnergyDeadSeriesAnalysis
 
 class ExperimentManagerWorker(multiprocessing.Process):
-
     def __init__(self, configuration, experiment, scenario_name, queue, arguments):
         super(ExperimentManagerWorker,self).__init__()
         self.simulations_directory = configuration['cwd'] + experiment
@@ -99,8 +98,10 @@ class ExperimentManagerWorker(multiprocessing.Process):
                 pathEnergyAnalyser.draw = self.draw
                 pathEnergyAnalyser.evaluate(experiment_results)
 
-                result = (experiment, pdrAnalyser, lastPacketAnalyser, energyDeadSeriesAnalyser, delayAnalyser, pathEnergyAnalyser)
+                # TODO: add methods for storing results in database
 
+            # TODO: add support for smart return values
+            result = "DUMMY"
             self.logger.info("[%d] successfully read %d experiment(s) from %d scalar file(s)." % (pid, 1, experiment_results.get_number_of_repetitions()))
             self.results_queue.put(result)
 

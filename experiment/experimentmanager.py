@@ -1,18 +1,14 @@
 #!/usr/bin/env python2.7
 
 import os
-import json
 import runner
 import logging
 import itertools
 
 from Queue import Empty
-
 from multiprocessing import Queue, Pool
 
 from experimentmanagerworker import ExperimentManagerWorker
-from persistence.baltimorejsonencoder import BaltimoreJSONEncoder
-from persistence.baltimorejsondecoder import BaltimoreJSONDecoder
 from parser.omnetconfigurationfileparser import OMNeTConfigurationFileParser
 
 class ExperimentManager:
