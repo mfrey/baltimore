@@ -13,7 +13,7 @@ from parser.vectorfileparser import VectorFileParser
 from parser.networkfileparser import NetworkFileParser
 from parser.routingtabledataparser import RoutingTableDataParser
 from parser.mobilitydataparser import MobilityDataParser
-from experimentresult import ExperimentResult
+from .experimentresult import ExperimentResult
 from plot.routingtableplot import RoutingTablePlot
 
 class Experiment:
@@ -25,7 +25,7 @@ class Experiment:
         self.location = location
 
     def get_results(self):
-        print "Reading results of experiment [%s]" % self.scenario_name
+        print("Reading results of experiment [%s]" % self.scenario_name)
         experiment_results = ExperimentResult()
 
         for filename in listdir(self.results_directory):
