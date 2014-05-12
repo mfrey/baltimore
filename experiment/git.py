@@ -16,5 +16,5 @@ class Git:
 
 if __name__ == "__main__":
     git = Git()
-    print git.get_revision("~/Desktop/Projekte/code/ara-sim")
-    print git.get_revision("/vol/home-vol1/simulant/frey/Desktop/Projekte/code/ara-sim")
+    print(git.get_revision("~/Desktop/Projekte/code/ara-sim"))
+    print(git.get_revision("/vol/home-vol1/simulant/frey/Desktop/Projekte/code/ara-sim"))

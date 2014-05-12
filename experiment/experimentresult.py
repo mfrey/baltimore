@@ -10,10 +10,10 @@ class ExperimentResult:
     def add_repetition(self, node_results):
         repetition = int(node_results.get_parameter("runnumber"))
 
-        if repetition in self.repetitions.keys():
-            for node in node_results.get_node_results().keys():
-                for metric, result in node_results.get_node_results()[node].iteritems():
-                    if node not in self.repetitions[repetition].get_node_results().keys():
+        if repetition in list(self.repetitions.keys()):
+            for node in list(node_results.get_node_results().keys()):
+                for metric, result in node_results.get_node_results()[node].items():
+                    if node not in list(self.repetitions[repetition].get_node_results().keys()):
                         self.repetitions[repetition].get_node_results()[node] = {}
                     self.repetitions[repetition].get_node_results()[node][metric] = result
         else:
@@ -45,7 +45,7 @@ class ExperimentResult:
         result = []
 
         for node in self.repetitions[repetition_nr].get_node_results():
-            if metric in self.repetitions[repetition_nr].get_node_results()[node].keys():
+            if metric in list(self.repetitions[repetition_nr].get_node_results()[node].keys()):
                 result.append(node)
 
         return result
@@ -59,7 +59,7 @@ class ExperimentResult:
 
     def get_metric(self, metric_name, repetition):
         sum = 0
-        for node_identifier, results in self.repetitions[repetition].get_node_results().iteritems():
+        for node_identifier, results in self.repetitions[repetition].get_node_results().items():
             if metric_name in results:
                 sum += results[metric_name]
 
