@@ -5,7 +5,7 @@ import logging
 import sys, traceback
 import multiprocessing
 
-from experiment import Experiment
+from .experiment import Experiment
 
 from analysis.delayanalysis import DelayAnalysis
 from analysis.overheadanalysis import OverheadAnalysis
@@ -107,6 +107,6 @@ class ExperimentManagerWorker(multiprocessing.Process):
 
         except Exception as exception:
             self.logger.error("[%d] an error occurred while evaluating experiment %s" % (pid, str(self.scenario_name) + " : " + str(exception)))
-            print '-'*60
+            print('-'*60)
             traceback.print_exc(file=sys.stdout)
-            print '-'*60
+            print('-'*60)

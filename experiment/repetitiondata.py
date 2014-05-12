@@ -9,7 +9,7 @@ class RepetitionData:
         try:
             return self.parameters[parameter_name]
         except KeyError:
-            print "Unknown parameter " + parameter_name
+            print("Unknown parameter " + parameter_name)
 
     def get_node_results(self):
         return self.nodes

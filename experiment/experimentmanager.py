@@ -1,14 +1,14 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import os
-import runner
+from . import runner
 import logging
 import itertools
 
-from Queue import Empty
+from queue import Empty
 from multiprocessing import Queue, Pool
 
-from experimentmanagerworker import ExperimentManagerWorker
+from .experimentmanagerworker import ExperimentManagerWorker
 from parser.omnetconfigurationfileparser import OMNeTConfigurationFileParser
 
 class ExperimentManager:
@@ -42,7 +42,7 @@ class ExperimentManager:
             configuration['omnetpp_ini'] = omnetpp_ini_raw + location + '/omnetpp.ini'
             
             # build up a tuple consisting of scenarios and repetitions
-            argument = itertools.product(scenarios, range(experiment[2]), [configuration], [location])
+            argument = itertools.product(scenarios, list(range(experiment[2])), [configuration], [location])
             # run the simulations
             self.pool.map(runner.run_simulation, argument)
 
@@ -109,8 +109,8 @@ class ExperimentManager:
         existing_scenarios = self._get_scenarios(directory)
         for scenario in scenarios:
             if scenario in existing_scenarios:
-                print "There seems already to be a scenario ", scenario, " in the results directory"
-                reply = raw_input("Shall the existing scenario be removed? [Y/n] ").lower()
+                print("There seems already to be a scenario ", scenario, " in the results directory")
+                reply = input("Shall the existing scenario be removed? [Y/n] ").lower()
                 if reply.startswith("y"):
                     self._remove_scenario(directory, scenario)
 
@@ -133,7 +133,7 @@ class ExperimentManager:
 
     def _print_tuple(self, settings):
         for setting in settings:
-            print setting[0], ' = ', setting[1]
+            print(setting[0], ' = ', setting[1])
 
     def __getstate__(self):
         d = dict(self.__dict__)
