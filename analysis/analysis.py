@@ -52,10 +52,10 @@ class Analysis:
 
     def print_analysis_header(self, results):
         nr_of_repetitions = results.get_number_of_repetitions()
-        print "Overall statistics (averaged over %d iterations)" % nr_of_repetitions
-        print '=' * 100
-        print " " * 42 + "#   Average    Median   Std.Dev       Min       Max"
-        print '-' * 100
+        print(("Overall statistics (averaged over %d iterations)" % nr_of_repetitions))
+        print(('=' * 100))
+        print((" " * 42 + "#   Average    Median   Std.Dev       Min       Max"))
+        print(('-' * 100))
 
     def _get_percent_string(self, value, nr_of_packets):
         if nr_of_packets > 0:

@@ -12,7 +12,7 @@ from scipy.ndimage import gaussian_filter
 
 from collections import OrderedDict
 
-from analysis import Analysis
+from .analysis import Analysis
 
 from plot.lineplot import LinePlot
 from plot.boxplot import BoxPlot

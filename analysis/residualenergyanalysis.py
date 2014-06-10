@@ -6,7 +6,7 @@ import logging
 import numpy as np
 import pprint
 
-from analysis import Analysis
+from .analysis import Analysis
 
 class ResidualEnergyAnalysis(Analysis):
     def __init__(self, scenario, location, max_timestamp, repetitions, csv):
@@ -44,12 +44,12 @@ class ResidualEnergyAnalysis(Analysis):
                     bins_for_this_repetition[bin_nr].append(residual_energy)
             
             # calculate the average residual energy values and sort these in the global bins
-            for bin_nr, residual_energy_values in bins_for_this_repetition.iteritems():
+            for bin_nr, residual_energy_values in bins_for_this_repetition.items():
                 if residual_energy_values:
                     avg_residual_energy = np.average(residual_energy_values)
                     global_bins[bin_nr].append(avg_residual_energy)
                 
-        for bin_nr, avg_residual_energy_values in global_bins.iteritems():
+        for bin_nr, avg_residual_energy_values in global_bins.items():
             if avg_residual_energy_values:
                 global_avg_residual_energy = np.average(avg_residual_energy_values)
                 global_avg_residual_energy_percent = global_avg_residual_energy * 100 / highest_energy_capacity
