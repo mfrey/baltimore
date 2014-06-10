@@ -59,7 +59,7 @@ def main():
         if arguments.plot == True:
             Visualize(configuration.settings)
     else:
-        print "at present you can't run testbed and simulation experiments at the same time"
+        print("at present you can't run testbed and simulation experiments at the same time")
     
 
 def check_matplotlibrc_support(configuration):
@@ -92,10 +92,10 @@ def store_experiment_results(settings, experiment_manager):
 
 def get_configuration(arguments):
     if arguments.configuration != "":
-        print "Reading configuration from", arguments.configuration
+        print("Reading configuration from", arguments.configuration)
         configuration = Configuration(arguments.configuration)
     elif os.path.exists('baltimore.ini'):
-        print "Using standard configuration: ./baltimore.ini"
+        print("Using standard configuration: ./baltimore.ini")
         configuration = Configuration('baltimore.ini')
     else:
         configuration = Configuration.createDefaultConfiguration()

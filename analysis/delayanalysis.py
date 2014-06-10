@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import logging
 import numpy as np
@@ -32,7 +32,7 @@ class DelayAnalysis(Analysis):
                 result = experiment_results.get_metric_per_node("delay", node, repetition)
                 delay[node].append(result)
 
-        for node, data  in delay.items():
+        for node, data  in list(delay.items()):
             self.data_min[node] = [np.amin(repetition) for repetition in data]
             self.data_max[node] = [np.amax(repetition) for repetition in data]
             self.data_median[node] = [np.median(repetition) for repetition in data]
@@ -91,7 +91,7 @@ class DelayAnalysis(Analysis):
         data = []
 
         # this assumes that if self.data_min is set, that also the other metrics are set (avg, median, std, ...)
-        for node, delays  in raw_data.items():
+        for node, delays  in list(raw_data.items()):
             for repetition, values in enumerate(delays):
                 for element in values:
 	                data.append([node, repetition, element])
