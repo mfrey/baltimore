@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import unittest
 
@@ -7,7 +7,7 @@ from parser import networkfileparser as nfp
 class TestNetworkFileParser(unittest.TestCase):
     def setUp(self):
         self.parser = nfp.NetworkFileParser()
-        print "bla"
+        print("bla")
 
 #    def test_read(self):
 #        print "foo"

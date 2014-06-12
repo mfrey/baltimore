@@ -1,8 +1,8 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import hashlib
 import os
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 
 
 class OMNeTConfigurationFileParser:
@@ -75,7 +75,7 @@ class OMNeTConfigurationFileParser:
 if __name__ == "__main__":
     configuration = OMNeTConfigurationFileParser("/home/frey/Desktop/Projekte/code/ara-sim/simulations/ara/omnetpp.ini")
     for setting in configuration.get_section("General"):
-        print setting[0], " = ", setting[1]
+        print((setting[0], " = ", setting[1]))
 
 #    result = configuration.get_scenario("ARA600", {})
 
