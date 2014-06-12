@@ -1,11 +1,11 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import sys
 import logging
 
 import numpy as np
 
-from analysis import Analysis
+from .analysis import Analysis
 
 class PacketDeliveryRateAnalysis(Analysis):
     def __init__(self, scenario, location, repetitions, csv):
@@ -90,8 +90,8 @@ class PacketDeliveryRateAnalysis(Analysis):
         self._print_avg_statistics_line("Dropped Packets (TTL = 0)", 'dropZeroTTLPacket:count', results, nr_of_sent_packets)
         self._print_avg_statistics_line("Dropped Packets because 0 energy",  'dropPacketBecauseEnergyDepleted:count', results, nr_of_sent_packets)
         self._print_avg_statistics_line("Trapped packets after finish", 'nrOfTrappedPacketsAfterFinish', results, nr_of_sent_packets)
-        print "Average number of route discoveries: %d" % results.get_average('newRouteDiscovery:count')
-        print "Average number of packets droped due to failed route discovery: %d (%s%%)\n" % (nr_of_undeliverables, self._get_percent_string(nr_of_undeliverables, total_nr_of_packets))
+        print("Average number of route discoveries: %d" % results.get_average('newRouteDiscovery:count'))
+        print("Average number of packets droped due to failed route discovery: %d (%s%%)\n" % (nr_of_undeliverables, self._get_percent_string(nr_of_undeliverables, total_nr_of_packets)))
 
     def _print_avg_statistics_line(self, name, metric_name, results, nr_of_sent_packets):
         nr_of_digits = self.get_max_nr_of_digits(nr_of_sent_packets)
@@ -104,7 +104,7 @@ class PacketDeliveryRateAnalysis(Analysis):
             data_min = self._get_percent_string(results.get_minimum(metric_name), nr_of_sent_packets)
             data_max = self._get_percent_string(results.get_maximum(metric_name), nr_of_sent_packets)
 
-            print "%-34s %*d   %s   %s   %s   %s   %s" % (name, nr_of_digits, data_avg, percent, data_median, data_std, data_min, data_max)
+            print("%-34s %*d   %s   %s   %s   %s   %s" % (name, nr_of_digits, data_avg, percent, data_median, data_std, data_min, data_max))
         except KeyError:
             self.logger.error("there is no such metric " + metric_name)
 
@@ -116,11 +116,11 @@ class PacketDeliveryRateAnalysis(Analysis):
 
     def analyse_single_repetitions(self, results):
         for repetition in results:
-            print "Statistics of " + repetition.get_parameter('run')
+            print("Statistics of " + repetition.get_parameter('run'))
             self._print_statistics(results, repetition)
 
     def _print_statistics(self, results, repetition):
-        print '=' * 55
+        print('=' * 55)
         self._print_statistics_line("Sent Packets",                      'trafficSent', results, repetition)
         self._print_statistics_line("Received Packets",                  'trafficReceived', results, repetition)
         self._print_statistics_line("Routing Loops",                     'routingLoopDetected:count', results, repetition)
@@ -130,7 +130,7 @@ class PacketDeliveryRateAnalysis(Analysis):
         self._print_statistics_line("Failed Route Discoveries",          'packetUnDeliverable:count', results, repetition)
         self._print_statistics_line("Dropped Packets (TTL = 0)",         'dropZeroTTLPacket:count', results, repetition)
         self._print_statistics_line("Trapped packets after finish",      'nrOfTrappedPacketsAfterFinish', results, repetition)
-        print "Number of route discoveries: %d\n" % results.get_metric('newRouteDiscovery:count', repetition)
+        print("Number of route discoveries: %d\n" % results.get_metric('newRouteDiscovery:count', repetition))
 
     def _print_statistics_line(self, name, metric_name, results, repetition):
         nr_of_sent_packets = results.get_metric('trafficSent', repetition)
@@ -139,7 +139,7 @@ class PacketDeliveryRateAnalysis(Analysis):
         value = results.get_metric(metric_name, repetition)
         percent = self._get_percent_string(value, nr_of_sent_packets)
 
-        print "%-26s %*d   %s" % (name, nr_of_digits, value, percent)
+        print("%-26s %*d   %s" % (name, nr_of_digits, value, percent))
 
     def get_max_nr_of_digits(self, nr_of_packets):
         return len(str(nr_of_packets))

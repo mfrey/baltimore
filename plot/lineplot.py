@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import csv
 import matplotlib.pyplot as plt
@@ -53,7 +53,7 @@ if __name__ == "__main__":
     with open('expected_pheromone_values_table.dat', 'rb') as csvfile:
         reader = csv.reader(csvfile, delimiter=' ', quotechar='"')
         for row in reader:
-            row = filter(lambda a: a != '', row)
+            row = [a for a in row if a != '']
             result.append(row)
     
     result.pop(0)

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import json
 
@@ -14,7 +14,7 @@ class BaltimoreJSONDecoder(json.JSONDecoder):
             #print 'MODULE:', module
             class_ = getattr(module, class_name)
             #print 'CLASS:', class_
-            args = dict( (key.encode('ascii'), value) for key, value in d.items())
+            args = dict( (key.encode('ascii'), value) for key, value in list(d.items()))
             #print 'INSTANCE ARGS:', args
             inst = class_(**args)
         else:

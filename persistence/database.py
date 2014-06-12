@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import json
 
@@ -19,7 +19,7 @@ class Database:
         try:
             self.database.authenticate(self.user, self.password)
         except PyMongoError: 
-            print "user and/or password unknown"
+            print("user and/or password unknown")
  
     def close(self):
         self.client.close()

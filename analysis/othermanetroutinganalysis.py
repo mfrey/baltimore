@@ -1,11 +1,11 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import sys
 import logging
 
 import numpy as np
 
-from analysis import Analysis
+from .analysis import Analysis
 
 class OtherManetRoutingAnalysis(Analysis):
     def __init__(self, scenario, location, repetitions, csv):
@@ -33,7 +33,7 @@ class OtherManetRoutingAnalysis(Analysis):
             data_min = self._get_percent_string(results.get_minimum(metric_name), nr_of_sent_packets)
             data_max = self._get_percent_string(results.get_maximum(metric_name), nr_of_sent_packets)
 
-            print "%-34s %*d   %s   %s   %s   %s   %s" % (name, nr_of_digits, data_avg, percent, data_median, data_std, data_min, data_max)
+            print("%-34s %*d   %s   %s   %s   %s   %s" % (name, nr_of_digits, data_avg, percent, data_median, data_std, data_min, data_max))
         except KeyError:
             self.logger.error("there is no such metric " + metric_name)
 

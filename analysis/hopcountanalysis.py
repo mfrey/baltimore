@@ -1,9 +1,9 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import logging
 import numpy as np
 
-from analysis import Analysis
+from .analysis import Analysis
 
 class HopCountAnalysis(Analysis):
     def __init__(self, scenario, location, repetitions, csv):
@@ -41,7 +41,7 @@ class HopCountAnalysis(Analysis):
 
             raw_data = []
 
-        for node, data  in hop_count.iteritems():
+        for node, data  in list(hop_count.items()):
             hop_count_data = [element[3] for repetition in data for element in repetition]
 
             self.data_min[node] = np.amin(hop_count_data)
@@ -86,7 +86,7 @@ class HopCountAnalysis(Analysis):
 
         data = []
 
-        for node, hop_counts in raw_data.iteritems():
+        for node, hop_counts in list(raw_data.items()):
             for values in hop_counts:
                 for element in values:
                     data.append([node, element[0], element[2], element[3]])

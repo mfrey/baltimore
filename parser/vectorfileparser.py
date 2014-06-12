@@ -1,8 +1,8 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import shlex
 
-from omnetfileparser import OMNeTFileParser
+from .omnetfileparser import OMNeTFileParser
 from experiment.repetitiondata import RepetitionData
 
 class VectorFileParser(OMNeTFileParser):
@@ -18,12 +18,12 @@ class VectorFileParser(OMNeTFileParser):
             self._build_result_dict()
             return RepetitionData(self.parameters, self.nodes)
         except IOError:
-            print "Error: can\'t find file ", self.file_path, " or read it"
+            print("Error: can\'t find file ", self.file_path, " or read it")
         finally:
             self.file_handle.close()
 
     def _build_result_dict(self):
-        for key, value in self.vector_dict.items():
+        for key, value in list(self.vector_dict.items()):
             node_identifier, metric = self.vector_settings[key][0], self.vector_settings[key][1]
             self.nodes[node_identifier][metric] = value
 

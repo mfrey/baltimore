@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 class RepetitionData:
     def __init__(self, parameters, nodes):
@@ -9,7 +9,7 @@ class RepetitionData:
         try:
             return self.parameters[parameter_name]
         except KeyError:
-            print "Unknown parameter " + parameter_name
+            print("Unknown parameter " + parameter_name)
 
     def get_node_results(self):
         return self.nodes

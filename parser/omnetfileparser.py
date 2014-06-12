@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 class OMNeTFileParser:
     def __init__(self, file_path):
@@ -8,7 +8,7 @@ class OMNeTFileParser:
             self.file_handle = open(self.file_path, "r")
             self.parameters = self._read_preamble()
         except IOError:
-            print "Error: can\'t find file ", self.file_path, " or read it"
+            print("Error: can\'t find file ", self.file_path, " or read it")
         except:
             self.file_handle.close()
 
@@ -33,11 +33,11 @@ class OMNeTFileParser:
     def _parse_key_value(self, key):
         words = self.file_handle.readline().split(' ')
         if len(words) != 2:
-            print "Could not parse key value line %d from %s because there are %d words" % (self.current_line_nr, self.file_path, len(words))
+            print("Could not parse key value line %d from %s because there are %d words" % (self.current_line_nr, self.file_path, len(words)))
             raise
 
         if words[0] != key:
-            print "Error while parsing key value line: Expected %s but got %s" % (key, words[0])
+            print("Error while parsing key value line: Expected %s but got %s" % (key, words[0]))
             raise
 
         return words[1].strip()
@@ -45,11 +45,11 @@ class OMNeTFileParser:
     def _parse_attribute(self, name):
         words = self._read_next_line().split(' ')
         if len(words) != 3:
-            print "Could not parse attribute line %d from %s because there are %d words" % (self.current_line_nr, self.file_path, len(words))
+            print("Could not parse attribute line %d from %s because there are %d words" % (self.current_line_nr, self.file_path, len(words)))
             raise
 
         if words[0] != 'attr' or words[1] != name:
-            print "Could not parse line %d from %s for attribute %s" % (self.current_line_nr, self.file_path, name)
+            print("Could not parse line %d from %s for attribute %s" % (self.current_line_nr, self.file_path, name))
             raise
 
         return words[2].strip()

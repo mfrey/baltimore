@@ -1,11 +1,11 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import sys
 import logging
 import os.path
 import numpy as np
 
-from analysis import Analysis
+from .analysis import Analysis
 
 from plot.lineplot import LinePlot
 from plot.boxplot import BoxPlot
@@ -66,7 +66,7 @@ class LastPacketAnalysis(Analysis):
         disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - arrival of last packet for scenario ' + self.scenario],['#']]
         header = ['repetition', 'time']
 
-        for repetition, timestamp in self.raw_data.iteritems():
+        for repetition, timestamp in self.raw_data.items():
             data.append([repetition, timestamp])
 
         self._write_csv_file(file_name, disclaimer, header, data)

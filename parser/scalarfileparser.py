@@ -1,8 +1,8 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import shlex
 
-from omnetfileparser import OMNeTFileParser
+from .omnetfileparser import OMNeTFileParser
 from experiment.repetitiondata import RepetitionData
 
 class ScalarFileParser(OMNeTFileParser):
@@ -14,7 +14,7 @@ class ScalarFileParser(OMNeTFileParser):
             nodes = self._read_body()
             return RepetitionData(self.parameters, nodes)
         except IOError:
-            print "Error: can\'t find file ", self.file_path, " or read it"
+            print("Error: can\'t find file ", self.file_path, " or read it")
         finally:
             self.file_handle.close()
 

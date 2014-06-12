@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import os
 from os import path
@@ -59,7 +59,7 @@ def main():
         if arguments.plot == True:
             Visualize(configuration.settings)
     else:
-        print "at present you can't run testbed and simulation experiments at the same time"
+        print("at present you can't run testbed and simulation experiments at the same time")
     
 
 def check_matplotlibrc_support(configuration):
@@ -67,7 +67,7 @@ def check_matplotlibrc_support(configuration):
         matplotlib.rc_file(path.expanduser(configuration['analysis_matplotlib']))
 
 def run_testbed(settings, experiment_manager):
-    raise "running testbed experiments is currently an unsupported operation"
+    raise Exception("running testbed experiments is currently an unsupported operation")
 
 def run_simulation(settings, experiment_manager):
     for experiment in settings['experiments']:
@@ -92,10 +92,10 @@ def store_experiment_results(settings, experiment_manager):
 
 def get_configuration(arguments):
     if arguments.configuration != "":
-        print "Reading configuration from", arguments.configuration
+        print(("Reading configuration from", arguments.configuration))
         configuration = Configuration(arguments.configuration)
     elif os.path.exists('baltimore.ini'):
-        print "Using standard configuration: ./baltimore.ini"
+        print("Using standard configuration: ./baltimore.ini")
         configuration = Configuration('baltimore.ini')
     else:
         configuration = Configuration.createDefaultConfiguration()

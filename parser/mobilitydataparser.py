@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import os
 import struct
@@ -21,6 +21,7 @@ class MobilityDataParser:
                     self.last_positions = position
                     yield (time, position)
             except StopIteration:
+                print("Could not parse mobility trace of " + file_name + ": not enough bytes")
                 raise MobilityDataParserException("Could not parse mobility trace of " + file_name + ": not enough bytes")
 
     def _request_next_bytes(self, chunksize):
@@ -38,7 +39,7 @@ class MobilityDataParser:
     def _read_next_bytes(self, nr_of_bytes, byte_stream):
         result = ""
         for i in range(nr_of_bytes):
-            result += byte_stream.next()
+            result += next(byte_stream)
 
         return result
 
@@ -62,6 +63,8 @@ class MobilityDataParserException(Exception):
 if __name__ == "__main__":
     parser = MobilityDataParser()
     #data = parser.read("/home/frey/Desktop/Projekte/code/ara-sim/simulations/ara/results/ARATEST-0-node0.mtr")
-    data = parser.read("/vol/home-vol1/simulant/frey/Desktop/Projekte/code/ara-sim/simulations/ara/results/ARATEST-0-node0.mtr")
+    #data = parser.read("/vol/home-vol1/simulant/frey/Desktop/Projekte/code/ara-sim/simulations/ara/results/ARATEST-0-node0.mtr")
+    #data = parser.read("/home/michael/Desktop/Projekte/code/data/trace/EARA0-1-node1.mtr")
+    data = parser.read("/tmp/binary_test")
     for d in data:
-        print d
+        print(d)

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import re
 import os
@@ -18,6 +18,7 @@ from plot.boxplot import BoxPlot
 from plot.barchart import BarChart
 from plot.lineplot import LinePlot
 from plot.packetdeliveryrateplot import PacketDeliveryRatePlot
+from functools import reduce
 
 class Visualize:
     def __init__(self, settings):
@@ -94,7 +95,7 @@ class Visualize:
         eara = {}
         eara_alt = {}
         # FIXME
-        for scenario in eds.keys():
+        for scenario in list(eds.keys()):
             if scenario.startswith("ARA"):
                 if scenario not in ara:
                     ara[scenario] = eds[scenario]
@@ -117,7 +118,7 @@ class Visualize:
         y_data = []
         labels = []
 
-        for index, scenario in enumerate(self._sorted(data.keys())):
+        for index, scenario in enumerate(self._sorted(list(data.keys()))):
             pause_time = self._get_pause_time(scenario) 
 
             if pause_time == -1:
@@ -169,7 +170,7 @@ class Visualize:
         plot = LinePlot()
         file_name = os.path.join(self.csv_location, "overall_eds_" + scenario + ".pdf") 
 
-        for scenario in self._sorted(eds.keys()):
+        for scenario in self._sorted(list(eds.keys())):
             plot.xlist.append(eds[scenario][0][0])
             plot.ylist.append(eds[scenario][1][0])
             plot.labels.append(scenario)
@@ -225,10 +226,10 @@ class Visualize:
         plot = BoxPlot()
         plot.title = "Hop Count"
         plot.ylabel = "Number of Hops"
-        plot.xlabel = [[scenario] for scenario in self._sorted(hop_count.keys())]
+        plot.xlabel = [[scenario] for scenario in self._sorted(list(hop_count.keys()))]
         data = []
 
-        for scenario in self._sorted(hop_count.keys()):
+        for scenario in self._sorted(list(hop_count.keys())):
             scenario_data = []
             for repetition in hop_count[scenario]:
                 for entry in hop_count[scenario][repetition]:
@@ -239,7 +240,7 @@ class Visualize:
         file_name = os.path.join(self.csv_location, experiment +  "-hop_count_boxplot.pdf")
         plot.draw(data, file_name)
 
-        for scenario in self._sorted(hop_count.keys()):
+        for scenario in self._sorted(list(hop_count.keys())):
             repetitions = len(hop_count[scenario])
             max_timestamp = max_timestamp_per_scenario[scenario]
             nr_of_bins = int(max_timestamp/bin_size_in_seconds) + 1
@@ -262,14 +263,14 @@ class Visualize:
                     bins_for_this_repetition[bin_nr].append(value)
 
                 # now save the bins to calculate the average later
-                for bin_nr, value in bins_for_this_repetition.iteritems(): 
+                for bin_nr, value in bins_for_this_repetition.items(): 
                     if bin_nr not in global_bins:
                         global_bins[bin_nr] = []
                     global_bins[bin_nr].append(value)
 
             data = {}
 
-            for bin_nr, value_list in global_bins.iteritems():
+            for bin_nr, value_list in global_bins.items():
                 # calculate the average number of dead notes from the corresponding bin of each repetition
                 if len(value_list) > 0:
                     average = [np.average([np.average(repetition) for repetition in value_list])]
@@ -281,11 +282,11 @@ class Visualize:
             xdata = []
             ydata = []
 
-            for bin_nr, value in data.iteritems():
+            for bin_nr, value in data.items():
                 xdata.append(bin_nr * bin_size_in_seconds)
                 ydata.append(value)
 
-            ydata = reduce(operator.add, map(lambda x: list(x), [element for element in ydata]))
+            ydata = reduce(operator.add, [list(x) for x in [element for element in ydata]])
             file_name = os.path.join(self.csv_location, scenario +  "_hop-count_test.pdf")
 
             plot = LinePlot()
@@ -380,10 +381,10 @@ class Visualize:
         plot = BoxPlot()
         plot.title = "Energy Dead Series"
         plot.ylabel = "Time [s]"
-        plot.xlabel = [[scenario] for scenario in self._sorted(energy_dead_series.keys())]
+        plot.xlabel = [[scenario] for scenario in self._sorted(list(energy_dead_series.keys()))]
         data = []
         # generate box plot        
-        for scenario in self._sorted(energy_dead_series.keys()):
+        for scenario in self._sorted(list(energy_dead_series.keys())):
             scenario_data = []
             for repetition in energy_dead_series[scenario]:
                 for entry in energy_dead_series[scenario][repetition]:
@@ -417,12 +418,12 @@ class Visualize:
                     bins_for_this_repetition[bin_nr] += 1
 
                 # now save the bins to calculate the average later
-                for bin_nr, value in bins_for_this_repetition.iteritems(): 
+                for bin_nr, value in bins_for_this_repetition.items(): 
                     global_bins[bin_nr].append(value)
 
             eds = {}
 
-            for bin_nr, value_list in global_bins.iteritems():
+            for bin_nr, value_list in global_bins.items():
                 # calculate the average number of dead notes from the corresponding bin of each repetition
                 if value_list:
                     average = np.average(value_list)
@@ -440,7 +441,7 @@ class Visualize:
         xdata = []
         ydata = []
 
-        for bin_nr, value in energy_dead_series.iteritems():
+        for bin_nr, value in energy_dead_series.items():
             xdata.append(bin_nr * bin_size_in_seconds)
             ydata.append(value)
  
@@ -462,7 +463,7 @@ class Visualize:
         for overhead_file in files:
             scenario = overhead_file.split("/")[-1].split("_")[0]
             result = self._read_csv(overhead_file)
-            print result
+            print(result)
             overhead[scenario] = float(result[1][4])
 
         result = self._get_data_new(overhead) 
@@ -493,7 +494,7 @@ class Visualize:
         ydata = []
         pause_times = []
 
-        if type(keys) is types.DictType:
+        if type(keys) is dict:
             for scenario in keys:
                  pause_times = sorted(data[scenario].keys())
                  xdata.append(pause_times)

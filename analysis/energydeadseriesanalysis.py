@@ -1,11 +1,11 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import sys
 import math
 import logging
 import numpy as np
 
-from analysis import Analysis
+from .analysis import Analysis
 
 class EnergyDeadSeriesAnalysis(Analysis):
     def __init__(self, scenario, location, repetitions, csv):
@@ -56,14 +56,14 @@ class EnergyDeadSeriesAnalysis(Analysis):
                 bins_for_this_repetition[bin_nr] += 1
                 
             # now save the bins to calculate the average later
-            for bin_nr, value in bins_for_this_repetition.iteritems(): 
+            for bin_nr, value in list(bins_for_this_repetition.items()): 
                 global_bins[bin_nr].append(value)
            
             # save the average and median for the energy depletion timestamp
             avg_timestamps.append(np.average(timestamps_of_repetition))
             median_timestamps.append(np.median(timestamps_of_repetition))
 
-        for bin_nr, value_list in global_bins.iteritems():
+        for bin_nr, value_list in list(global_bins.items()):
             # calculate the average number of dead notes from the corresponding bin of each repetition
             if value_list:
                 average = np.average(value_list)
@@ -89,7 +89,7 @@ class EnergyDeadSeriesAnalysis(Analysis):
         xdata = []
         ydata = []
         
-        for bin_nr, value in self.energy_dead_series.iteritems():
+        for bin_nr, value in list(self.energy_dead_series.items()):
             xdata.append(bin_nr * self.bin_size_in_seconds)
             ydata.append(value)
  
@@ -108,7 +108,7 @@ class EnergyDeadSeriesAnalysis(Analysis):
 
         data =[]
 
-        for bin_nr, value in self.energy_dead_series.iteritems():
+        for bin_nr, value in list(self.energy_dead_series.items()):
             data.append([bin_nr*self.bin_size_in_seconds, value])
 
         self._write_csv_file(file_name, disclaimer, header, data)

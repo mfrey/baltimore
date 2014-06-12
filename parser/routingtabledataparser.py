@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 
 import os
 import struct
@@ -43,12 +43,12 @@ class RoutingTableDataParser:
     def _read_next_bytes(self, nr_of_bytes, byte_stream):
         result = ""
         for i in range(nr_of_bytes):
-            result += byte_stream.next()
+            result += next(byte_stream)
 
         return result
 
     def _read_nr_of_entries(self, byte_stream):
-        return struct.unpack("B", byte_stream.next())[0]
+        return struct.unpack("B", next(byte_stream))[0]
 
     def _read_entries(self, nr_of_entries, routing_destination):
         byte_stream = self._request_next_bytes(nr_of_entries * self.single_entry_size)
