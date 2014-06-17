@@ -40,6 +40,15 @@ class TestbedExperimentManager:
         setup.set_up_interface()
 
 if __name__ == "__main__":
-    manager = TestbedExperimentManager()
+    settings = {
+        'ara_home' : "/home/mfrey/ara-sim",
+        'cwd' : ".",
+        'testbed_settings' : True,
+        'testbed_interface' : "wlan0",
+        'ld_library_path' : "/home/mfrey/ara-sim/src/:/home/mfrey/software/rtf/lib:$LD_LIBRARY_PATH"
+    }
+    manager = TestbedExperimentManager(settings)
+#    manager.setup()
+
 #    manager.shutdown("ramssys")
 
