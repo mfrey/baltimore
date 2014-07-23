@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
 import json
+import sqlite3
 
-from pymongo import MongoClient
-from pymongo.errors import PyMongoError
 
 class Database:
     def __init__(self, user, password, database, host, port=27017):
