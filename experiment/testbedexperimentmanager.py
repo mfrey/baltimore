@@ -12,7 +12,7 @@ class TestbedExperimentManager:
     def __init__(self, settings):
         self.nodes = []
         self.port = 4519
-        self.interface = settings['testbed_interface'] 
+        self.interface = settings['testbed_interface']
 
         self.binary = settings['ara_home'] + '/testbed/des-ara.init'
         self.ld_library_path = settings['ld_library_path']
@@ -32,7 +32,7 @@ class TestbedExperimentManager:
         with open(logfile_path, 'w') as logfile:
             call([self.binary, "start"], env=self.environment, cwd=self.cwd, stdout=logfile)
 
-    def shutdown(self): 
+    def shutdown(self):
         call([self.binary, "stop"], env=self.environment, cwd=self.cwd)
 
     def _setup_interfaces(self):
@@ -51,4 +51,3 @@ if __name__ == "__main__":
 #    manager.setup()
 
 #    manager.shutdown("ramssys")
-

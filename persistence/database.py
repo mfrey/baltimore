@@ -17,9 +17,9 @@ class Database:
 #        self.database = self.client[self.database_name]
 #        try:
 #            self.database.authenticate(self.user, self.password)
-#        except PyMongoError: 
+#        except PyMongoError:
 #            print("user and/or password unknown")
- 
+
 #    def close(self):
 #        self.client.close()
 
@@ -46,8 +46,7 @@ class Database:
         result = experiments.find({ "experiments." + scenario : { "$exists": True}, "omnetpp_ini_checksum" : omnetpp_ini_checksum, "standard_ini_checksum" : standard_ini_checksum}).count()
 #DEBUG:        print "experiments.find({ experiments." + scenario + ": { $exists : True},  omnetpp_ini_checksum : " + omnetpp_ini_checksum + ", standard_ini_checksum : " + standard_ini_checksum + "}).count()"
         return result != 0
-      
-if __name__ == "__main__":
-     database = Database("baltimore_admin", "<add password>", "baltimore", "localhost")
-#     database.open()
 
+if __name__ == "__main__":
+    database = Database("baltimore_admin", "<add password>", "baltimore", "localhost")
+#     database.open()

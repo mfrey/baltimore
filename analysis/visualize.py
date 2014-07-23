@@ -5,7 +5,7 @@ import os
 import csv
 import math
 import types
-import random 
+import random
 import logging
 import operator
 
@@ -24,7 +24,7 @@ class Visualize:
     def __init__(self, settings):
         self.csv_location = settings['analysis_location']
         self.logger = logging.getLogger('baltimore.analysis.Visualize')
-        
+
         csv_files = []
         pdr_file = ""
         energy_dead_series_file = ""
@@ -46,41 +46,41 @@ class Visualize:
         for root, _, files in os.walk(self.csv_location):
             for name in files:
                 if name.endswith('csv'):
-                   scenario = name.split("/")[-1].split("_")[0]
-                   if scenario in self.scenarios:
-                       if scenario not in scenario_files:
-                           scenario_files[scenario] = []
-                       scenario_files[scenario].append(os.path.join(root, name))
+                    scenario = name.split("/")[-1].split("_")[0]
+                    if scenario in self.scenarios:
+                        if scenario not in scenario_files:
+                            scenario_files[scenario] = []
+                        scenario_files[scenario].append(os.path.join(root, name))
 
         for scenario in scenario_files:
             self.logger.debug("scanning files for scenario %s", scenario)
             for csv_file in scenario_files[scenario]:
-               if csv_file.endswith("pdr_aggregated.csv"):
-                   pdr_file = csv_file
-               elif csv_file.endswith("energy-dead-series_raw.csv"):
-                   energy_dead_series_files_raw.append(csv_file)
-               elif csv_file.endswith("path-energyraw.csv"):
-                   path_energy_files.append(csv_file)
-               elif csv_file.endswith("energy-dead-series.csv"):
-                   energy_dead_series_file = csv_file
-               elif csv_file.endswith("overhead_bits.csv"):
-                   overhead_files_bits.append(csv_file)
-               elif csv_file.endswith("overhead_packets.csv"):
-                   overhead_files_packets.append(csv_file)
-               elif csv_file.endswith("hopCount.csv"):
-                   hop_count_file = csv_file
-            
+                if csv_file.endswith("pdr_aggregated.csv"):
+                    pdr_file = csv_file
+                elif csv_file.endswith("energy-dead-series_raw.csv"):
+                    energy_dead_series_files_raw.append(csv_file)
+                elif csv_file.endswith("path-energyraw.csv"):
+                    path_energy_files.append(csv_file)
+                elif csv_file.endswith("energy-dead-series.csv"):
+                    energy_dead_series_file = csv_file
+                elif csv_file.endswith("overhead_bits.csv"):
+                    overhead_files_bits.append(csv_file)
+                elif csv_file.endswith("overhead_packets.csv"):
+                    overhead_files_packets.append(csv_file)
+                elif csv_file.endswith("hopCount.csv"):
+                    hop_count_file = csv_file
+
             result = self._get_packet_delivery_rate(scenario, pdr_file)
             pdr[scenario] = result
 
             result = self._visualize_hop_count(scenario, hop_count_file)
             hop_count[scenario] = result[scenario]
 
-#	    self._visualize_eds_raw(scenario, energy_dead_series_files_raw)
+#           self._visualize_eds_raw(scenario, energy_dead_series_files_raw)
 
             result = self._visualize_eds(scenario, energy_dead_series_file)
             eds[scenario] = result
-   
+
 
             energy_dead_series_files_raw = []
 
@@ -119,7 +119,7 @@ class Visualize:
         labels = []
 
         for index, scenario in enumerate(self._sorted(list(data.keys()))):
-            pause_time = self._get_pause_time(scenario) 
+            pause_time = self._get_pause_time(scenario)
 
             if pause_time == -1:
                 pause_time = index
@@ -131,7 +131,7 @@ class Visualize:
         return (x_data, y_data, labels)
 
     def _generate_overall_pdr(self, pdr):
-        file_name = os.path.join(self.csv_location, "overall_avg_pdr.pdf") 
+        file_name = os.path.join(self.csv_location, "overall_avg_pdr.pdf")
         result = self._get_data_new(pdr)
 
         plot = PacketDeliveryRatePlot()
@@ -152,23 +152,23 @@ class Visualize:
 
 
     def _generate_overall_hop_count(self, hop_count):
-		  plot = LinePlot()
-		  file_name = os.path.join(self.csv_location, "overall_avg_hop_count.pdf") 
+        plot = LinePlot()
+        file_name = os.path.join(self.csv_location, "overall_avg_hop_count.pdf")
 
-		  for scenario in sorted(hop_count.keys()):
-			  plot.xlist.append(hop_count[scenario][0])
-			  plot.ylist.append(hop_count[scenario][1])
-			  plot.labels.append(scenario)
+        for scenario in sorted(hop_count.keys()):
+            plot.xlist.append(hop_count[scenario][0])
+            plot.ylist.append(hop_count[scenario][1])
+            plot.labels.append(scenario)
 
-		  plot.title = "Average Hop Count"
-		  plot.xlabel = "Time [s]"
-		  plot.ylabel = "Number of Hops"
-		  plot.yticks = [0, 2, 5, 10, 15, 20]
-		  plot.draw(file_name)
+        plot.title = "Average Hop Count"
+        plot.xlabel = "Time [s]"
+        plot.ylabel = "Number of Hops"
+        plot.yticks = [0, 2, 5, 10, 15, 20]
+        plot.draw(file_name)
 
     def _generate_overall_eds(self, eds, scenario):
         plot = LinePlot()
-        file_name = os.path.join(self.csv_location, "overall_eds_" + scenario + ".pdf") 
+        file_name = os.path.join(self.csv_location, "overall_eds_" + scenario + ".pdf")
 
         for scenario in self._sorted(list(eds.keys())):
             plot.xlist.append(eds[scenario][0][0])
@@ -193,9 +193,9 @@ class Visualize:
         return [row for row in result if len(row) > 1]
 
 
-    def _sorted(self, data): 
-        convert = lambda text: int(text) if text.isdigit() else text 
-        alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ] 
+    def _sorted(self, data):
+        convert = lambda text: int(text) if text.isdigit() else text
+        alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ]
         return sorted(data, key = alphanum_key)
 
 
@@ -222,7 +222,7 @@ class Visualize:
                 hop_count[scenario][repetition] = []
 
             hop_count[scenario][repetition].append(row)
- 
+
         plot = BoxPlot()
         plot.title = "Hop Count"
         plot.ylabel = "Number of Hops"
@@ -245,10 +245,10 @@ class Visualize:
             max_timestamp = max_timestamp_per_scenario[scenario]
             nr_of_bins = int(max_timestamp/bin_size_in_seconds) + 1
 
-            global_bins = {} 
+            global_bins = {}
 
             for repetition in hop_count[scenario]:
-                bins_for_this_repetition = {} 
+                bins_for_this_repetition = {}
 
                 for row in hop_count[scenario][repetition]:
                     node = row[0]
@@ -257,13 +257,13 @@ class Visualize:
                     # get the hop count and add +1 to the corresponding bin
                     # in which interval does the hop count lie?
                     bin_nr = int(math.floor(timestamp/bin_size_in_seconds))
-                    
+
                     if bin_nr not in bins_for_this_repetition:
                         bins_for_this_repetition[bin_nr] = []
                     bins_for_this_repetition[bin_nr].append(value)
 
                 # now save the bins to calculate the average later
-                for bin_nr, value in bins_for_this_repetition.items(): 
+                for bin_nr, value in bins_for_this_repetition.items():
                     if bin_nr not in global_bins:
                         global_bins[bin_nr] = []
                     global_bins[bin_nr].append(value)
@@ -301,7 +301,7 @@ class Visualize:
 
             hop_count_result[scenario] = (xdata, ydata)
 
-        return hop_count_result 
+        return hop_count_result
 
 
     def _visualize_eds(self, experiment, eds_file):
@@ -312,7 +312,7 @@ class Visualize:
         self.logger.debug("parsing scenario %s and energy dead series file: %s", scenario, eds_file)
         result = self._read_csv(eds_file)
 
-        # remove the row containing the description 
+        # remove the row containing the description
         result.pop(0)
 
         xlist = []
@@ -340,7 +340,7 @@ class Visualize:
         plot.xlist.append(xlist)
         # set the values of the y-axis
         plot.ylist.append(ylist)
-        
+
         plot.title = "Energy Dead Series (Average)"
         plot.xlabel = "Time [s]"
         plot.ylabel = "Average Number of Dead Nodes"
@@ -357,12 +357,12 @@ class Visualize:
         nr_of_bins = 0
 
         max_timestamp_per_scenario = {}
- 
+
         for eds_file in eds_files:
             scenario = eds_file.split("/")[-1].split("_")[0]
             result = self._read_csv(eds_file)
 
-            # remove the row containing the description 
+            # remove the row containing the description
             result.pop(0)
 
             max_timestamp_per_scenario[scenario] = np.amax([float(element[2]) for element in result])
@@ -383,7 +383,7 @@ class Visualize:
         plot.ylabel = "Time [s]"
         plot.xlabel = [[scenario] for scenario in self._sorted(list(energy_dead_series.keys()))]
         data = []
-        # generate box plot        
+        # generate box plot
         for scenario in self._sorted(list(energy_dead_series.keys())):
             scenario_data = []
             for repetition in energy_dead_series[scenario]:
@@ -395,19 +395,19 @@ class Visualize:
         file_name = os.path.join(self.csv_location, experiment +  "energy_dead_series_boxplot.pdf")
         plot.draw(data, file_name)
 
-        # generate bar chart        
+        # generate bar chart
         for scenario in energy_dead_series:
             repetitions = len(energy_dead_series[scenario])
             max_timestamp = max_timestamp_per_scenario[scenario]
             nr_of_bins = int(max_timestamp/bin_size_in_seconds) + 1
-            
+
             self.logger.debug("number of bins: %d (for scenario %s)", nr_of_bins, scenario)
 
-            # create all bins and initialize with zero and each bin is a list of dead notes per repetition 
-            global_bins = { key : [] for key in range(0, nr_of_bins) } 
+            # create all bins and initialize with zero and each bin is a list of dead notes per repetition
+            global_bins = { key : [] for key in range(0, nr_of_bins) }
 
             for repetition in energy_dead_series[scenario]:
-                bins_for_this_repetition = { key : 0 for key in range(0, nr_of_bins) } 
+                bins_for_this_repetition = { key : 0 for key in range(0, nr_of_bins) }
 
                 for row in energy_dead_series[scenario][repetition]:
                     node = row[1]
@@ -418,7 +418,7 @@ class Visualize:
                     bins_for_this_repetition[bin_nr] += 1
 
                 # now save the bins to calculate the average later
-                for bin_nr, value in bins_for_this_repetition.items(): 
+                for bin_nr, value in bins_for_this_repetition.items():
                     global_bins[bin_nr].append(value)
 
             eds = {}
@@ -434,8 +434,8 @@ class Visualize:
 
             self._plot_energy_dead_series(scenario, eds, bin_size_in_seconds)
             # reset the global bin
-            global_bins = { key : [] for key in range(0, nr_of_bins-1) } 
-        
+            global_bins = { key : [] for key in range(0, nr_of_bins-1) }
+
 
     def _plot_energy_dead_series(self, scenario, energy_dead_series, bin_size_in_seconds):
         xdata = []
@@ -444,7 +444,7 @@ class Visualize:
         for bin_nr, value in energy_dead_series.items():
             xdata.append(bin_nr * bin_size_in_seconds)
             ydata.append(value)
- 
+
         ydata = np.cumsum(ydata)
 
         plot = BarChart()
@@ -454,7 +454,7 @@ class Visualize:
         plot.bar_widths = -1
         file_name = os.path.join(self.csv_location, scenario +  "_energy_dead_series.pdf")
         plot.draw(xdata, ydata, file_name)
-     
+
 
     def _visualize_overhead(self, files, version):
         overhead = {}
@@ -466,7 +466,7 @@ class Visualize:
             print(result)
             overhead[scenario] = float(result[1][4])
 
-        result = self._get_data_new(overhead) 
+        result = self._get_data_new(overhead)
 
         plot = LinePlot()
         plot.title = "Routing Overhead (" + version + ")"
@@ -496,14 +496,14 @@ class Visualize:
 
         if type(keys) is dict:
             for scenario in keys:
-                 pause_times = sorted(data[scenario].keys())
-                 xdata.append(pause_times)
-                 ydata_temp = []
+                pause_times = sorted(data[scenario].keys())
+                xdata.append(pause_times)
+                ydata_temp = []
 
-                 for pause_time in pause_times:
-                      ydata_temp.append(data[scenario][pause_time])
+                for pause_time in pause_times:
+                    ydata_temp.append(data[scenario][pause_time])
 
-                 ydata.append(ydata_temp)
+                ydata.append(ydata_temp)
         else:
             xdata = []
             ydata = keys
@@ -513,7 +513,7 @@ class Visualize:
 
     def _get_keys(self, keys, results):
         """ The method returns a dictionary containing scenarios and the corresponding values.
-       
+
         """
 
         data = {}
@@ -528,11 +528,11 @@ class Visualize:
 
             self.logger.debug("parsing data for algorithm %s, pause time %s and option %s", algorithm, pause_time, option)
 
-            key = algorithm + option 
+            key = algorithm + option
 
             if key not in data:
-               data[key] = {}
-            
+                data[key] = {}
+
             if pause_time not in data[key]:
                 data[key][pause_time] = 0
 
@@ -562,7 +562,7 @@ class Visualize:
 
                 if node not in path_energy[scenario]:
                     path_energy[scenario][node] = []
- 
+
                 # the entry follows the format: timestamp, path energy
                 path_energy[scenario][node].append((timestamp, energy))
 
@@ -641,9 +641,9 @@ class Visualize:
         """
         Tmax = 6000
 
-        # timestamps 
+        # timestamps
         timestamps = [float(pair[0]) for pair in data]
-        # path energy values 
+        # path energy values
         path_energy = [float(pair[1]) for pair in data]
 
         bw = smoothing_width
@@ -679,5 +679,5 @@ class Visualize:
 
         The method ...
 
-        """  
+        """
         return .5

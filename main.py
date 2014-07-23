@@ -32,7 +32,7 @@ def main():
     parser.add_argument('-p', '--plot', dest='plot', default=False, const=True, action='store_const', help="draw graphs")
     parser.add_argument('-e', '--evaluate', dest='evaluate', default=False, const=True, action='store_const', help="evaluate results")
     parser.add_argument('-o', '--analyze-other-protocol', dest='analyze_other_protocol', default=False, const=True, action='store_const', help="Run analysis for other MANET routing protocol (like results for AODV, DSR or DSDV)")
-    
+
     arguments = parser.parse_args()
 
     configuration = get_configuration(arguments)
@@ -60,7 +60,7 @@ def main():
             Visualize(configuration.settings)
     else:
         print("at present you can't run testbed and simulation experiments at the same time")
-    
+
 
 def check_matplotlibrc_support(configuration):
     if configuration['analysis_matplotlib'] != "":

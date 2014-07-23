@@ -33,7 +33,7 @@ class Analysis:
         plot.xlabel = x_label
         plot.ylabel = y_label
         plot.draw(data, os.path.join(self.location, self.scenario + "_" + self.metric + ".png"))
-    
+
     def plot_barchart(self, title, x_label, y_label, x_data, y_data, bar_widths=-1):
         plot = BarChart()
         plot.title = title
@@ -41,11 +41,11 @@ class Analysis:
         plot.ylabel = y_label
         plot.bar_widths = bar_widths
         plot.draw(x_data, y_data, os.path.join(self.location, self.scenario + "_" + self.metric + ".png"))
-        
+
     def __getstate__(self):
         d = dict(self.__dict__)
         del d['logger']
-        return d        
+        return d
 
     def __setstate__(self, d):
         self.__dict__.update(d)

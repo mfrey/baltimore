@@ -35,12 +35,12 @@ class ExperimentManager:
         for experiment in configuration['experiments']:
             scenarios = experiment[0]
             self.logger.debug("scenarios " + str(scenarios))
-            
+
             location = experiment[1]
             configuration['repetitions'] = experiment[2]
-            configuration['ned_path'] = ned_path_raw + configuration['ara_home'] + '/simulations/' + location 
+            configuration['ned_path'] = ned_path_raw + configuration['ara_home'] + '/simulations/' + location
             configuration['omnetpp_ini'] = omnetpp_ini_raw + location + '/omnetpp.ini'
-            
+
             # build up a tuple consisting of scenarios and repetitions
             argument = itertools.product(scenarios, list(range(experiment[2])), [configuration], [location])
             # run the simulations
@@ -52,7 +52,7 @@ class ExperimentManager:
 
         if os.path.exists(directory + '/omnetpp.ini'):
             self.read_omnetppini(directory + '/omnetpp.ini', is_verbose)
-            
+
             if is_verbose:
                 self._print_general_settings(self.omnetpp_ini.get_section('General'))
 
@@ -138,7 +138,7 @@ class ExperimentManager:
     def __getstate__(self):
         d = dict(self.__dict__)
         del d['logger']
-        return d        
+        return d
 
     def __setstate__(self, d):
         self.__dict__.update(d)

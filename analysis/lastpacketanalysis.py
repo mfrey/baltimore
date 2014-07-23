@@ -31,8 +31,8 @@ class LastPacketAnalysis(Analysis):
 
         # todo fix that
         for repetition in experiment_results.repetitions:
-           if repetition not in self.raw_data:
-               raw_data[repetition] = experiment_results.get_metric("timeOfLastReceivedPacket", repetition)
+            if repetition not in self.raw_data:
+                raw_data[repetition] = experiment_results.get_metric("timeOfLastReceivedPacket", repetition)
 
         data = [element for element in raw_data if element != 0]
 

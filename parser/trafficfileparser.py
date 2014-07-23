@@ -2,7 +2,7 @@
 
 from lxml import etree
 
-class TrafficFileParser: 
+class TrafficFileParser:
 
     def get_traffic_settings(self, file_name, traffic_id):
         search_expression = "//config/[@id='" + str(traffic_id) + "']"
@@ -10,6 +10,6 @@ class TrafficFileParser:
         result = document.findall(search_expression)
 
         if len(result) == 1:
-           return result[0].attrib
-       
+            return result[0].attrib
+
         return {}

@@ -55,10 +55,10 @@ if __name__ == "__main__":
         for row in reader:
             row = [a for a in row if a != '']
             result.append(row)
-    
+
     result.pop(0)
     plot.labels = ['1.0', '0.5', '0.25']
-    xlist = [float(row[0]) for row in result] 
+    xlist = [float(row[0]) for row in result]
 
     for i in range(3):
         plot.xlist.append(xlist)

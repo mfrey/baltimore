@@ -8,7 +8,7 @@ from configparser import ConfigParser
 class OMNeTConfigurationFileParser:
     def __init__(self, file_name):
         self.omnetpp_ini_file = ConfigParser(allow_no_value=True)
-        self.omnetpp_ini_hash = hashlib.sha512(file_name).hexdigest()
+        self.omnetpp_ini_hash = hashlib.sha512(file_name.encode(encoding='UTF-8',errors='strict')).hexdigest()
         self.standard_ini_hash = "0"
         self.omnetpp_ini_file.read(file_name)
         self.file_name = file_name
@@ -35,7 +35,7 @@ class OMNeTConfigurationFileParser:
 
     def _parse_include_file(self, file_name):
         parser = ConfigParser()
-        self.standard_ini_hash = hashlib.sha512(file_name).hexdigest()
+        self.standard_ini_hash = hashlib.sha512(file_name.encode(encoding='UTF-8',errors='strict')).hexdigest()
         parser.read(file_name)
         return parser
 

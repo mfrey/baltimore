@@ -22,7 +22,7 @@ class HopCountAnalysis(Analysis):
     def evaluate(self, experiment_results, is_verbose=False):
         self.logger.info("running hop count analysis")
 
-        hop_count = {} 
+        hop_count = {}
         raw_data = []
 
         for repetition in experiment_results:
@@ -56,7 +56,7 @@ class HopCountAnalysis(Analysis):
             self.logger.info("Std.Deviation     = %f nodes", self.data_std[node])
             self.logger.info("Average hop count = %f nodes", self.data_avg[node])
             self.logger.info("Median hop count  = %f nodes", self.data_median[node])
-        if self.draw:            
+        if self.draw:
             for node in hop_count:
                 self.metric = "hop_count_node-" + str(node)
                 self.plot_boxplot("Average Hop Count (Node " + str(node) + ")", "Repetition", "Hop Count [ms]", self.data_avg[node])
@@ -90,5 +90,5 @@ class HopCountAnalysis(Analysis):
             for values in hop_counts:
                 for element in values:
                     data.append([node, element[0], element[2], element[3]])
-              
+
         self._write_csv_file(file_name, disclaimer, header, data)

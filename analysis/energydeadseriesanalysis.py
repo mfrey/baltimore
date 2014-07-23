@@ -13,7 +13,7 @@ class EnergyDeadSeriesAnalysis(Analysis):
 
         self.logger = logging.getLogger('baltimore.analysis.EnergyDeadSeriesAnalysis')
         self.logger.debug('creating an instance of EnergyDeadSeriesAnalysis for scenario %s', scenario)
-        
+
         self.energy_dead_series = {}
         self.bin_size_in_seconds = 10
 
@@ -22,7 +22,7 @@ class EnergyDeadSeriesAnalysis(Analysis):
         self.logger.info("running energy dead series analysis")
 
         data = []
-        
+
         for repetition in experiment_results:
             nodes = experiment_results.nodes_have_metric("nodeEnergyDepletionTimestamp", repetition)
 
@@ -35,16 +35,16 @@ class EnergyDeadSeriesAnalysis(Analysis):
         self.nr_of_bins = int(self.max_time_stamp_value / self.bin_size_in_seconds) + 1
 
         repetitions = len(experiment_results.repetitions)
-        # create all bins and initialize with zero and each bin is a list of dead notes per repetition 
-        global_bins = { key : [] for key in range(0, self.nr_of_bins) } 
+        # create all bins and initialize with zero and each bin is a list of dead notes per repetition
+        global_bins = { key : [] for key in range(0, self.nr_of_bins) }
 
         data = []
         avg_timestamps = []
         median_timestamps = []
         for repetition in experiment_results:
             nodes = experiment_results.nodes_have_metric("nodeEnergyDepletionTimestamp", repetition)
-            bins_for_this_repetition = { key : 0 for key in range(0, self.nr_of_bins) } 
-            
+            bins_for_this_repetition = { key : 0 for key in range(0, self.nr_of_bins) }
+
             timestamps_of_repetition = []
             for node in nodes:
                 # get the timestamp and add +1 to the corresponding bin
@@ -54,11 +54,11 @@ class EnergyDeadSeriesAnalysis(Analysis):
                 # in which interval does the timestamp lie?
                 bin_nr = int(math.floor(timestamp / self.bin_size_in_seconds))
                 bins_for_this_repetition[bin_nr] += 1
-                
+
             # now save the bins to calculate the average later
-            for bin_nr, value in list(bins_for_this_repetition.items()): 
+            for bin_nr, value in list(bins_for_this_repetition.items()):
                 global_bins[bin_nr].append(value)
-           
+
             # save the average and median for the energy depletion timestamp
             avg_timestamps.append(np.average(timestamps_of_repetition))
             median_timestamps.append(np.median(timestamps_of_repetition))
@@ -76,23 +76,23 @@ class EnergyDeadSeriesAnalysis(Analysis):
         median_depletion_timestamp = np.average(median_timestamps)
         self.logger.info("Average depletion timestamp: %f", avg_depletion_timestamp)
         self.logger.info("Median depletion timestamp : %f", median_depletion_timestamp)
-            
+
         if self.draw:
             self._createplot()
 
         if self.csv:
             self.export_csv_raw(data)
             self.export_csv()
-            
-        
+
+
     def _create_plot(self):
         xdata = []
         ydata = []
-        
+
         for bin_nr, value in list(self.energy_dead_series.items()):
             xdata.append(bin_nr * self.bin_size_in_seconds)
             ydata.append(value)
- 
+
         ydata = np.cumsum(ydata)
         self.plot_barchart("Energy Dead Series", "Time [s]", "Dead Nodes", xdata, ydata)
 
@@ -119,4 +119,3 @@ class EnergyDeadSeriesAnalysis(Analysis):
         header = ['repetition', 'node', 'timestamp']
 
         self._write_csv_file(file_name, disclaimer, header, data)
-

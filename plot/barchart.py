@@ -16,7 +16,7 @@ class BarChart:
 
     def draw(self, xdata, ydata, filename):
         figure = plt.figure()
-        
+
         if self.bar_widths > 0:
             plt.bar(xdata, ydata, self.bar_widths)
         else:

@@ -44,7 +44,7 @@ class ExperimentManagerWorker(multiprocessing.Process):
 
         try:
             self.logger.info('[%d] Scanning directory "%s" for simulation result files. This may take some time depending on the number of files...' %  (pid, self.simulations_directory))
-            
+
             experiment = Experiment(self.simulations_directory + '/results', self.scenario_name, self.visualize, self.routing_table_trace, self.location)
             experiment_results = experiment.get_results()
             repetitions = experiment_results.get_number_of_repetitions()
@@ -88,7 +88,7 @@ class ExperimentManagerWorker(multiprocessing.Process):
                 energyDeadSeriesAnalyser = EnergyDeadSeriesAnalysis(self.scenario_name, self.location, repetitions, self.csv)
                 energyDeadSeriesAnalyser.draw = self.draw
                 energyDeadSeriesAnalyser.evaluate(experiment_results, self.verbose)
-                
+
                 # fix it with the last packet analyser date
                 residualEnergyAnalyser = ResidualEnergyAnalysis(self.scenario_name, self.location, lastPacketAnalyser.data_max, repetitions, self.csv)
                 residualEnergyAnalyser.draw = self.draw

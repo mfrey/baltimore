@@ -22,7 +22,7 @@ class DelayAnalysis(Analysis):
     def evaluate(self, experiment_results, is_verbose=False):
         self.logger.info("running delay analysis")
 
-        delay = {} 
+        delay = {}
 
         for repetition in experiment_results:
             nodes = experiment_results.nodes_have_metric("delay", repetition)
@@ -51,7 +51,7 @@ class DelayAnalysis(Analysis):
             self.logger.info("Std.Deviation = %f seconds", avg_stdDev)
             self.logger.info("Average delay = %f seconds", avg_average)
             self.logger.info("Median delay  = %f seconds", avg_median)
-        if self.draw:            
+        if self.draw:
             for node in delay:
                 self.metric = "delay_node-" + str(node)
             # make a plot over all repetitions (per node)
@@ -94,6 +94,6 @@ class DelayAnalysis(Analysis):
         for node, delays  in list(raw_data.items()):
             for repetition, values in enumerate(delays):
                 for element in values:
-	                data.append([node, repetition, element])
-              
+                    data.append([node, repetition, element])
+
         self._write_csv_file(file_name, disclaimer, header, data)

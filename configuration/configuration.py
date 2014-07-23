@@ -52,7 +52,7 @@ class Configuration(object):
         if port != '':
             self.settings['database_port'] = int(port)
         else:
-           port = -1
+            port = -1
 
         self.settings['database_db'] = self._get('Database', 'database')
         self.settings['database_user'] = self._get('Database', 'user')
@@ -76,28 +76,28 @@ class Configuration(object):
 
     def _get(self, section, option):
         try:
-           result = self.parser.get(section, option)
+            result = self.parser.get(section, option)
         except NoOptionError:
-           self.logger.debug("no such option %s in section %s", option, section)
-           result = ""
-        except NoSectionError: 
-           result = ""
-           self.settings[section.lower() + "_settings"] = False
-           self.logger.debug("no such section %s", section)
+            self.logger.debug("no such option %s in section %s", option, section)
+            result = ""
+        except NoSectionError:
+            result = ""
+            self.settings[section.lower() + "_settings"] = False
+            self.logger.debug("no such section %s", section)
 
         return result
 
 
     def _get_boolean_option(self, section, option):
         try:
-           result = self.parser.getboolean(section, option)
+            result = self.parser.getboolean(section, option)
         except NoOptionError:
-           self.logger.debug("no such option %s in section %s", option, section)
-           result = False
-        except NoSectionError: 
-           result = False
-           self.settings[section.lower() + "_settings"] = False
-           self.logger.debug("no such section %s", section)
+            self.logger.debug("no such option %s in section %s", option, section)
+            result = False
+        except NoSectionError:
+            result = False
+            self.settings[section.lower() + "_settings"] = False
+            self.logger.debug("no such section %s", section)
 
         return result
 
@@ -121,7 +121,7 @@ class Configuration(object):
                 return wanted_cores
 
     def _build_ned_path(self):
-        self.settings['ned_path'] =  self.settings['ara_home'] + '/inetmanet/src:' + self.settings['ara_home'] + '/inetmanet/examples:' + self.settings['ara_home'] + '/omnetpp:' 
+        self.settings['ned_path'] =  self.settings['ara_home'] + '/inetmanet/src:' + self.settings['ara_home'] + '/inetmanet/examples:' + self.settings['ara_home'] + '/omnetpp:'
 
     def _build_omnetpp_ini_path(self):
         self.settings['omnetpp_ini'] = self.settings['ara_home'] + '/simulations/'
@@ -130,7 +130,7 @@ class Configuration(object):
         self.settings['ld_library_path'] = "$LD_LIBRARY_PATH:" + self.settings['ara_home'] + '/src:' + self.settings['ara_home'] + '/inetmanet/src:' + self.settings['omnetpp_home'] + '/lib'
 
     def _build_cwd(self):
-        self.settings['cwd'] = self.settings['ara_home'] + '/simulations/' 
+        self.settings['cwd'] = self.settings['ara_home'] + '/simulations/'
 
     def _build_scenarios(self, scenarios):
         return [scenario.strip() for scenario in scenarios.split(',')]

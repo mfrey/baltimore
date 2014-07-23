@@ -38,7 +38,7 @@ class PacketDeliveryRateAnalysis(Analysis):
             nr_of_sent_packets = results.get_metric('trafficSent', repetition) - results.get_metric('packetUnDeliverable:count', repetition)
             if nr_of_sent_packets == 0:
                 raise Exception("WARNING: All packets in repetition "+str(repetition)+" have been reported as undeliverable (very unlucky start scenario?)")
-            
+
             pdr = results.get_metric('trafficReceived', repetition)/nr_of_sent_packets
             pdr = round(pdr*100, 2)
             self.all_pdr.append(pdr)
@@ -58,7 +58,7 @@ class PacketDeliveryRateAnalysis(Analysis):
         self.pdr = self.data_avg
 
     def check_no_inexplicable_loss(self, result):
-        for repetition in result:            
+        for repetition in result:
             try:
                 inexplicable_loss  = result.get_metric('trafficSent', repetition) - result.get_metric('trafficReceived', repetition)
                 inexplicable_loss -= result.get_metric('routingLoopDetected:count', repetition)
@@ -92,7 +92,7 @@ class PacketDeliveryRateAnalysis(Analysis):
 
         print("Average number of route discoveries: %d" % results.get_average('newRouteDiscovery:count'))
         print("Average number of packets droped due to failed route discovery: %d (%s%%)\n" % (nr_of_undeliverables, self._get_percent_string(nr_of_undeliverables, total_nr_of_packets)))
-        
+
 
     def _print_avg_statistics_line(self, name, metric_name, results, nr_of_sent_packets):
         nr_of_digits = self.get_max_nr_of_digits(nr_of_sent_packets)
@@ -159,4 +159,3 @@ class PacketDeliveryRateAnalysis(Analysis):
             data.append([repetition, pdr])
 
         self._write_csv_file(file_name, disclaimer, header, data)
-

@@ -29,15 +29,15 @@ class OverheadAnalysis(Analysis):
     # add support for bitwise overhead (and not only packetwise)
     def _compute_overhead(self, results):
         for repetition in results:
-           data_packets = results.get_metric('nrOfDataPackets', repetition)
-           control_packets = results.get_metric('nrOfControlPackets', repetition)
-           all_packets = data_packets + control_packets
-           self.packet_overhead.append(control_packets/all_packets)
+            data_packets = results.get_metric('nrOfDataPackets', repetition)
+            control_packets = results.get_metric('nrOfControlPackets', repetition)
+            all_packets = data_packets + control_packets
+            self.packet_overhead.append(control_packets/all_packets)
 
-           nr_of_data_bits = results.get_metric('nrOfSentDataBits', repetition)
-           nr_of_control_bits = results.get_metric('nrOfSentControlBits', repetition)
-           nr_of_all_bits = nr_of_data_bits + nr_of_control_bits
-           self.bit_overhead.append(nr_of_control_bits/nr_of_all_bits)
+            nr_of_data_bits = results.get_metric('nrOfSentDataBits', repetition)
+            nr_of_control_bits = results.get_metric('nrOfSentControlBits', repetition)
+            nr_of_all_bits = nr_of_data_bits + nr_of_control_bits
+            self.bit_overhead.append(nr_of_control_bits/nr_of_all_bits)
 
     def _get_overhead(self, results):
         if len(self.packet_overhead) == 0:
@@ -48,9 +48,9 @@ class OverheadAnalysis(Analysis):
         self.packet_statistics['Med'] = round(np.median(self.packet_overhead)*100, 2)
         self.packet_statistics['Std'] = round(np.std(self.packet_overhead)*100, 2)
         self.packet_statistics['Avg'] = round(np.average(self.packet_overhead)*100, 2)
-	self.packet_statistics['low'] = round(stats.scoreatpercentile(self.packet_overhead, 5)*100, 2)
+        self.packet_statistics['low'] = round(stats.scoreatpercentile(self.packet_overhead, 5)*100, 2)
         self.packet_statistics['hig'] = round(stats.scoreatpercentile(self.packet_overhead, 95)*100, 2)
-        
+
         self.bit_statistics['Min'] = round(np.amin(self.bit_overhead)*100, 6)
         self.bit_statistics['Max'] = round(np.amax(self.bit_overhead)*100, 6)
         self.bit_statistics['Med'] = round(np.median(self.bit_overhead)*100, 6)
@@ -100,9 +100,9 @@ class OverheadAnalysis(Analysis):
 
     def export_csv(self):
         file_name = self.scenario + "_" + self.metric + "_packets.csv"
-	disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - overhead (packets) for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
-	header = ['min', 'max', 'median', 'std', 'avg', 'low', 'high']
-	data = [[self.packet_statistics['Min'], self.packet_statistics['Max'], self.packet_statistics['Med'], self.packet_statistics['Std'], self.packet_statistics['Avg'], self.packet_statistics['low'], self.packet_statistics['hig']]]
+        disclaimer = [['#'],['#'], ['# ' + str(self.date) + ' - overhead (packets) for scenario ' + self.scenario],['# aggregated over ' + str(self.repetitions) + ' repetitions'],['#']]
+        header = ['min', 'max', 'median', 'std', 'avg', 'low', 'high']
+        data = [[self.packet_statistics['Min'], self.packet_statistics['Max'], self.packet_statistics['Med'], self.packet_statistics['Std'], self.packet_statistics['Avg'], self.packet_statistics['low'], self.packet_statistics['hig']]]
         self._write_csv_file(file_name, disclaimer, header, data)
 
         # Write bit overhead to csv
@@ -111,4 +111,3 @@ class OverheadAnalysis(Analysis):
         header = ['minimum', 'maximum', 'median', 'deviation', 'average', 'low', 'high']
         data = [[self.bit_statistics['Min'], self.bit_statistics['Max'], self.bit_statistics['Med'], self.bit_statistics['Std'], self.bit_statistics['Avg'], self.bit_statistics['low'], self.bit_statistics['hig']]]
         self._write_csv_file(file_name, disclaimer, header, data)
-
