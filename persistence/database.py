@@ -12,16 +12,16 @@ class Database:
         self.host = host
         self.port = port
 
-    def open(self):
-        self.client = MongoClient(self.host, self.port)
-        self.database = self.client[self.database_name]
-        try:
-            self.database.authenticate(self.user, self.password)
-        except PyMongoError: 
-            print("user and/or password unknown")
+#    def open(self):
+#        self.client = MongoClient(self.host, self.port)
+#        self.database = self.client[self.database_name]
+#        try:
+#            self.database.authenticate(self.user, self.password)
+#        except PyMongoError: 
+#            print("user and/or password unknown")
  
-    def close(self):
-        self.client.close()
+#    def close(self):
+#        self.client.close()
 
     def add_experiment(self, experiment_manager):
         omnetpp_ini_checksum = experiment_manager.omnetpp_ini_checksum
@@ -39,7 +39,7 @@ class Database:
 
         if len(experiment_manager.experiments) > 0:
             data = json.loads(experiment_manager.create_json())
-            self.database['experiments'].insert(data)
+#            self.database['experiments'].insert(data)
 
     def experiment_exists(self, scenario, omnetpp_ini_checksum, standard_ini_checksum):
         experiments = self.database['experiments']
@@ -49,5 +49,5 @@ class Database:
       
 if __name__ == "__main__":
      database = Database("baltimore_admin", "<add password>", "baltimore", "localhost")
-     database.open()
+#     database.open()
 
