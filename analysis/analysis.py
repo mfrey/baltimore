@@ -64,7 +64,7 @@ class Analysis:
             return "  0.00%%"
 
     def _write_csv_file(self, file_name, disclaimer, header, data):
-        with open(os.path.join(self.location, file_name), "wb") as csvfile:
+        with open(os.path.join(self.location, file_name), "wt", encoding='UTF8') as csvfile:
             writer = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
             for line in disclaimer:
