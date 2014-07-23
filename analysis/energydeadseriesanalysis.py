@@ -3,6 +3,8 @@
 import sys
 import math
 import logging
+import operator
+import functools
 import numpy as np
 
 from .analysis import Analysis
@@ -20,8 +22,7 @@ class EnergyDeadSeriesAnalysis(Analysis):
 
     def evaluate(self, experiment_results, is_verbose=False):
         self.logger.info("running energy dead series analysis")
-
-        data = []
+        data = [[]]
 
         for repetition in experiment_results:
             nodes = experiment_results.nodes_have_metric("nodeEnergyDepletionTimestamp", repetition)
@@ -31,6 +32,11 @@ class EnergyDeadSeriesAnalysis(Analysis):
                 timestamp = experiment_results.repetitions[repetition].get_node_results()[node]["nodeEnergyDepletionTimestamp"]
                 data.append([repetition, node, timestamp])
 
+        if len(functools.reduce(operator.add, data)) != 0:
+            self._evaluate(experiment_results, data, is_verbose) 
+
+
+    def _evaluate(self, experiment_results, data, is_verbose=False):
         self.max_time_stamp_value = np.amax([element[2] for element in data])
         self.nr_of_bins = int(self.max_time_stamp_value / self.bin_size_in_seconds) + 1
 
