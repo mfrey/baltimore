@@ -13,7 +13,6 @@ Installation from git
 		networkx
 		numpy
 		nose	
-		pymongo (>= 2.4)
 		scipy
 
 3. Run the program
