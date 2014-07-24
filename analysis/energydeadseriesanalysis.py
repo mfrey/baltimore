@@ -33,6 +33,7 @@ class EnergyDeadSeriesAnalysis(Analysis):
                 data.append([repetition, node, timestamp])
 
         if len(functools.reduce(operator.add, data)) != 0:
+            data = [triple for triple in data if len(triple) > 2]
             self._evaluate(experiment_results, data, is_verbose) 
 
 
