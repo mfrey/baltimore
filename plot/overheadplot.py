@@ -6,36 +6,41 @@ import csv
 import numpy as np
 import matplotlib.pyplot as plt
 
+import json
+import requests
+import matplotlib
+
 class OverheadPlot:
     def __init__(self):
-        self.title = "Overhead $\mu$ and $\pm \sigma$ interval"
+        self.title = "Overhead ($\mu$ and $\pm \sigma$ interval)"
         self.ylabel = "Packets [%]"
         self.xlabel = "Pause Time [s]"
         self.xlist = []
         self.mu = []
         self.sigma = []
         #self.yticks = [2, 3, 4, 6, 7, 8, 9, 10, 12, 15]
-        self.yticks = [0.2, 0.3, 0.4, 0.6, 0.7, 0.8, 0.9, 1.0]
+        #self.yticks = [0.2, 0.3, 0.4, 0.6, 0.7, 0.8, 0.9, 1.0]
+        self.yticks = [2, 3, 4, 6, 7, 8, 9, 10]
         self.labels = []
         self.markers = ['s','^','v','2','*','3','d']
         self.legend_location = 4
 
     def draw(self, filename):
         figure, axis = plt.subplots(1)
-        axis.plot(self.xlist, self.mu, lw=2, label='ARA', color='blue')
+        axis.plot(self.xlist, self.mu, lw=2, label='ARA', color='#348ABD')
  #       axis.plot(t, mu1, lw=2, label='mean population 2', color='yellow')
-        axis.fill_between(self.xlist, self.mu + self.sigma, self.mu - self.sigma, facecolor='blue', alpha=0.5)
+        #axis.fill_between(self.xlist, self.mu + self.sigma, self.mu - self.sigma, facecolor='blue', alpha=0.5)
+        axis.fill_between(self.xlist, [i + j for i, j in zip(self.mu, self.sigma)], [i - j for i, j in zip(self.mu, self.sigma)], facecolor='#348ABD', alpha=0.5)
 #        axis.fill_between(t, mu2+sigma2, mu2-sigma2, facecolor='yellow', alpha=0.5)
         axis.set_title(self.title)
         axis.legend(loc=self.legend_location)
         axis.set_xlabel(self.xlabel)
         axis.set_ylabel(self.ylabel)
         axis.grid()
-        axis.savefig(filename)
-        axis.close()
+        figure.savefig(filename)
 
 if __name__ == "__main__":
-    csv_location = '/home/frey/Desktop/Projekte/remote/jupiter/Desktop/TechReport' 
+    csv_location = '/home/michael/Desktop/Projekte/remote/jupiter/Desktop/TechReport' 
 
     overhead = {}
     scenarios = ['ARA0', 'ARA100', 'ARA300', 'ARA500', 'ARA700', 'ARA900', 'ARA1000'] 
@@ -60,12 +65,15 @@ if __name__ == "__main__":
 
                     for row in reader:
                         if len(row) > 1:
-                            overhead[scenario].append(float(row[1]))
+                            overhead[scenario].append(float(row[1]) * 100)
 
 #                print(overhead[scenario])
 #                print("                ")
 
 #    print(overhead)
+    s = requests.get("https://raw.github.com/CamDavidsonPilon/Probabilistic-Programming-and-Bayesian-Methods-for-Hackers/master/styles/bmh_matplotlibrc.json").json()
+    matplotlib.rcParams.update(s)
+
 
     plot = OverheadPlot()
     plot.xlist = [0, 100, 300, 500, 700, 900, 1000]
