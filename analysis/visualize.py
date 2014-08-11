@@ -110,9 +110,6 @@ class Visualize:
         self._generate_overall_eds(eara, "EARA_ALT")
 
 
-    def _generate_overhead(self, files, version):
-        self._visualize_overhead(files, version)
-
     def _get_data_new(self, data):
         x_data = []
         y_data = []
@@ -456,7 +453,7 @@ class Visualize:
         plot.draw(xdata, ydata, file_name)
 
 
-    def _visualize_overhead(self, files, version):
+    def _generate_overhead(self, files, version):
         overhead = {}
         version = version.lower()
 
