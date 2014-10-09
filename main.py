@@ -2,6 +2,7 @@
 
 import os
 from os import path
+import sys
 import logging
 import argparse
 
@@ -32,6 +33,10 @@ def main():
     parser.add_argument('-p', '--plot', dest='plot', default=False, const=True, action='store_const', help="draw graphs")
     parser.add_argument('-e', '--evaluate', dest='evaluate', default=False, const=True, action='store_const', help="evaluate results")
     parser.add_argument('-o', '--analyze-other-protocol', dest='analyze_other_protocol', default=False, const=True, action='store_const', help="Run analysis for other MANET routing protocol (like results for AODV, DSR or DSDV)")
+
+    if len(sys.argv) == 1:
+        parser.print_help()
+        sys.exit(1)
 
     arguments = parser.parse_args()
 
