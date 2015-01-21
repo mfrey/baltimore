@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.2
 
 import os
 from os import path
@@ -13,6 +13,7 @@ from persistence.database import Database
 from experiment.git import Git
 from configuration.configuration import Configuration
 from experiment.experimentmanager import ExperimentManager
+from experiment.testbedexperimentmanager import TestbedExperimentManager
 from analysis.visualize import Visualize
 
 def main():
@@ -32,7 +33,7 @@ def main():
     parser.add_argument('-t', '--testbed', dest='testbed', default=False, const=True, action='store_const', help="run a testbed experiment")
     parser.add_argument('-p', '--plot', dest='plot', default=False, const=True, action='store_const', help="draw graphs")
     parser.add_argument('-e', '--evaluate', dest='evaluate', default=False, const=True, action='store_const', help="evaluate results")
-    parser.add_argument('-o', '--analyze-other-protocol', dest='analyze_other_protocol', default=False, const=True, action='store_const', help="Run analysis for other MANET routing protocol (like results for AODV, DSR or DSDV)")
+    parser.add_argument('-o', '--analyze-other-protocol', dest='analyze_other_protocol', default=False, const=True, action='store_const', help="run analysis for other MANET routing protocol (like results for AODV, DSR or DSDV)")
 
     if len(sys.argv) == 1:
         parser.print_help()
@@ -54,7 +55,8 @@ def main():
         evaluate_simulation(configuration.settings, experiment_manager, arguments)
 
     elif arguments.run == False and arguments.testbed == True:
-        run_testbed(configuration)
+        experiment_manager = TestbedExperimentManager(baltimore_revision, libara_revision)
+        run_testbed(configuration.settings, experiment_manager)
 
     elif arguments.run == False and arguments.testbed == False:
         if arguments.evaluate == True:
@@ -73,6 +75,7 @@ def check_matplotlibrc_support(configuration):
 
 def run_testbed(settings, experiment_manager):
     raise Exception("running testbed experiments is currently an unsupported operation")
+    
 
 def run_simulation(settings, experiment_manager):
     for experiment in settings['experiments']:
