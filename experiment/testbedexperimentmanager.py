@@ -14,12 +14,12 @@ class TestbedExperimentManager(ExperimentManager):
         super(TestbedExperimentManager, self).__init__(baltimore_revision,
             libara_revision)
 
-    def _meh(self):
-        self.nodes = []
+    def _initialize(self, settings):
         self.port = 4519
+        self.nodes = []
+
         self.interface = settings['testbed_interface']
         print(self.interface)
-
 
         self.binary = settings['ara_home'] + '/testbed/des-ara.init'
         self.ld_library_path = settings['ld_library_path']
@@ -27,6 +27,9 @@ class TestbedExperimentManager(ExperimentManager):
 
         self.environment = dict(os.environ)
         self.environment['LD_LIBRARY_PATH'] = self.ld_library_path
+
+    def run_testbed_experiments(self, settings):
+        self._initialize(settings)
 
     def setup(self):
         self._setup_interfaces()

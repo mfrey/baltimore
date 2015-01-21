@@ -74,6 +74,7 @@ def check_matplotlibrc_support(configuration):
         matplotlib.rc_file(path.expanduser(configuration['analysis_matplotlib']))
 
 def run_testbed(settings, experiment_manager):
+    experiment_manager.run_testbed_experiments(settings)
     raise Exception("running testbed experiments is currently an unsupported operation")
     
 
