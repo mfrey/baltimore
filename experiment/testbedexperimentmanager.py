@@ -6,13 +6,20 @@ import socket
 from socket import error
 from subprocess import call
 
-from experiment import TestbedSetup
+from .testbedsetup import TestbedSetup
+from .experimentmanager import ExperimentManager
 
-class TestbedExperimentManager:
-    def __init__(self, settings):
+class TestbedExperimentManager(ExperimentManager):
+    def __init__(self, baltimore_revision, libara_revision):
+        super(TestbedExperimentManager, self).__init__(baltimore_revision,
+            libara_revision)
+
+    def _meh(self):
         self.nodes = []
         self.port = 4519
         self.interface = settings['testbed_interface']
+        print(self.interface)
+
 
         self.binary = settings['ara_home'] + '/testbed/des-ara.init'
         self.ld_library_path = settings['ld_library_path']
