@@ -33,6 +33,7 @@ class Configuration(object):
         else:
             self.settings = {}
 
+
     def read_experiment_options(self):
         self.settings['experiments'] = []
         experiments = [section for section in self.parser.sections() if section.startswith("Experiment")]
@@ -70,8 +71,11 @@ class Configuration(object):
 
 
     def read_testbed_options(self):
-        self.settings['testbed_settings'] = True
+        self.settings['testbed_settings'] = False 
         self.settings['testbed_interface'] = self._get('Testbed', 'interface')
+
+        if self.settings['testbed_interface'] != "":
+            self.settings['testbed_settings'] = True
 
 
     def _get(self, section, option):
