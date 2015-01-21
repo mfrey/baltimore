@@ -17,7 +17,7 @@ Installation from git
 
 3. Run the program
 
-		./main.py
+		./baltimore
 
 4. Tests are executed using nose. From the root of the project call
 
