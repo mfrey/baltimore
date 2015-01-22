@@ -4,7 +4,8 @@ import os
 import socket
 
 from socket import error
-from subprocess import call
+#from subprocess import call, Popen
+import subprocess  
 
 from .testbedsetup import TestbedSetup
 from .experimentmanager import ExperimentManager
@@ -47,7 +48,13 @@ class TestbedExperimentManager(ExperimentManager):
         with open("/tmp/testcommand.txt", 'w') as logfile:
             for command in setup.commands:
                 print(command)
-                call(["parallel-ssh", "-h", self.nodes_file, "-l", "root", "-i", command], env=self.environment, cwd=self.cwd, stdout=logfile)
+                #call(["parallel-ssh", "-h", self.nodes_file, "-l", "root", "-i", command], env=self.environment, cwd=self.cwd, stdout=logfile)
+                # TODO would be nice if we could avoid the shell option
+                pipe = subprocess.Popen(["parallel-ssh", "-h", self.nodes_file, "-l", "root", "-A", "-i", command], env=self.environment, cwd=self.cwd, stdin=subprocess.PIPE, stdout=logfile, shell=True)
+                # TODO should also try to avoid to write hte passwort somewhere
+                # (the real testbed actually uses ssh keys, while the testbed
+                # test # routers ask for a password)
+                print(pipe.communicate(bytes("that's uncool\n", 'UTF-8')))
 
 
     def run_testbed_experiments(self, settings):
