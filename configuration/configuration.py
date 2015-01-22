@@ -77,6 +77,10 @@ class Configuration(object):
         if self.settings['testbed_interface'] != "":
             self.settings['testbed_settings'] = True
 
+        nodes = self._get('Testbed', 'nodes')
+        if nodes != "":
+            self.settings['testbed_nodes'] = nodes.split(',')
+
 
     def _get(self, section, option):
         try:

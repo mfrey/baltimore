@@ -16,7 +16,8 @@ class TestbedExperimentManager(ExperimentManager):
 
     def _initialize(self, settings):
         self.port = 4519
-        self.nodes = []
+        self.nodes = settings['testbed_nodes']
+        print(self.nodes)
 
         self.interface = settings['testbed_interface']
         print(self.interface)
