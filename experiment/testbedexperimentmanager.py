@@ -15,19 +15,30 @@ class TestbedExperimentManager(ExperimentManager):
             libara_revision)
 
     def _initialize(self, settings):
+        # port of the routing daemon management interface
         self.port = 4519
+        # nodes which are part of the experiment
         self.nodes = settings['testbed_nodes']
-        print(self.nodes)
 
+        # default interface of the routing daemon
         self.interface = settings['testbed_interface']
-        print(self.interface)
-
+        # 
         self.binary = settings['ara_home'] + '/testbed/des-ara.init'
         self.ld_library_path = settings['ld_library_path']
         self.cwd = settings['cwd']
 
         self.environment = dict(os.environ)
         self.environment['LD_LIBRARY_PATH'] = self.ld_library_path
+
+
+        self._write_nodes_file()
+
+    def _write_nodes_file(self):
+        assert len(self.nodes) > 0
+        file_name = "/tmp/" + "nodes-" + str(os.getpid()) + ".txt"
+        with open(file_name, 'w') as node_file:
+            for node in self.nodes:
+                node_file.write(node.strip() + "\n")
 
     def run_testbed_experiments(self, settings):
         self._initialize(settings)
