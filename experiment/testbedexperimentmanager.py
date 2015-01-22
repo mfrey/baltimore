@@ -32,13 +32,23 @@ class TestbedExperimentManager(ExperimentManager):
 
 
         self._write_nodes_file()
+        self._pre()
 
     def _write_nodes_file(self):
         assert len(self.nodes) > 0
-        file_name = "/tmp/" + "nodes-" + str(os.getpid()) + ".txt"
-        with open(file_name, 'w') as node_file:
+        self.nodes_file = "/tmp/" + "nodes-" + str(os.getpid()) + ".txt"
+        with open(self.nodes_file, 'w') as node_file:
             for node in self.nodes:
                 node_file.write(node.strip() + "\n")
+
+    def _pre(self):
+        # setup interfaces for each node
+        setup = TestbedSetup(self.interface)
+        with open("/tmp/testcommand.txt", 'w') as logfile:
+            for command in setup.commands:
+                print(command)
+                call(["parallel-ssh", "-h", self.nodes_file, "-l", "root", "-i", command], env=self.environment, cwd=self.cwd, stdout=logfile)
+
 
     def run_testbed_experiments(self, settings):
         self._initialize(settings)
