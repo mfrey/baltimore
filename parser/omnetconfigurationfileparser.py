@@ -1,8 +1,9 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2.7
 
 import hashlib
 import os
-from configparser import ConfigParser
+#from configparser import ConfigParser
+from ConfigParser import ConfigParser
 
 
 class OMNeTConfigurationFileParser:

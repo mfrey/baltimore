@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2.7
 
 #from pylab import rand, ones, concatenate
 import matplotlib.pyplot as plt

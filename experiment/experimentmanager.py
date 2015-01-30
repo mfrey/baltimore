@@ -1,11 +1,12 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2.7
 
 import os
 from . import runner
 import logging
 import itertools
 
-from queue import Empty
+#from queue import Empty
+from Queue import Empty
 from multiprocessing import Queue, Pool
 
 from .experimentmanagerworker import ExperimentManagerWorker

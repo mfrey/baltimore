@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python2.7
 
 class RepetitionData:
     def __init__(self, parameters, nodes):
